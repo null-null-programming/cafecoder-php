@@ -1,0 +1,9 @@
+.git
+config/*
+Contests/*
+database/config.php
+public/users/*
+public/tea002/Problems/*
+public/tea002/problem_list.html
+
+
