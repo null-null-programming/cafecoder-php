@@ -1,5 +1,12 @@
 <!DOCTYPE HTML>
 <html lang="ja">
+<?php
+if (strcmp($_SERVER['SERVER_NAME'], "localhost") == 0) {
+    $address = "http://localhost";
+} else {
+    $address = "https://www.kakecoder.com";
+}
+?>
 
 <head>
     <meta charset="utf-8">
@@ -55,15 +62,17 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-        <a href="https://www.kakecoder.com/" class="navbar-brand">KakeCoder</a>
+    <nav class="navbar navbar-expand-sm navbar-dark " style="background-color:#a0522d;">
+        <a href="$address/" class="navbar-brand">CafeCoder</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navmenu1" aria-controls="navmenu1" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navmenu1">
             <div class="navbar-nav">
-                <a class="nav-item nav-link" href="https://www.kakecoder.com/">ホーム</a>
-                <a class="nav-item nav-link" href="https://www.kakecoder.com/Contest.html">コンテスト一覧</a>
+                <?php
+                echo '<a class="nav-item nav-link" href="' . $address . '/">ホーム</a>';
+                echo '<a class="nav-item nav-link" href="' . $address . '/Contest.html">コンテスト一覧</a>';
+                ?>
             </div>
         </div>
     </nav>
@@ -84,12 +93,13 @@
                     </button>
                     <div class="collapse navbar-collapse" id="navmenu1">
                         <div class="navbar-nav">
-                            <a class="nav-item nav-link" href="https://www.kakecoder.com/tea002">コンテストTOP</a>
-                            <a class="nav-item nav-link" href="https://www.kakecoder.com/tea002/problem_list.html">問題一覧</a>
-                            <a class="nav-item nav-link" href="https://www.kakecoder.com/tea002/ranking.php">ランキング</a>
-                            <a class="nav-item nav-link" href="https://www.kakecoder.com/tea002/my_submit.php">自分の提出</a>
-                            <a class="nav-item nav-link" href="https://www.kakecoder.com/tea002/all_submit.php">みんなの提出</a>
-
+                            <?php
+                            echo '<a class="nav-item nav-link" href="' . $address . '/tea002">コンテストTOP</a>';
+                            echo '<a class="nav-item nav-link" href="' . $address . '/tea002/problem_list.php">問題一覧</a>';
+                            echo '<a class="nav-item nav-link" href="' . $address . '/tea002/ranking.php">ランキング</a>';
+                            echo '<a class="nav-item nav-link" href="' . $address . '/tea002/my_submit.php">自分の提出</a>';
+                            echo '<a class="nav-item nav-link" href="' . $address . '/tea002/all_submit.php">みんなの提出</a>';
+                            ?>
                         </div>
                     </div>
                 </nav>
@@ -113,7 +123,7 @@
 
                 foreach ($file as $outputs) {
                     echo '<pre class="prettyprint">';
-                    for($i=0;$i<count($user_code);$i++){
+                    for ($i = 0; $i < count($user_code); $i++) {
                         echo htmlspecialchars($user_code[$i]);
                         echo '<br>';
                     }
@@ -173,7 +183,6 @@
                     echo '</tr>';
                     echo '</tbody>';
                     echo '</table>';
-                    
                 }
                 ?>
             </div>

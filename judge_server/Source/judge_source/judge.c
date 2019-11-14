@@ -1,13 +1,12 @@
 /*----------------------------------------------------------------------------
-*date  :2019/11/12
+*date  :2019/11/14
 *author:earlgray283
 *comment:
- ・バリデーションチェッカーを設けました。
  ・提出言語がpython3だったときはコンパイルチェックをしません。
 　 うまくコンパイルができなかったので、もしもCE状態で提出されたとしても
 　 RE扱いになります。(要検証)
  ・mkdirをシェル上で実行することにしました(要検証)
- ・
+ ・input_validation_checker()を修正しました。正直なにがだめだったのかがわかりません
 
 ----------------------------------------------------------------------------*/
 
@@ -74,13 +73,11 @@ int main(int argc,char *argv[]){
     submit.lang=atoi(argv[3]);
     strcpy(submit.testcase_dir_path,argv[4]);
     submit.score=atoi(argv[5]);
-    /*
     if(input_validation_checker(submit)){
         fprintf(stdout,"%s,-1,undef,IE,0,",submit.sessionID);
-        fprintf(stderr,"Inputs are included another characters[0-9][a-z][A-Z]");
+        fprintf(stderr,"Inputs are included another characters[0-9],[a-z],[A-Z],'.','/'");
         return -1;
     }
-    */
 
     //*シェル上でmkdirを実行するとうまくいったのでとりあえずこうしましたが、
     //*よくないということは分かっているので落ち着いたら検証します。
@@ -285,23 +282,18 @@ void clean_up(char *sessionid){
 
 int input_validation_checker(submit_t submit){
     char *ptr;
-    ptr=submit.sessionID;
-    for(int i=0;*ptr!='\0';ptr++){
+    for(ptr=submit.sessionID;*ptr!='\0';ptr++){
         if(!(('a'<=*ptr&&*ptr<='z')||('A'<=*ptr&&*ptr<='Z')||('0'<=*ptr&&*ptr<='9')||*ptr=='/'||*ptr=='.')){
             return 1;
         }
     }
-    ptr=submit.testcase_dir_path;
-    for(int i=0;*ptr!='\0';ptr++){
+    for(ptr=submit.testcase_dir_path;*ptr!='\0';ptr++){
         if(!(('a'<=*ptr&&*ptr<='z')||('A'<=*ptr&&*ptr<='Z')||('0'<=*ptr&&*ptr<='9')||*ptr=='/'||*ptr=='.')){
-            
             return 1;
         }
     }
-    ptr=submit.usercode_path;
-    for(int i=0;*ptr!='\0';ptr++){
+    for(ptr=submit.usercode_path;*ptr!='\0';ptr++){
         if(!(('a'<=*ptr&&*ptr<='z')||('A'<=*ptr&&*ptr<='Z')||('0'<=*ptr&&*ptr<='9')||*ptr=='/'||*ptr=='.')){
-            
             return 1;
         }
     }
