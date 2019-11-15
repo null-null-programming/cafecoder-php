@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------
-*date  :2019/11/14
+*last update:2019/11/15
 *author:earlgray283
 *comment:
  ・提出言語がpython3だったときはコンパイルチェックをしません。
@@ -7,6 +7,7 @@
 　 RE扱いになります。(要検証)
  ・mkdirをシェル上で実行することにしました(要検証)
  ・input_validation_checker()を修正しました。正直なにがだめだったのかがわかりません
+ ・C#のコンパイルコマンド・実行コマンドを追加しました。
 
 ----------------------------------------------------------------------------*/
 
@@ -49,14 +50,14 @@ int permit(submit_t);
 int try_testcase(submit_t*);
 //tmp下のセッションidごとにわかれたdirを削除します。
 void clean_up(char*);
-//[a-z],[A-Z],[0-9]以外の文字が入っていた時、ジャッジを終了します
+//[a-z],[A-Z],[0-9],'/','.'以外の文字が入っていた時、ジャッジを終了します
 int input_validation_checker(submit_t);
 
 int main(int argc,char *argv[]){
     setuid(0);
     submit_t submit;
     memset(&submit,0,sizeof(submit));//initialize with 0
-    char result[7][5]={"AC","WA","TLE","RE","MLE","CE","IE"};
+    char *result[7]={"AC","WA","TLE","RE","MLE","CE","IE"};
     
     if(argc>6){
         fprintf(stdout,"%s,-1,undef,IE,0,",submit.sessionID);
@@ -147,7 +148,7 @@ int compile(submit_t* submit){
             sprintf(compile_command,"python3 -m py_compile %s -d tmp/%s 2> tmp/%s/err.txt",submit->usercode_path,submit->sessionID,submit->sessionID);
             break;
         case 4://C#
-            //sprintf(compile_command,"mcs %s.cs -out:tmp/%s/Main.exe 2> tmp/%s/err.txt");
+            sprintf(compile_command,"mcs %s -out:tmp/%s/Main.exe 2> tmp/%s/err.txt",submit->usercode_path,submit->sessionID,submit->sessionID);
             break;
         default:
             fprintf(stderr,"error\n");
@@ -157,7 +158,7 @@ int compile(submit_t* submit){
     int ret=0;
     if(submit->lang!=3)ret=system(compile_command);
     
-    //get standard error input
+    //get standard error
     char err_path[600];sprintf(err_path,"tmp/%s/err.txt",submit->sessionID);
     char buf[600];
     FILE *fp=fopen(err_path,"r");
@@ -219,7 +220,8 @@ int try_testcase(submit_t *submit){
                                                                     ,submit->usercode_path,testcase_in,submit->sessionID);
                 break;
             case 4://C#
-
+                sprintf(execute_command,"sudo -u rbash_user timeout 4 mono ./tmp/%s/Main.exe < %s > tmp/%s/user_out.txt"
+                                                                    ,submit->sessionID,testcase_in,submit->sessionID);
                 break;
             default:
                 fprintf(stderr,"error\n");
