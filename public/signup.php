@@ -32,7 +32,7 @@ function signup($username, $password, $email, $role){
     }
     if ($rec["uid"] != null){
         echo "すでに同名のユーザーがいます。";
-        return false;
+        return false; 
     }
     //insert
     try{

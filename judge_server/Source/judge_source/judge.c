@@ -23,7 +23,6 @@
 
 typedef long long int ll;
 typedef struct submit_{
-    time_t submit_time;
     char sessionID[256];
     char usercode_path[256];
     char testcase_dir_path[256];

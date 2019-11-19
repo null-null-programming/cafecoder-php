@@ -44,7 +44,9 @@ if (strcmp($_SERVER['SERVER_NAME'], "localhost") == 0) {
 
 <body>
     <nav class="navbar navbar-expand-sm navbar-dark " style="background-color:#a0522d;">
-        <a href="$address/" class="navbar-brand">CafeCoder</a>
+    <?php
+        echo '<a href="' . $address . '/" class="navbar-brand">CafeCoder</a>';
+        ?>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navmenu1" aria-controls="navmenu1" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
