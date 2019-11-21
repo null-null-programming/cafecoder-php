@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -8,6 +9,7 @@ import (
 	"os/exec"
 	"regexp"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -25,7 +27,8 @@ type submitT struct {
 	score           int
 
 	//0:C 1:C++ 2:Java8 3:Python3 4:C#
-	lang int
+	lang          int
+	langExtention string
 
 	//0:AC 1:WA 2:TLE 3:RE 4:MLE 5:CE 6:IE *Please reference atcoder.
 	testcaseResult [50]int
@@ -43,47 +46,55 @@ func checkRegexp(reg, str string) bool {
 
 func compile(submit *submitT) int {
 	var (
-		cpUsercodeCmd *exec.Cmd
-		compileCmd    *exec.Cmd
+		//cpUsercodeCmd *exec.Cmd
+		compileCmd *exec.Cmd
+		stderr     bytes.Buffer
 	)
 
-	exec.Command("docker", "exec", "-it", "ubuntuForJudge", "/bin/bash", "-c", "\"mkdir /cafecoderUsers/\""+submit.sessionID).Run()
+	mkdirCmd := exec.Command("docker", "exec", "-i", "ubuntuForJudge", "/bin/bash", "-c", "mkdir cafecoderUsers/"+submit.sessionID)
+	err := mkdirCmd.Run()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "couldn't execute next command \"mkdir cafecoderUsers/****\"\n")
+		return -2
+	}
+
+	defer deleteUserCode(*submit)
+	exec.Command("docker", "cp", submit.usercodePath, "ubuntuForJudge:/cafecoderUsers/"+submit.sessionID+"/Main"+submit.langExtention).Run()
 	switch submit.lang {
 	case 0: //C11
-		cpUsercodeCmd = exec.Command("docker", "cp", submit.usercodePath, "ubuntuForJudge:/cafecoderUsers/"+submit.sessionID+"/Main.c")
-		compileCmd = exec.Command("docker", "exec", "-it", "ubuntuForJudge", "gcc", "/cafecoderUsers/"+submit.sessionID+"/Main.c", "-lm", "-std=gnu11", "-o", "/cafecoderUsers/"+submit.sessionID+"/Main.out")
+		compileCmd = exec.Command("docker", "exec", "-i", "ubuntuForJudge", "gcc", "/cafecoderUsers/"+submit.sessionID+"/Main.c", "-lm", "-std=gnu11", "-o", "/cafecoderUsers/"+submit.sessionID+"/Main.out")
 		submit.execFilePath = "/cafecoderUsers/" + submit.sessionID + "/Main.out"
+		submit.execDirPath = "/cafecoderUsers/" + submit.sessionID
 	case 1: //C++17
-		cpUsercodeCmd = exec.Command("docker", "cp", submit.usercodePath, "ubuntuForJudge:/cafecoderUsers/"+submit.sessionID+"/Main.cpp")
-		compileCmd = exec.Command("docker", "exec", "-it", "ubuntuForJudge", "g++", "/cafecoderUsers/"+submit.sessionID+"/Main.cpp", "-lm", "-std=gnu++17", "-o", "/cafecoderUsers/"+submit.sessionID+"/Main.out")
+		compileCmd = exec.Command("docker", "exec", "-i", "ubuntuForJudge", "g++", "/cafecoderUsers/"+submit.sessionID+"/Main.cpp", "-lm", "-std=gnu++17", "-o", "/cafecoderUsers/"+submit.sessionID+"/Main.out")
 		submit.execFilePath = "/cafecoderUsers/" + submit.sessionID + "/Main.out"
+		submit.execDirPath = "/cafecoderUsers/" + submit.sessionID
 	case 2: //java8
-		cpUsercodeCmd = exec.Command("docker", "cp", submit.usercodePath, "ubuntuForJudge:/cafecoderUsers/"+submit.sessionID+"/Main.java")
-		compileCmd = exec.Command("docker", "exec", "-it", "ubuntuForJudge", "javac", "/cafecoderUsers/"+submit.sessionID+"/Main.java", "-d", "/cafecoderUsers/"+submit.sessionID)
+		compileCmd = exec.Command("docker", "exec", "-i", "ubuntuForJudge", "javac", "/cafecoderUsers/"+submit.sessionID+"/Main.java", "-d", "/cafecoderUsers/"+submit.sessionID)
 		submit.execFilePath = "/cafecoderUsers/" + submit.sessionID + "/Main.class"
+		submit.execDirPath = "/cafecoderUsers/" + submit.sessionID
 	case 3: //python3
-		cpUsercodeCmd = exec.Command("docker", "cp", submit.usercodePath, "ubuntuForJudge:/cafecoderUsers/"+submit.sessionID+"/Main.py")
 		//cmd:=exec.Command("python3","-m","py_compile",submit.execDirPath+"/Main.py","-lm","-std=gnu11","-o",submit.execDirPath,"2>",submit.execDirPath+"/err.txt");
 		submit.execFilePath = "/cafecoderUsers/" + submit.sessionID + "/Main.py"
+		submit.execDirPath = "/cafecoderUsers/" + submit.sessionID
 	case 4: //C#
-		cpUsercodeCmd = exec.Command("docker", "cp", submit.usercodePath, "ubuntuForJudge:/cafecoderUsers/"+submit.sessionID+"/Main.cs")
-		compileCmd = exec.Command("docker", "exec", "-it", "ubuntuForJudge", "mcs", "/cafecoderUsers/"+submit.sessionID+"/Main.cs", "-out:/cafecoderUsers/"+submit.sessionID+"/Main.exe")
+		compileCmd = exec.Command("docker", "exec", "-i", "ubuntuForJudge", "mcs", "/cafecoderUsers/"+submit.sessionID+"/Main.cs", "-out:/cafecoderUsers/"+submit.sessionID+"/Main.exe")
 		submit.execFilePath = "/cafecoderUsers/" + submit.sessionID + "/Main.exe"
+		submit.execDirPath = "/cafecoderUsers/" + submit.sessionID
 	case 5: //Ruby
-		cpUsercodeCmd = exec.Command("docker", "cp", submit.usercodePath, "ubuntuForJudge:/cafecoderUsers/"+submit.sessionID+"/Main.rb")
-		compileCmd = exec.Command("docker", "exec", "-it", "ubuntuForJudge", "ruby", "-cw", "/cafecoderUsers/"+submit.sessionID+"/Main.rb")
+		compileCmd = exec.Command("docker", "exec", "-i", "ubuntuForJudge", "ruby", "-cw", "/cafecoderUsers/"+submit.sessionID+"/Main.rb")
 		submit.execFilePath = "/cafecoderUsers/" + submit.sessionID + "/Main.rb"
+		submit.execDirPath = "/cafecoderUsers/" + submit.sessionID
 	}
-	cpUsercodeCmd.Run()
-	compileOut, err := compileCmd.Output()
+	compileCmd.Stderr = &stderr
+	err = compileCmd.Run()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "%s\n", err)
+		fmt.Fprintf(os.Stderr, "%s\n", stderr.String())
 		return -1
 	}
-	fmt.Fprintf(os.Stderr, "%s\n", string(compileOut))
 
-	chownErr := exec.Command("docker", "exec", "-it", "ubuntuForJudge", "chown", "rbash_user", submit.execFilePath).Run()
-	chmodErr := exec.Command("docker", "exec", "-it", "ubuntuForJudge", "chmod", "4777", submit.execFilePath).Run()
+	chownErr := exec.Command("docker", "exec", "-i", "ubuntuForJudge", "chown", "rbash_user", submit.execFilePath).Run()
+	chmodErr := exec.Command("docker", "exec", "-i", "ubuntuForJudge", "chmod", "4777", submit.execFilePath).Run()
 	if chownErr != nil || chmodErr != nil {
 		fmt.Fprintf(os.Stderr, "failed to give permission\n")
 		return -2
@@ -93,6 +104,10 @@ func compile(submit *submitT) int {
 }
 
 func tryTestcase(submit *submitT) int {
+	var (
+		stderr bytes.Buffer
+	)
+
 	testcaseListFp, err := os.Open(submit.testcaseDirPath + "/testcase_list.txt")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "failed to open"+submit.testcaseDirPath+"/testcase_list.txt\n")
@@ -110,7 +125,7 @@ func tryTestcase(submit *submitT) int {
 			break
 		}
 		if readErr != nil {
-			fmt.Fprintf(os.Stderr, "failed to read"+submit.execDirPath+"/testcase_list.txt\n")
+			fmt.Fprintf(os.Stderr, "failed to read..\n")
 			break
 		}
 		testcaseName[i] = string(buf[:n])
@@ -121,24 +136,25 @@ func tryTestcase(submit *submitT) int {
 	var executeUsercodeCmd *exec.Cmd
 	switch submit.lang {
 	case 0: //C11
-		executeUsercodeCmd = exec.Command("docker", "exec", "-i", "ubuntuForJudge", "timeout", "3", ".", submit.execFilePath)
+		executeUsercodeCmd = exec.Command("docker", "exec", "-i", "ubuntuForJudge", "timeout", "3", "."+submit.execFilePath)
 	case 1: //C++17
-		executeUsercodeCmd = exec.Command("docker", "exec", "-i", "ubuntuForJudge", "timeout", "3", ".", submit.execFilePath)
+		executeUsercodeCmd = exec.Command("docker", "exec", "-i", "ubuntuForJudge", "timeout", "3", "."+submit.execFilePath)
 	case 2: //java8
-		executeUsercodeCmd = exec.Command("docker", "exec", "-i", "ubuntuForJudge", "timeout", "3", ".", submit.execFilePath)
+		executeUsercodeCmd = exec.Command("docker", "exec", "-i", "ubuntuForJudge", "timeout", "3", "java","-cp","."+submit.execDirPath,"Main")
 	case 3: //python3
-		executeUsercodeCmd = exec.Command("docker", "exec", "-i", "ubuntuForJudge", "timeout", "3", ".", submit.execFilePath)
+		executeUsercodeCmd = exec.Command("docker", "exec", "-i", "ubuntuForJudge", "timeout", "3", "python3",submit.execFilePath)
 	case 4: //C#
-		executeUsercodeCmd = exec.Command("docker", "exec", "-i", "ubuntuForJudge", "timeout", "3", ".", submit.execFilePath)
+		executeUsercodeCmd = exec.Command("docker", "exec", "-i", "ubuntuForJudge", "timeout", "3", "mono","."+submit.execFilePath)
 	case 5: //Ruby
-		executeUsercodeCmd = exec.Command("docker", "exec", "-i", "ubuntuForJudge", "timeout", "3", ".", submit.execFilePath)
+		executeUsercodeCmd = exec.Command("docker", "exec", "-i", "ubuntuForJudge", "timeout", "3", "."+submit.execFilePath)
 	}
 	submit.overallTime = 0
 	submit.overallResult = 0
 	for i := 0; i < testcaseN; i++ {
+		testcaseName[i] = strings.TrimSpace(testcaseName[i]) //delete \n\r
 		inputTestcase, err := ioutil.ReadFile(submit.testcaseDirPath + "/in/" + testcaseName[i])
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "%s\n", err)
+			fmt.Fprintf(os.Stderr, "[%s]-->%s\n", testcaseName[i], err)
 			return -1
 		}
 		outputTestcase, err := ioutil.ReadFile(submit.testcaseDirPath + "/out/" + testcaseName[i])
@@ -146,6 +162,7 @@ func tryTestcase(submit *submitT) int {
 			fmt.Fprintf(os.Stderr, "%s\n", err)
 			return -1
 		}
+
 		stdin, err := executeUsercodeCmd.StdinPipe()
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "%s\n", err)
@@ -154,20 +171,20 @@ func tryTestcase(submit *submitT) int {
 		io.WriteString(stdin, string(inputTestcase))
 		stdin.Close()
 
-		startTime := time.Now()
-		userOut, runtimeErr := executeUsercodeCmd.Output()
-		endTime := time.Now()
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "%s\n", err)
-			return -1
-		}
+		executeUsercodeCmd.Stderr = &stderr
 
-		submit.testcaseTime[i] = endTime.Sub(startTime).Milliseconds()
+		startTime := time.Now().UnixNano()
+		userOut, runtimeErr := executeUsercodeCmd.Output()
+		endTime := time.Now().UnixNano()
+		submit.testcaseTime[i] = (endTime-startTime)/1000000
+
 		if submit.overallTime < submit.testcaseTime[i] {
 			submit.overallTime = submit.testcaseTime[i]
 		}
+
 		if submit.testcaseTime[i] <= 2000 {
 			if runtimeErr != nil {
+				fmt.Fprintf(os.Stderr, "%s\n", stderr.String())
 				submit.testcaseResult[i] = 3 //RE
 			} else {
 				if string(userOut) == string(outputTestcase) {
@@ -179,17 +196,25 @@ func tryTestcase(submit *submitT) int {
 		} else {
 			submit.testcaseResult[i] = 2 //TLE
 		}
-		if submit.testcaseResult[i] < submit.overallResult {
-			submit.testcaseResult[i] = submit.overallResult
+		if submit.testcaseResult[i] > submit.overallResult {
+			submit.overallResult = submit.testcaseResult[i]
 		}
 	}
 	return 0
 }
 
+func deleteUserDir(submit submitT) {
+	exec.Command("docker", "exec", "-i", "ubuntuForJudge", "rm", "-r", "cafecoderUsers/"+submit.sessionID).Run()
+}
+
+func deleteUserCode(submit submitT) {
+	exec.Command("docker", "exec", "-i", "ubuntuForJudge", "rm", "cafecoderUsers/"+submit.sessionID+"/Main"+submit.langExtention).Run()
+}
+
 func main() {
 	var (
 		result = [...]string{"AC", "WA", "TLE", "RE", "MLE", "CE", "IE"}
-		//lang   = [...]string{".c", ".cpp", ".java", ".py", ".cs", ".rb"}
+		lang   = [...]string{".c", ".cpp", ".java", ".py", ".cs", ".rb"}
 		submit submitT
 		args   = os.Args
 	)
@@ -220,6 +245,9 @@ func main() {
 	submit.lang, _ = strconv.Atoi(args[3])
 	submit.testcaseDirPath = args[4]
 	submit.score, _ = strconv.Atoi(args[5])
+	submit.langExtention = lang[submit.lang]
+
+	defer deleteUserDir(submit)
 
 	ret := compile(&submit)
 	if ret == -2 {
