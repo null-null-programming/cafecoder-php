@@ -2,10 +2,13 @@ package main
 
 import (
 	"fmt"
+	"io"
+	"io/ioutil"
 	"os"
 	"os/exec"
 	"regexp"
 	"strconv"
+	"time"
 )
 
 const (
@@ -28,8 +31,8 @@ type submitT struct {
 	testcaseResult [50]int
 	overallResult  int
 
-	testcaseTime [50]int
-	overallTime  int
+	testcaseTime [50]int64
+	overallTime  int64
 	testcaseCnt  int
 	memoryUsed   int
 }
@@ -113,25 +116,73 @@ func tryTestcase(submit *submitT) int {
 		testcaseName[i] = string(buf[:n])
 		testcaseN++
 	}
+	submit.testcaseCnt = testcaseN
 
+	var executeUsercodeCmd *exec.Cmd
+	switch submit.lang {
+	case 0: //C11
+		executeUsercodeCmd = exec.Command("docker", "exec", "-i", "ubuntuForJudge", "timeout", "3", ".", submit.execFilePath)
+	case 1: //C++17
+		executeUsercodeCmd = exec.Command("docker", "exec", "-i", "ubuntuForJudge", "timeout", "3", ".", submit.execFilePath)
+	case 2: //java8
+		executeUsercodeCmd = exec.Command("docker", "exec", "-i", "ubuntuForJudge", "timeout", "3", ".", submit.execFilePath)
+	case 3: //python3
+		executeUsercodeCmd = exec.Command("docker", "exec", "-i", "ubuntuForJudge", "timeout", "3", ".", submit.execFilePath)
+	case 4: //C#
+		executeUsercodeCmd = exec.Command("docker", "exec", "-i", "ubuntuForJudge", "timeout", "3", ".", submit.execFilePath)
+	case 5: //Ruby
+		executeUsercodeCmd = exec.Command("docker", "exec", "-i", "ubuntuForJudge", "timeout", "3", ".", submit.execFilePath)
+	}
+	submit.overallTime = 0
+	submit.overallResult = 0
 	for i := 0; i < testcaseN; i++ {
-		var executeUsercodeCmd *exec.Cmd
-		switch submit.lang {
-		case 0: //C11
-			executeUsercodeCmd = exec.Command("docker", "exec", "-i", "ubuntuForJudge", "timeout", "3", ".", submit.execFilePath, "<", submit.testcaseDirPath+"/in/"+testcaseName[i])
-		case 1: //C++17
-			executeUsercodeCmd = exec.Command("docker", "exec", "-i", "ubuntuForJudge", "timeout", "3", ".", submit.execFilePath, "<", submit.testcaseDirPath+"/in/"+testcaseName[i])
-		case 2: //java8
-			executeUsercodeCmd = exec.Command("docker", "exec", "-i", "ubuntuForJudge", "timeout", "3", ".", submit.execFilePath, "<", submit.testcaseDirPath+"/in/"+testcaseName[i])
-		case 3: //python3
-			executeUsercodeCmd = exec.Command("docker", "exec", "-i", "ubuntuForJudge", "timeout", "3", ".", submit.execFilePath, "<", submit.testcaseDirPath+"/in/"+testcaseName[i])
-		case 4: //C#
-			executeUsercodeCmd = exec.Command("docker", "exec", "-i", "ubuntuForJudge", "timeout", "3", ".", submit.execFilePath, "<", submit.testcaseDirPath+"/in/"+testcaseName[i])
-		case 5: //Ruby
-			executeUsercodeCmd = exec.Command("docker", "exec", "-i", "ubuntuForJudge", "timeout", "3", ".", submit.execFilePath, "<", submit.testcaseDirPath+"/in/"+testcaseName[i])
+		inputTestcase, err := ioutil.ReadFile(submit.testcaseDirPath + "/in/" + testcaseName[i])
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "%s\n", err)
+			return -1
+		}
+		outputTestcase, err := ioutil.ReadFile(submit.testcaseDirPath + "/out/" + testcaseName[i])
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "%s\n", err)
+			return -1
+		}
+		stdin, err := executeUsercodeCmd.StdinPipe()
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "%s\n", err)
+			return -1
+		}
+		io.WriteString(stdin, string(inputTestcase))
+		stdin.Close()
+
+		startTime := time.Now()
+		userOut, runtimeErr := executeUsercodeCmd.Output()
+		endTime := time.Now()
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "%s\n", err)
+			return -1
+		}
+
+		submit.testcaseTime[i] = endTime.Sub(startTime).Milliseconds()
+		if submit.overallTime < submit.testcaseTime[i] {
+			submit.overallTime = submit.testcaseTime[i]
+		}
+		if submit.testcaseTime[i] <= 2000 {
+			if runtimeErr != nil {
+				submit.testcaseResult[i] = 3 //RE
+			} else {
+				if string(userOut) == string(outputTestcase) {
+					submit.testcaseResult[i] = 0 //AC
+				} else {
+					submit.testcaseResult[i] = 1 //WA
+				}
+			}
+		} else {
+			submit.testcaseResult[i] = 2 //TLE
+		}
+		if submit.testcaseResult[i] < submit.overallResult {
+			submit.testcaseResult[i] = submit.overallResult
 		}
 	}
-
 	return 0
 }
 
@@ -178,7 +229,13 @@ func main() {
 		fmt.Fprintf(os.Stdout, "%s,-1,undef,%s,0,", submit.sessionID, result[5])
 		return
 	}
-
 	ret = tryTestcase(&submit)
-
+	if ret == -1 {
+		fmt.Fprintf(os.Stdout, "%s,-1,undef,%s,0,", submit.sessionID, result[6])
+	} else {
+		fmt.Fprintf(os.Stdout, "%s,%d,undef,%s,%d,", submit.sessionID, submit.overallTime, result[submit.overallResult], submit.score)
+		for i := 0; i < submit.testcaseCnt; i++ {
+			fmt.Fprintf(os.Stdout, "%s,%d,", result[submit.testcaseResult[i]], submit.testcaseTime[i])
+		}
+	}
 }

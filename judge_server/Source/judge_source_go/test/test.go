@@ -1,14 +1,13 @@
 package main
 
-import (
-	"os/exec"
-)
+import "time"
 
 func main() {
-	cmd := exec.Command("bash", "-c", "./a", "<", "in.txt")
-	out, err := cmd.Output()
-	if err != nil {
+	start := time.Now()
+	for i := 0; i < 1000000000; i++ {
 
 	}
-	println(string(out))
+	end := time.Now()
+	println(end.Sub(start).Milliseconds(), "[ms]")
+
 }
