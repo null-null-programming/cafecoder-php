@@ -1,14 +1,10 @@
 # 概要
 ドキュメントルートはpublicになります。  
 現在なにもできません。 
-# judge_serverの仕様(仮)
+# judge_serverの仕様(仮2)
 渡されるコマンドライン引数はそれぞれnull文字込みでmax256文字まで  
 必ずこの順番で引数が渡され、ユーザーの入力が直接反映されないことを保証する。
 
-簡易的だがインターフェースの実装は  
-test/stab/judge_estab.c  
-を参考にするといいかもしれない。
-余裕があればMakefileでビルド可能にしといてほしい。
 ## 引数
 
 0. 実行ファイルの名前  
@@ -25,6 +21,8 @@ argv[0]
 
 4. testcase_dir_path  
 　　テストケースが保存されたディレクトリのフルパス。(未定 今までの資源を使うためにContestsに入る？)  
+5. point
+    ポイント　暫定的に追加   
 
 
 ## 出力  
@@ -50,14 +48,14 @@ AC WA TLE RE CEのいずれか。基準は要協議。
 5. 得点  
 基準を知らないので要協議。
 
-6. 各テストケースの結果  
+6. 各テストケースの結果,実行時間  
 各テスト結果における出力。可変長に見える。最大数は要協議。
 テスト結果1,実行時間1,テスト結果2,実行時間2,・・・,テスト結果N,実行時間N,
 
 ```csv
-sessionid,runtime(ms),[maxmemory(kb)|undef],[AC|WA|TLE|RE|CE],point[0-1000],output1[AC|WA|TLE|RE|CE],output2[AC|WA|TLE|RE|CE],...
+sessionid,runtime(ms),[maxmemory(kb)|undef],[AC|WA|TLE|RE|CE],point[0-1000],output1[AC|WA|TLE|RE|CE],runtime1(ms),output2[AC|WA|TLE|RE|CE],runtime2,...
 ```
 例
 ```csv
-42de40c3e69c769f12a19c011713c119,321,undef,AC,200,AC,AC,AC,
+42de40c3e69c769f12a19c011713c119,321,undef,AC,200,AC,321,AC,456,AC,567  
 ```
