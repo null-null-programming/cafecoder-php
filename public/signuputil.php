@@ -30,7 +30,7 @@ function signup($username, $password, $email, $role){
         echo "DB SELECT ERROR";
         exit();
     }
-    if ($rec["uid"] != null){
+    if ($rec[0]["uid"] != null){
         echo "すでに同名のユーザーがいます。";
         return false; 
     }
@@ -49,7 +49,7 @@ function signup($username, $password, $email, $role){
         if(signup($username, $_POST["password"], "", "user")){
 	    mkdir("./users/".$username);
 	    copy("../template/userpage/template.php","users/".$username."/index.php");
-        echo "登録が完了しました。<br /><a href=\"signin.html\">サインイン</a>";
+        echo "登録が完了しました。<br /><a href=\"signin.php\">サインイン</a>";
         }
     }
 ?>

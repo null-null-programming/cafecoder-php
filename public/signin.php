@@ -26,13 +26,13 @@
         <div class="card-body">
             <form action="signinutil.php" method="POST">
                 <p>サインイン</p>
-                <p2>ユーザーID</p2>
+                <p>ユーザーID</p>
                 <p class="username"><input type="text" name="username" maxlength="32" autocomplete="OFF" /></p>
-                <p2>パスワード</p2>
+                <p>パスワード</p>
                 <p class="password"><input type="password" name="password" maxlength="32" autocomplete="OFF" /></p>
                 <p class="submit"><input type="submit" value="サインイン" /></p>
             </form>
-            新規登録は<a href="signup.html">こちら</a>
+            新規登録は<a href="signup.php">こちら</a>
         </div>
     </div>
 </div>
