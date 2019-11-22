@@ -1,2 +1,2 @@
-sudo ./JUDGE tester /var/www/html/judge_server/test/tester_c.c 0 /var/www/html/judge_server/test/testcase 100
+sudo ./JUDGE tester /var/www/html/judge_server/test/tester.rb 5 /var/www/html/judge_server/test/testcase 100
 
