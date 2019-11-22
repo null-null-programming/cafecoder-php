@@ -1,57 +1,43 @@
-<?php
-session_start();
+<!doctype html>
+<html lang="ja">
 
-include("../database/connection.php");
-/*
- * do not pass $_SESSION["username"]
-* @param string $username
-* @return bool issignin
-*/
-function is_signin($username){
-    return $_SESSION["username"] === $username;
-}
+<head>
+<?php include_once "../template/head.php"; ?>
+</head>
+<body>
+<?php include_once "../template/nav.php"; ?>
+   <br>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
 
-/*
- * @param string $username
- * @param string $password
- * @return bool issignin
- * */
+</body>
+<!--メインコンテンツ-->
+<div class="container">
+    <div class="card" style="width:auto">
+        <div class="card-body">
+            <form action="signinutil.php" method="POST">
+                <p>サインイン</p>
+                <p2>ユーザーID</p2>
+                <p class="username"><input type="text" name="username" maxlength="32" autocomplete="OFF" /></p>
+                <p2>パスワード</p2>
+                <p class="password"><input type="password" name="password" maxlength="32" autocomplete="OFF" /></p>
+                <p class="submit"><input type="submit" value="サインイン" /></p>
+            </form>
+            新規登録は<a href="signup.html">こちら</a>
+        </div>
+    </div>
+</div>
+<br />
 
-function signin($username, $password){
-    //password is safe because it is hashed with sha256 
-    if(!preg_match("/^[a-zA-Z0-9_]+$/", $username)){
-        echo "ユーザー名に使用できない文字が含まれています。";
-        return false;
-    }
+</body>
 
-    if($username == null || $password == null){
-        return false;
-    }
-    $con = new DBC();
-    try{
-    $rec = $con->prepare_execute_oneline("SELECT uid,username,role FROM users WHERE username=? and password_hash=? ", array($username, $con->sha256hash($password)));
-    }catch(Exception $e){
-        var_dump($e);
-        echo "DB SELECT ERROR";
-    }
-    if($rec["uid"] != null){
-        session_start();
-        $_SESSION["uid"] = $rec["uid"];
-        $_SESSION["username"] = $rec["username"];
-        $_SESSION["role"] = $rec["role"];
-        return true;
-    }else{
-        return false;
-    }
-}
-
-if(isset($_POST["username"]) && isset($_POST["password"])){
-    if(signin($_POST["username"], $_POST["password"])){
-        header("Location: /users/".$_POST["username"]);
-        exit();
-    }else{
-        echo "ユーザー名かパスワードが正しくありません。";
-        exit();
-    }
-}
-?>
+</html>

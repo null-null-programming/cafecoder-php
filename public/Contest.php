@@ -3,41 +3,12 @@
 
 <head>
     <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-144747694-2"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-
-        gtag('config', 'UA-144747694-2');
-    </script>
-
-
+    <?php include_once "../template/head.php"; ?>
     <title>コンテスト</title>
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-sm navbar-dark " style="background-color:#a0522d;">
-        <a href="https://www.kakecoder.com/" class="navbar-brand">CafeCoder</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navmenu1"
-            aria-controls="navmenu1" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navmenu1">
-            <div class="navbar-nav">
-                <a class="nav-item nav-link" href="https://www.kakecoder.com/">ホーム</a>
-                <a class="nav-item nav-link" href="https://www.kakecoder.com/Contest.html">コンテスト一覧</a>
-            </div>
-        </div>
-    </nav>
+<?php include_once "../template/nav.php"; ?>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

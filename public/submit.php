@@ -66,7 +66,7 @@ sesssion to mysql
 */
 $con = new DBC();
 try{
-    $con->prepare_execute_oneline("INSERT INTO tea002uploads (uid, problem, code_session, user_id) VALUES (?, ?, ?, ?)", array(md5(rand()), $problem, $code_session, $_SESSION["uid"]));
+    $con->prepare_execute("INSERT INTO tea002uploads (uid, problem, code_session, user_id) VALUES (?, ?, ?, ?)", array(md5(rand()), $problem, $code_session, $_SESSION["uid"]));
 }catch(Exception $e){
     // var_dump($e);
     echo "エラーが発生しました。";

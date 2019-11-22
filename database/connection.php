@@ -39,12 +39,13 @@ Class DBC {
  * @todo catch exceptions
  *
  **/
-    function prepare_execute_oneline($sql, $data){
+    function prepare_execute($sql, $data){
         $stmt = $this->dbh->prepare($sql);
         $stmt->execute($data); 
         try{
-            $rec = $stmt->fetch(PDO::FETCH_ASSOC); 
-        }catch(Exception $e){
+            $rec = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+        catch(Exception $e){
             return true;
         }
         return $rec;

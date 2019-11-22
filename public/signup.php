@@ -1,55 +1,43 @@
-<?php
-try{
-include("../database/connection.php");
-}catch(Exception $e){
-    echo "DB INIT ERROR";
-    exit();
-}
+<!doctype html>
+<html lang="ja">
 
-/*
- * @param string $username
- * @param string $password
- * @return bool result
- * @todo email
- * */
-function signup($username, $password, $email, $role){
-    if(!preg_match("/^[a-zA-Z0-9_]+$/",$username)){
-        echo "現在ユーザー名に使用出来る文字列はa-zA-Z0-9です。";
-        return false;
-    }
+<head>
+<?php include_once "../template/head.php"; ?>
+</head>
+<body>
+<?php include_once "../template/nav.php"; ?>
+<br>
 
-    if($username == null || $password == null){
-        return false;
-    }
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
 
-    $con = new DBC();
-    //is there username
-    try{
-        $rec = $con->prepare_execute_oneline("SELECT uid FROM users WHERE username=? ", array($username));
-    }catch(Exception $e){
-        echo "DB SELECT ERROR";
-        exit();
-    }
-    if ($rec["uid"] != null){
-        echo "すでに同名のユーザーがいます。";
-        return false; 
-    }
-    //insert
-    try{
-        $con->prepare_execute_oneline("INSERT INTO users (uid, username, password_hash, role) VALUES (?, ?, ?, ?)", array(md5(rand()), $username, $con->sha256hash($password),$role));
-    }catch(Exception $e){
-        echo "エラーが発生しました。";
-        return false;
-    }
-    return true;
-}
+</body>
+<!--メインコンテンツ-->
+<div class="container">
+    <div class="card" style="width: auto">
+        <div class="card-body">
+            <form action="signuputil.php" method="POST">
+                <p>ユーザー登録</p>
+                <label>ユーザーID</label>
+                <p class="username"><input type="text" name="username" maxlength="32" autocomplete="OFF" /></p>
+                <label>パスワード</label>
+                <p class="password"><input type="password" name="password" maxlength="32" autocomplete="OFF" /></p>
+                <p class="submit"><input type="submit" value="登録" /></p>
+            </form>
+        </div>
+    </div>
+</div>
+<br />
 
-    if(isset($_POST["username"]) && isset($_POST["password"])){
-	$username = htmlspecialchars($_POST["username"], ENT_QUOTES);
-        if(signup($username, $_POST["password"], "", "user")){
-	    mkdir("./users/".$username);
-	    copy("../template/userpage/template.php","users/".$username."/index.php");
-        echo "登録が完了しました。";
-        }
-    }
-?>
+</body>
+
+</html>
