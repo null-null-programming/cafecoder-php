@@ -47,7 +47,7 @@ function signin($username, $password){
 
 if(isset($_POST["username"]) && isset($_POST["password"])){
     if(signin($_POST["username"], $_POST["password"])){
-        header("Location: https://www.kakecoder.com/users/".$_POST["username"]);
+        header("Location: /users/".$_POST["username"]);
         exit();
     }else{
         echo "ユーザー名かパスワードが正しくありません。";

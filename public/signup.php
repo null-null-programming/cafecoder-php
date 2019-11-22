@@ -48,7 +48,7 @@ function signup($username, $password, $email, $role){
 	$username = htmlspecialchars($_POST["username"], ENT_QUOTES);
         if(signup($username, $_POST["password"], "", "user")){
 	    mkdir("./users/".$username);
-	    copy("./users/template/template.php","users/".$username."/index.php");
+	    copy("../template/userpage/template.php","users/".$username."/index.php");
         echo "登録が完了しました。";
         }
     }
