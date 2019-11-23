@@ -29,7 +29,7 @@ function signin($username, $password){
     }
     $con = new DBC();
     try{
-    $rec = $con->prepare_execute("SELECT uid,username,role FROM users WHERE username=? and password_hash=? ", array($username, $con->sha256hash($password)));
+    $rec = $con->prepare_execute("SELECT uid,username,role FROM users WHERE username=? and password_hash=? ", array($username, $con->sha256hash($password)))[0];
     }catch(Exception $e){
         var_dump($e);
         echo "DB SELECT ERROR";

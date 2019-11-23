@@ -25,12 +25,12 @@ function signup($username, $password, $email, $role){
     $con = new DBC();
     //is there username
     try{
-        $rec = $con->prepare_execute("SELECT uid FROM users WHERE username=? ", array($username));
+        $rec = $con->prepare_execute("SELECT uid FROM users WHERE username=? ", array($username))[0];
     }catch(Exception $e){
         echo "DB SELECT ERROR";
         exit();
     }
-    if ($rec[0]["uid"] != null){
+    if ($rec["uid"] != null){
         echo "すでに同名のユーザーがいます。";
         return false; 
     }

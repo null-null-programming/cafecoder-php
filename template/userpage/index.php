@@ -1,6 +1,6 @@
 <?php
 
-include("../../signin.php");
+include("../../signinutil.php");
 if(!is_signin(basename(getcwd()))){
     echo "ログインしてください。";
     exit();
@@ -11,7 +11,7 @@ if(!is_signin(basename(getcwd()))){
 <html lang="ja">
 
 <head>
-    <?php include_once "../../../template/head.php" ?>
+    <?php include_once("../../../template/head.php"); ?>
 
     <title>UserPage</title>
 
@@ -23,8 +23,7 @@ if(!is_signin(basename(getcwd()))){
 </head>
 
 <body>
-   <?php include_once "../../../template/nav.php" ?> 
-
+   <?php include_once("../../../template/nav.php"); ?> 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -34,7 +33,7 @@ if(!is_signin(basename(getcwd()))){
 </body>
 <!--メインコンテンツ-->
 <?php
-include("../template/usercard.php");
+include("usercard.php");
 ?>
 
 </body>
