@@ -11,12 +11,10 @@
 <body>
     
 <?php
-include "signin.php";
 if(!isset($_SESSION["username"]) || $_SESSION["username"] == ""){
     echo "サインインしてください。";
     exit();
 }
-echo "一時停止中。";
 
 $ext = array(
     "0"=>"c",
@@ -35,45 +33,61 @@ $problem = array(
 );
 
 
-var_dump($_POST);
-if($ext[$_POST["language"]] == "" || !isset($_POST["language"]) || !isset($_POST["problem"]) || !isset($_POST["sourcecode"])){
+if($ext[$_POST["language"]] == "" || !isset($_POST["language"]) || !isset($_POST["problem"]) || !isset($_POST["sourcecode"]) || !isset($_POST["contest_id"])){
     echo "不適切なリクエストです。";
     exit();
 }
 //get file extention 
 //init session
+$language = $_POST["language"];
 $code_session = md5(rand());
+$contest_id = $_POST["contest_id"];
 $problem = $problem[$_POST["problem"]];
 $_SESSION["problem"] = $problem;
 $_SESSION["code_session"] = $code_session;
-$code_dir = "./users/".$_SESSION["username"]."/codes/$problem/";
-//test
-$point = 100;
-
+$code_dir = "./users/".$_SESSION["username"]."/codes/$contest_id/$problem/";
+include "../database/connection.php";
+try{
+$con = new DBC();
+}catch(Exception $e){
+    echo "DB INIT ERROR";
+    exit();
+}
+//point and testcase_dir
+try{
+$rec = $con->prepare_execute("SELECT point,testcase_list_dir FROM problem WHERE contest_id=? AND problem_id=?",array($contest_id, $problem))[0];
+}catch(Exception $e){
+    var_dump("");
+    echo "DB SELECT ERROR 1";
+    exit();
+}
+$point = $rec["point"];
+$testcase_dir = $rec["testcase_list_dir"];
 //make code dir
 if (!file_exists($code_dir.".")){
-    mkdir($code_dir,0777,TRUE);
+    mkdir($code_dir,0755,TRUE);
 }
 $code_path = realpath($code_dir)."/".$code_session.".".$ext[$_POST["language"]];
 $_SESSION["code_path"] = $code_path;
 //put code text
 file_put_contents($code_path, $_POST["sourcecode"]);
-
-$testcase_dir_path = realpath("../Contests/tea002/$problem/");
 /*
 todo
 sesssion to mysql 
 */
+$date = new DateTime();
+$nowtime = $date->format('Y-m-d H:i:s');
 $con = new DBC();
 try{
-    $con->prepare_execute("INSERT INTO tea002uploads (uid, problem, code_session, user_id) VALUES (?, ?, ?, ?)", array(md5(rand()), $problem, $code_session, $_SESSION["uid"]));
+    $con->prepare_execute("INSERT INTO uploads (code_session, contest_id, problem, user_id, upload_date,lang) VALUES (?, ?, ?, ?, ?, ?)", array($code_session, $contest_id , $problem, $_SESSION["uid"], $nowtime, $language));
 }catch(Exception $e){
     // var_dump($e);
-    echo "エラーが発生しました。";
+    echo "エラーが発生しました。もう一度提出してください。: DB INSERT ERROR";
+    exit();
 }
 //call
-system("../judge_server/JUDGE $code_session $code_path ".$_POST["language"]." $testcase_dir_path $point > ".$code_dir.$code_session.".result 2> ".$code_dir.$code_session.".error");
-header("Location: https://www.kakecoder.com/result.php");
+system("../judge_server/JUDGE $code_session $code_path ".$language." $testcase_dir $point > ".$code_dir.$code_session.".result 2> ".$code_dir.$code_session.".error");
+header("Location: /result.php?username=".$_SESSION["username"]."&code_session=".$code_session);
 exit();
 ?>
 

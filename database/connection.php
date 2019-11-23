@@ -1,5 +1,4 @@
 <?php
-//todo add prepared function
 //todo edit config loader
 //$user $passwod
 
@@ -21,12 +20,18 @@ Class DBC {
     function __construct()
     {
         try{
-            $this->config = include_once("config.php");      
+            if(file_exists(dirname(__FILE__)."/config.php")){
+                $this->config = require(dirname(__FILE__)."/config.php");      
+            }else{
+                "DB INIT ERROR 2 : config not found.";
+                exit();
+            }
             $this->dsn = "mysql:dbname=kakecoder;host=localhost;charset=utf8";
             $this->dbh = new PDO($this->dsn, $this->config["user"], $this->config["pass"]);
             $this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         }catch(Exception $e){
             echo "DB INIT ERROR 1";
+            var_dump($e);
             exit();
         }
     }
@@ -36,7 +41,6 @@ Class DBC {
  * @param string $sql
  * @param array $data
  * @return array $rec
- * @todo catch exceptions
  *
  **/
     function prepare_execute($sql, $data){

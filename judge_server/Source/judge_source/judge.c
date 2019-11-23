@@ -84,8 +84,8 @@ int main(int argc,char *argv[]){
     char mkdir_cmd[1000];
     //sprintf(mkdir_cmd,"tmp/%s",submit.sessionID);
     sprintf(mkdir_cmd,"mkdir -m 755 tmp/%s",submit.sessionID);
-    //mkdir("tmp",0777);
-    //mkdir(mkdir_cmd,__S_IREAD|__S_IWRITE);
+    mkdir("tmp",0777);
+    mkdir(mkdir_cmd,__S_IREAD|__S_IWRITE);
     system(mkdir_cmd);
     
     int ret;

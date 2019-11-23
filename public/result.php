@@ -54,51 +54,83 @@
 </head>
 
 <body>
-
-    <?php include_once "../template/nav.php"; ?>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
-    <div class="container">
-        <div class="card" style="width: auto">
-            <div class="card-body">
-                <nav class="navbar navbar-expand-sm navbar-light bg-light">
-
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navmenu1" aria-controls="navmenu1" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navmenu1">
-                        <div class="navbar-nav">
-                            <a class="nav-item nav-link" href="https://www.kakecoder.com/tea002">コンテストTOP</a>
-                            <a class="nav-item nav-link" href="https://www.kakecoder.com/tea002/problem_list.html">問題一覧</a>
-                            <a class="nav-item nav-link" href="https://www.kakecoder.com/tea002/ranking.php">ランキング</a>
-                            <a class="nav-item nav-link" href="https://www.kakecoder.com/tea002/my_submit.php">自分の提出</a>
-                            <a class="nav-item nav-link" href="https://www.kakecoder.com/tea002/all_submit.php">みんなの提出</a>
-
-                        </div>
-                    </div>
-                </nav>
+<?php include_once("../template/nav.php");
+include_once("../util/util.php");
+echo_nav_card($_GET["contest_id"]);
+?>
 
                 <?php
-                $username = $_SESSION["username"];
-                $problem = $_SESSION["problem"];
-                $code_session = $_SESSION["code_session"];
 
-                $user_code = file_get_contents($_SESSION["code_path"]);
+                //todo magic number to config
+                $ext = array(
+                    "0"=>"c",
+                    "1"=>"cpp",
+                    "2"=>"java",
+                    "3"=>"py",
+                    "4"=>"cs",
+                );
+                include("../database/connection.php");
+
+                $code_session = $_GET["code_session"];
+                $con = new DBC();
+
+               //get user_code path
+                $sql = "SELECT username,problem,contest_id,contest_id,lang FROM uploads,users WHERE uid=user_id AND code_session=?";
+                try{
+                    $rec = $con->prepare_execute($sql, array($code_session))[0];
+                }catch(Exception $e){
+                    echo "DB SELECT ERROR 1";
+                }
+                $problem = $rec["problem"];
+                $contest_id = $rec["contest_id"];
+                $language = $rec["lang"];
+                $user_id = $rec["user_id"];
+                $username = $rec["username"];
+
+                //check time and login
+                $sql = "SELECT contest_name FROM contests WHERE contest_id=? AND NOW() BETWEEN start_time AND end_time";
+                try{
+                    $rec = $con->prepare_execute($sql, array($code_session))[0];
+                }catch(Exception $e){
+                    echo "DB SELECT ERROR 2";
+                }
+                $contest_name = $rec["contest_name"];
+
+                //if contest time
+                if($contest_name != ""){
+                    if($_SESSION["username"] !== $username){
+                        echo "コンテスト中は本人のみが確認できます。";
+                        exit();
+                    }
+                }
+
+                //get test_case_list path
+                $sql = "SELECT testcase_list_dir,point FROM problem WHERE contest_id=? and problem_id=?";
+                try{
+                $rec = $con->prepare_execute($sql, array($contest_id, $problem))[0];
+                }catch(Exception $e){
+                    echo "DB SELECT ERROR 3";
+                }
+                $testcase_list_path = $rec["testcase_list_dir"]. "/testcase_list.txt";
+
+                //get user_code
+                $user_code_base = "./users/$username/codes/$contest_id/$problem/$code_session";
+                $user_code_path = $user_code_base . $ext[$language];
+                $user_code = file_get_contents($user_code_path);
                 $user_code = explode("\n", $user_code);
 
                 $cnt = 0;
-                $result_path = "/var/www/html/public/users/$username/codes/$problem/$code_session" . ".result";
+                $result_path = $user_code_base . ".result";
                 $file = new SplFileObject($result_path);
                 $file->setFlags(SplFileObject::READ_CSV);
-
-                $testcase_list_path = "/var/www/html/Contests/tea002/" . $problem . "/testcase_list.txt";
                 $inn = file_get_contents($testcase_list_path);
                 $inn = explode("\n", $inn);
-
                 foreach ($file as $outputs) {
                     echo '<pre class="prettyprint">';
                     for($i=0;$i<count($user_code);$i++){
@@ -141,7 +173,7 @@
                     echo '</tr>';
                     echo '<tr>';
                     echo '<th>問題</th>';
-                    echo '<th>' . $problem . '</                // var_dump($file);th>';
+                    echo '<th>' . $problem . '</th>';
                     echo '</tr>';
                     echo '<tr>';
                     echo '<th>結果</th>';

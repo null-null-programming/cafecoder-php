@@ -8,7 +8,7 @@
 </head>
 
 <body>
-<?php include_once "../template/nav.php"; ?>
+<?php include_once "../template/nav.php" ;?>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

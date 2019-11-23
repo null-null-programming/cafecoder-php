@@ -26,11 +26,11 @@
 </head>
 
 <body>
-<?php 
-include_once("../template/nav.php");
+<?php include_once("../template/nav.php");
 include_once("../util/util.php");
 echo_nav_card($_GET["contest_id"]);
 ?>
+
 <table class="table table-bordered">
 <div class="pager">
 <?php 
@@ -40,10 +40,10 @@ if(!preg_match("/^[0-9]+$/",$page)){
     exit();
 }
 if($page > 0){
-echo '<a href="all_submit.php?page='.($page-1)."&contest_id=".$_GET["contest_id"].'">前へ</a>';
+echo '<a href="my_submit.php?page='.((int)$page-1)."&contest_id=".$_GET["contest_id"].'">前へ</a>';
 }
 echo $page;
-echo '<a href="all_submit.php?page='.($page+1).'&contest_id='.$_GET["contest_id"].'">次へ</a>';
+echo '<a href="my_submit.php?page='.((int)$page+1).'&contest_id='.$_GET["contest_id"].'">次へ</a>';
 ?>
 </div>
 <thead>
@@ -71,18 +71,19 @@ $contest_id = $_GET["contest_id"];
 include "../database/connection.php";
 $con = new DBC();
 $page_from = (int)($page * 10);
+$page_to = (int)($page * 10 + 10);
 try{
-    $rec = $con->prepare_execute("SELECT username,user_id, problem, code_session FROM uploads LEFT JOIN users ON uid=user_id WHERE contest_id=? LIMIT 10 OFFSET $page_from",array($contest_id));
+    $rec = $con->prepare_execute("SELECT problem, code_session FROM uploads LEFT JOIN users ON user_id=uid WHERE user_id=? AND contest_id=? LIMIT 10 OFFSET $page_from",array($_SESSION["uid"],$contest_id));
     // var_dump($rec);
     foreach ($rec as $line) {
         echo '<tr><th>';
-        echo $line["username"];
+        echo $_SESSION["username"];
         echo '</th>';
         echo '<th>';
         echo $line["problem"];
         echo '</th>';
         echo '<th>';
-        echo '<a href="/result.php?code_session='.$line["code_session"].'">詳細</a>';
+        echo '<a href="/result.php?code_session='.$line["code_session"].'">提出コード</a>';
         echo '</th></tr>';
     }
 }catch(Exception $e){
