@@ -32,20 +32,6 @@ include_once("../util/util.php");
 echo_nav_card($_GET["contest_id"]);
 ?>
 <table class="table table-bordered">
-<div class="pager">
-<?php 
-$page = (isset($_GET["page"]) && $_GET["page"] >= 0)? $_GET["page"] : 0 ;
-if(!preg_match("/^[0-9]+$/",$page)){
-    echo "PAGE ERROR";
-    exit();
-}
-if($page > 0){
-echo '<a href="all_submit.php?page='.($page-1)."&contest_id=".$_GET["contest_id"].'">前へ</a>';
-}
-echo $page;
-echo '<a href="all_submit.php?page='.($page+1).'&contest_id='.$_GET["contest_id"].'">次へ</a>';
-?>
-</div>
 <thead>
     <tr>
         <th>RANK</th>
@@ -77,7 +63,6 @@ $con = new DBC();
     echo "RANKING INIT ERROR";
     exit();
 }
-$page_from = (int)($page * 10);
 //update all user submit
 try{
 $rec = $con->prepare_execute("SELECT username, user_id, problem, code_session FROM uploads LEFT JOIN users ON uid=user_id WHERE contest_id=?",array($contest_id));
