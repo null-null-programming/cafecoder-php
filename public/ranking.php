@@ -136,7 +136,7 @@ try{
                 echo '</th>';
             }else{
                 echo '<th>';
-                echo "-";
+                echo " - ";
                 echo '</th>';
 
             }
