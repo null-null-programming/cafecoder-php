@@ -180,7 +180,7 @@ func tryTestcase(submit *submitT) int {
 
 		executeUsercodeCmd.Stderr = &stderr
 
-		err = exec.Command("ts=$(date+%s%N)").Run()
+		err = exec.Command("ts=$(date +%s%N)").Run()
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "%s\n", err)
 			return -1
