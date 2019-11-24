@@ -132,7 +132,7 @@ try{
         for($i=0,$j=0; $i < 6; $i++){
             if($enum_problem[$now_state[$j]["problem"]] == $i){
                 echo '<th>';
-                echo $now_state[$i]["point"];
+                echo $now_state[$j]["point"];
                 echo '</th>';
                 $j++;
             }else{
