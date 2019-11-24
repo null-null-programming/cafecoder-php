@@ -67,13 +67,7 @@
                     </select>
                     <br><br>
 
-                    <label>言語：</label>
-                    <select name="language">
-                        <option value="0">C(C11)</option>
-                        <option value="1">C++(C++17)</option>
-                        <option value="2">Java8(OpenJDK1.8.0)</option>
-                        <option value="3">Python3(ver3.6.8)</option>
-                    </select>
+                    <?php include_once "../template/select_language.php"; ?>
 
                     <br><br>
                     <label>ソースコード：</label>
