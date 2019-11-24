@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <title>みんなの提出</title>
+    <title>自分の提出</title>
     <link rel="stylesheet" href="https://cdn.datatables.net/t/bs-3.3.6/jqc-1.12.0,dt-1.10.11/datatables.min.css" />
     <script src="https://cdn.datatables.net/t/bs-3.3.6/jqc-1.12.0,dt-1.10.11/datatables.min.js"></script>
     <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
@@ -71,8 +71,8 @@ if(!preg_match("/^[0-9]+$/",$page)){
 $contest_id = $_GET["contest_id"];
 include_once "../database/connection.php";
 $con = new DBC();
-$page_from = (int)($page * 10);
-$page_to = (int)($page * 10 + 10);
+$page_from = (int)($page * 50);
+$page_to = (int)($page * 50 + 50);
 
 //get result
 try{
@@ -101,7 +101,7 @@ foreach($rec as $line){
     }
 }
 try{
-    $rec = $con->prepare_execute("SELECT problem, code_session,upload_date,result FROM uploads LEFT JOIN users ON user_id=uid WHERE user_id=? AND contest_id=? ORDER BY upload_date LIMIT 10 OFFSET $page_from",array($_SESSION["uid"],$contest_id));
+    $rec = $con->prepare_execute("SELECT problem, code_session,upload_date,result FROM uploads LEFT JOIN users ON user_id=uid WHERE user_id=? AND contest_id=? ORDER BY upload_date LIMIT 50 OFFSET $page_from",array($_SESSION["uid"],$contest_id));
     // var_dump($rec);
     foreach ($rec as $line) {
         echo '<tr><th>';
