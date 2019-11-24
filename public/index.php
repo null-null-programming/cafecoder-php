@@ -3,11 +3,12 @@
 
 
 <head>
-<?php include_once "../template/head.php"; ?>
+    <?php include_once "../template/head.php"; ?>
 </head>
+
 <body>
-<?php include_once "../template/nav.php"; ?>
-   <br>
+    <?php include_once "../template/nav.php"; ?>
+    <br>
 
 
     <!--メインコンテンツ-->
@@ -24,6 +25,30 @@
                     　<a href="https://github.com/earlgray283/CafeCoder">https://github.com/earlgray283/CafeCoder</a>
                     <br>
 
+
+            </div>
+        </div>
+    </div>
+    <br />
+
+    <div class="container">
+        <div class="card" style="width:auto">
+            <div class="card-body">
+                <h4 class="card-title">【Tea Break 003　告知】</h4>
+                <h6 class="card-subtitle mb-2 text-muted">コンテスト区分：tea</h6>
+                <p class="card-text">
+                    ・コンテストリンク：
+                    <?php
+                    echo '<a href="' . $address . '/tea003/">' . $address .
+                        '/tea003/</a>';
+                    ?>
+                    <br> ・開催時刻：2019-11-26(火) 21:00:00
+                    <br> ・コンテスト時間：90分
+                    <br> ・問題数：6問
+                    <br> ・Writer(敬称略)：null, 1st_vil, holeguma, 
+                    <br> ・ペナルティ：<s>3分</s>なし
+                    <br> ・メニュー：Green-Ceylon-Dimbula-Darjeeling-Earlgray-Keemun
+                </p>
 
             </div>
         </div>
