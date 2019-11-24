@@ -3,7 +3,6 @@ package main
 import (
 	"bufio"
 	"bytes"
-	"encoding/binary"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -117,7 +116,6 @@ func tryTestcase(submit *submitT) int {
 	var (
 		stderr     bytes.Buffer
 		runtimeErr error
-		userOut    []byte
 	)
 
 	testcaseListFp, err := os.Open(submit.testcaseDirPath + "/testcase_list.txt")
@@ -146,22 +144,7 @@ func tryTestcase(submit *submitT) int {
 	}
 
 	for i := 0; i < testcaseN; i++ {
-		var executeUsercodeCmd *exec.Cmd
-		switch submit.lang {
-		case 0: //C11
-			executeUsercodeCmd = exec.Command("docker", "exec", "-i", "ubuntuForJudge", "timeout", "3", "."+submit.execFilePath)
-		case 1: //C++17
-			executeUsercodeCmd = exec.Command("docker", "exec", "-i", "ubuntuForJudge", "timeout", "3", "."+submit.execFilePath)
-		case 2: //java8
-			executeUsercodeCmd = exec.Command("docker", "exec", "-i", "ubuntuForJudge", "timeout", "3", "java", "-cp", "."+submit.execDirPath, "Main")
-		case 3: //python3
-			executeUsercodeCmd = exec.Command("docker", "exec", "-i", "ubuntuForJudge", "timeout", "3", "python3", submit.execFilePath)
-		case 4: //C#
-			executeUsercodeCmd = exec.Command("docker", "exec", "-i", "ubuntuForJudge", "timeout", "3", "mono", "."+submit.execFilePath)
-		case 5: //Ruby
-			executeUsercodeCmd = exec.Command("docker", "exec", "-i", "ubuntuForJudge", "timeout", "3", "ruby", submit.execFilePath)
-		}
-
+		executeUsercodeCmd := exec.Command("docker", "exec", "-i", "ubuntuForJudge", "./executeUsercode.sh", string(submit.lang), submit.sessionID)
 		stdin, err := executeUsercodeCmd.StdinPipe()
 		testcaseName[i] = strings.TrimSpace(testcaseName[i]) //delete \n\r
 		inputTestcase, err := ioutil.ReadFile(submit.testcaseDirPath + "/in/" + testcaseName[i])
@@ -174,51 +157,55 @@ func tryTestcase(submit *submitT) int {
 			fmt.Fprintf(os.Stderr, "%s\n", err)
 			return -1
 		}
-
 		io.WriteString(stdin, string(inputTestcase))
 		stdin.Close()
-
 		executeUsercodeCmd.Stderr = &stderr
 
-		err = exec.Command("ts=$(date +%s%N)").Run()
+		runtimeErr = executeUsercodeCmd.Run()
+		userStdout, err := exec.Command("docker", "exec", "-i", "ubuntuForJudge", "cat", "/cafecoderUsers/"+submit.sessionID+"/userStdout.txt").Output()
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "%s\n", err)
 			return -1
 		}
-		userOut, runtimeErr = executeUsercodeCmd.Output()
-		err = exec.Command("tt=$((($(date +%s%N) - $ts)/1000000))").Run()
+		userStderr, err := exec.Command("docker", "exec", "-i", "ubuntuForJudge", "cat", "/cafecoderUsers/"+submit.sessionID+"/userStderr.txt").Output()
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "%s\n", err)
 			return -1
 		}
-		timeOut, err := exec.Command("echo \"$tt\"").Output()
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "%s\n", err)
-			return -1
-		}
-		buf := bytes.NewReader(timeOut)
-		err = binary.Read(buf, binary.LittleEndian, &submit.testcaseTime[i])
+		userTime, err := exec.Command("docker", "exec", "-i", "ubuntuForJudge", "cat", "/cafecoderUsers/"+submit.sessionID+"/userTime.txt").Output()
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "%s\n", err)
 			return -1
 		}
 
+		var tmpInt64 int64
+		tmpInt64, parseerr := strconv.ParseInt(string(userTime), 10, 64)
+		submit.testcaseTime[i] = tmpInt64
+		if parseerr != nil {
+			fmt.Fprintf(os.Stderr, "%s\n", parseerr)
+			return -1
+		}
 		if submit.overallTime < submit.testcaseTime[i] {
 			submit.overallTime = submit.testcaseTime[i]
 		}
-		userOutLines := strings.Split(string(userOut), "\n")
+
+		userStdoutLines := strings.Split(string(userStdout), "\n")
+		userStderrLines := strings.Split(string(userStderr), "\n")
 		outputTestcaseLines := strings.Split(string(outputTestcase), "\n")
 
+		for j := 0; j < len(userStderrLines); j++ {
+			fmt.Fprintf(os.Stderr, "%s\n", userStderrLines[j])
+		}
+		
 		if submit.testcaseTime[i] <= 2000 {
 			if runtimeErr != nil {
 				fmt.Fprintf(os.Stderr, "%s\n", runtimeErr)
-				fmt.Fprintf(os.Stderr, "%s\n", stderr.String())
 				submit.testcaseResult[i] = 3 //RE
 			} else {
 				submit.testcaseResult[i] = 1 //WA
-				for j := 0; j < len(userOutLines) && j < len(outputTestcaseLines); j++ {
+				for j := 0; j < len(userStdoutLines) && j < len(outputTestcaseLines); j++ {
 					submit.testcaseResult[i] = 0 //AC
-					if string(userOutLines[j]) != string(outputTestcaseLines[j]) {
+					if string(userStdoutLines[j]) != string(outputTestcaseLines[j]) {
 						submit.testcaseResult[i] = 1 //WA
 						break
 					}
