@@ -1,6 +1,6 @@
 <?php
 try{
-include("../database/connection.php");
+include_once("../database/connection.php");
 }catch(Exception $e){
     echo "DB INIT ERROR";
     exit();

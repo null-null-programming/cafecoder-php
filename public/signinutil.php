@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-include("../database/connection.php");
+include_once("../database/connection.php");
 /*
  * do not pass $_SESSION["username"]
 * @param string $username

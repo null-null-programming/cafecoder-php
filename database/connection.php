@@ -31,7 +31,6 @@ Class DBC {
             $this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         }catch(Exception $e){
             echo "DB INIT ERROR 1";
-            var_dump($e);
             exit();
         }
     }

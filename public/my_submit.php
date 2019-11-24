@@ -69,7 +69,7 @@ if(!preg_match("/^[0-9]+$/",$page)){
     exit();
 }
 $contest_id = $_GET["contest_id"];
-include "../database/connection.php";
+include_once "../database/connection.php";
 $con = new DBC();
 $page_from = (int)($page * 10);
 $page_to = (int)($page * 10 + 10);

@@ -46,7 +46,7 @@ $problem = $problem[$_POST["problem"]];
 $_SESSION["problem"] = $problem;
 $_SESSION["code_session"] = $code_session;
 $code_dir = "./users/".$_SESSION["username"]."/codes/$contest_id/$problem/";
-include "../database/connection.php";
+include_once "../database/connection.php";
 try{
 $con = new DBC();
 }catch(Exception $e){

@@ -75,7 +75,7 @@ echo_nav_card($_GET["contest_id"]);
                     "3"=>"py",
                     "4"=>"cs",
                 );
-                include("../database/connection.php");
+                include_once("../database/connection.php");
 
                 $code_session = $_GET["code_session"];
                 $con = new DBC();
