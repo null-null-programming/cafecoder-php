@@ -37,6 +37,10 @@ if($ext[$_POST["language"]] == "" || !isset($_POST["language"]) || !isset($_POST
     echo "不適切なリクエストです。";
     exit();
 }
+if(!preg_match("/^[0-9a-zA-Z]+$/",$_POST["contest_id"])){
+    echo "contest_idが不正です。";
+    exit();
+}
 //get file extention 
 //init session
 $language = $_POST["language"];

@@ -73,7 +73,7 @@ include_once "../database/connection.php";
 $con = new DBC();
 $page_from = (int)($page * 50);
 try{
-    $rec = $con->prepare_execute("SELECT username,user_id, problem, code_session, upload_date FROM uploads LEFT JOIN users ON uid=user_id WHERE contest_id=? ORDER BY upload_date LIMIT 50 OFFSET $page_from",array($contest_id));
+    $rec = $con->prepare_execute("SELECT username,user_id, problem, code_session, upload_date FROM uploads LEFT JOIN users ON uid=user_id WHERE contest_id=? ORDER BY upload_date DESC LIMIT 50 OFFSET $page_from",array($contest_id));
     // var_dump($rec);
     foreach ($rec as $line) {
         echo '<tr><th>';

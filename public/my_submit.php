@@ -101,7 +101,7 @@ foreach($rec as $line){
     }
 }
 try{
-    $rec = $con->prepare_execute("SELECT problem, code_session,upload_date,result FROM uploads LEFT JOIN users ON user_id=uid WHERE user_id=? AND contest_id=? ORDER BY upload_date LIMIT 50 OFFSET $page_from",array($_SESSION["uid"],$contest_id));
+    $rec = $con->prepare_execute("SELECT problem, code_session,upload_date,result FROM uploads LEFT JOIN users ON user_id=uid WHERE user_id=? AND contest_id=? ORDER BY upload_date DESC LIMIT 50 OFFSET $page_from",array($_SESSION["uid"],$contest_id));
     // var_dump($rec);
     foreach ($rec as $line) {
         echo '<tr><th>';

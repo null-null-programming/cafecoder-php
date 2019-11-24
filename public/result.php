@@ -74,6 +74,10 @@ echo_nav_card($_GET["contest_id"]);
                     "4"=>"cs",
                 );
                 include_once("../database/connection.php");
+                if(!preg_match("/^[0-9a-zA-Z]+$/",$_GET["code_session"])){
+                    echo "CODE SESSION ERROR";
+                    exit();
+                }
 
                 $code_session = $_GET["code_session"];
                 $con = new DBC();
