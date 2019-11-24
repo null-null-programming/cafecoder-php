@@ -129,11 +129,12 @@ try{
         echo '<th>';
         echo $line["sum_point"];
         echo '</th>';
-        for($i=0; $i < 6; $i++){
-            if($enum_problem[$now_state[$i]["problem"]] == $i){
+        for($i=0,$j=0; $i < 6; $i++){
+            if($enum_problem[$now_state[$j]["problem"]] == $i){
                 echo '<th>';
                 echo $now_state[$i]["point"];
                 echo '</th>';
+                $j++;
             }else{
                 echo '<th>';
                 echo " - ";
