@@ -117,7 +117,7 @@ try{
         echo $line["result"];
         echo '</th>';
         echo '<th>';
-        echo '<a href="/result.php?code_session='.$line["code_session"].'">提出コード</a>';
+        echo '<a href="/result.php?code_session='.$line["code_session"].'&contest_id='.$contest_id.'">提出コード</a>';
         echo '</th></tr>';
     }
 }catch(Exception $e){
