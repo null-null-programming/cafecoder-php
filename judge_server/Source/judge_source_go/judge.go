@@ -188,6 +188,8 @@ func tryTestcase(submit *submitT) int {
 		if submit.overallTime < submit.testcaseTime[i] {
 			submit.overallTime = submit.testcaseTime[i]
 		}
+		userOutLines := strings.Split(string(userOut), "\n")
+		outputTestcaseLines := strings.Split(string(outputTestcase), "\n")
 
 		if submit.testcaseTime[i] <= 2000 {
 			if runtimeErr != nil {
@@ -195,13 +197,14 @@ func tryTestcase(submit *submitT) int {
 				fmt.Fprintf(os.Stderr, "%s\n", stderr.String())
 				submit.testcaseResult[i] = 3 //RE
 			} else {
-
-				if string(userOut) == string(outputTestcase) {
+				submit.testcaseResult[i] = 1 //WA
+				for j := 0; j < len(userOutLines) && j < len(outputTestcaseLines); j++ {
 					submit.testcaseResult[i] = 0 //AC
-				} else {
-					submit.testcaseResult[i] = 1 //WA
+					if string(userOutLines[j]) != string(outputTestcaseLines[j]) {
+						submit.testcaseResult[i] = 1 //WA
+						break
+					}
 				}
-
 			}
 		} else {
 			submit.testcaseResult[i] = 2 //TLE
@@ -209,7 +212,6 @@ func tryTestcase(submit *submitT) int {
 		if submit.testcaseResult[i] > submit.overallResult {
 			submit.overallResult = submit.testcaseResult[i]
 		}
-
 	}
 	return 0
 }
