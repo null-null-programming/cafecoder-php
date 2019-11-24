@@ -45,7 +45,7 @@
                     <br> ・開催時刻：2019-11-26(火) 21:00:00
                     <br> ・コンテスト時間：100分
                     <br> ・問題数：6問
-                    <br> ・Writer(敬称略)：null, 1st_vil, holeguma, sanada<br>
+                    <br> ・Writer(敬称略)：null, ir_1st_vil, holeguma, sanada<br>
                     <br> ・ペナルティ：<s>3分</s>なし
                     <br> ・メニュー：Green-Ceylon-Dimbula-Darjeeling-Earlgray-Keemun
                 </p>
