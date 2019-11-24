@@ -118,10 +118,9 @@ echo_nav_card($_GET["contest_id"]);
                     echo "DB SELECT ERROR 3";
                 }
                 $testcase_list_path = $rec["testcase_list_dir"]. "/testcase_list.txt";
-
                 //get user_code
                 $user_code_base = "./users/$username/codes/$contest_id/$problem/$code_session";
-                $user_code_path = $user_code_base . $ext[$language];
+                $user_code_path = $user_code_base .".". $ext[$language];
                 $user_error_path = $user_code_base . ".error";
                 $user_code = file_get_contents($user_code_path);
                 $user_error = file_get_contents($user_error_path);
@@ -136,16 +135,15 @@ echo_nav_card($_GET["contest_id"]);
                 //print  code
                 echo 'CODE : <br/> ';
                 foreach ($file as $outputs) {
-                    echo '<pre class="prettyprint">';
+                    echo '<pre class="prettyprint"><br />';
                     for($i=0;$i<count($user_code);$i++){
                         echo htmlspecialchars($user_code[$i]);
-                        echo '<br>';
                 }
                 //print error
-                echo '</pre>';
+                echo '<br /></pre><br />';
                 echo 'ERROR : <br/> ';
                 echo '<pre>';
-                echo $user_error;
+                echo htmlspecialchars($user_error);
                 echo '</pre>';
 
                 echo '<table class="table table-bordered">';
