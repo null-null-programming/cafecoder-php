@@ -58,7 +58,7 @@
                     ・開催時刻：2019-11-26(火) 21:00:00<br>
                     ・開催時間：100分<br>
                     ・問題数：6問<br>
-                    ・writer：otamay, Ultraviolett, sakaki_tohru<br>
+                    ・writer：null, 1st_vil, holeguma, sanada<br>
                     ・ペナルティ：<s>3分</s>なし<br>
                     ・メニュー：Green-Ceylon-Dimbula-Darjeeling-Earlgray-Keemun<br>
                     ・注意事項<br>
