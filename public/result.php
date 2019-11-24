@@ -122,7 +122,9 @@ echo_nav_card($_GET["contest_id"]);
                 //get user_code
                 $user_code_base = "./users/$username/codes/$contest_id/$problem/$code_session";
                 $user_code_path = $user_code_base . $ext[$language];
+                $user_error_path = $user_code_base . ".error";
                 $user_code = file_get_contents($user_code_path);
+                $user_error = file_get_contents($user_error_path);
                 $user_code = explode("\n", $user_code);
 
                 $cnt = 0;
@@ -131,70 +133,77 @@ echo_nav_card($_GET["contest_id"]);
                 $file->setFlags(SplFileObject::READ_CSV);
                 $inn = file_get_contents($testcase_list_path);
                 $inn = explode("\n", $inn);
+                //print  code
+                echo 'CODE : <br/> ';
                 foreach ($file as $outputs) {
                     echo '<pre class="prettyprint">';
                     for($i=0;$i<count($user_code);$i++){
                         echo htmlspecialchars($user_code[$i]);
                         echo '<br>';
-                    }
-                    echo '</pre>';
-
-                    echo '<table class="table table-bordered">';
-                    echo '<thead>';
-                    echo '<tr>';
-                    echo '<th>テストケース</th>';
-                    echo '<th>結果</th>';
-                    echo '<th>実行時間</th>';
-                    echo '</tr>';
-                    echo '</thead>';
-
-                    echo '<tbody>';
-
-                    $start = 5;
-                    $end = count($outputs);
-                    for ($i = $start; $i <= $end - 2; $i += 2) {
-                        $case_number = intdiv(($i - 4), 2);
-                        $tim = $outputs[$i + 1];
-                        echo '<tr>';
-                        echo '<th>' . $inn[$case_number] . '</th>';
-                        echo '<th><span class="' . $outputs[$i] . '">' . $outputs[$i] . '</span></th>';
-                        echo '<th>' . $tim . '[ms]</th>';
-                    }
-                    echo '</tr>';
-                    echo '</tbody>';
-                    echo '</table>';
-
-
-                    echo '<table class="table table-bordered">';
-                    echo '<tbody>';
-                    echo '<tr>';
-                    echo '<th>ユーザID</th>';
-                    echo '<th>' . $username . '</th>';
-                    echo '</tr>';
-                    echo '<tr>';
-                    echo '<th>問題</th>';
-                    echo '<th>' . $problem . '</th>';
-                    echo '</tr>';
-                    echo '<tr>';
-                    echo '<th>結果</th>';
-                    echo '<th>' . $outputs[3] . '</th>';
-                    echo '</tr>';
-                    echo '<tr>';
-                    echo '<th>実行時間</th>';
-                    echo '<th>' . $outputs[1] . ' [ms]</th>';
-                    echo '</tr>';
-                    echo '<tr>';
-                    echo '<th>メモリ使用量</th>';
-                    echo '<th>' . $outputs[2] . ' [kB]</th>';
-                    echo '</tr>';
-                    echo '<tr>';
-                    echo '<th>得点</th>';
-                    echo '<th>' . $outputs[4] . '</th>';
-                    echo '</tr>';
-                    echo '</tbody>';
-                    echo '</table>';
-                    
                 }
+                //print error
+                echo '</pre>';
+                echo 'ERROR : <br/> ';
+                echo '<pre>';
+                echo $user_error;
+                echo '</pre>';
+
+                echo '<table class="table table-bordered">';
+                echo '<thead>';
+                echo '<tr>';
+                echo '<th>テストケース</th>';
+                echo '<th>結果</th>';
+                echo '<th>実行時間</th>';
+                echo '</tr>';
+                echo '</thead>';
+
+                echo '<tbody>';
+
+                $start = 5;
+                $end = count($outputs);
+                for ($i = $start; $i <= $end - 2; $i += 2) {
+                    $case_number = intdiv(($i - 4), 2);
+                    $tim = $outputs[$i + 1];
+                    echo '<tr>';
+                    echo '<th>' . $inn[$case_number] . '</th>';
+                    echo '<th><span class="' . $outputs[$i] . '">' . $outputs[$i] . '</span></th>';
+                    echo '<th>' . $tim . '[ms]</th>';
+                }
+                echo '</tr>';
+                echo '</tbody>';
+                echo '</table>';
+
+
+                echo '<table class="table table-bordered">';
+                echo '<tbody>';
+                echo '<tr>';
+                echo '<th>ユーザID</th>';
+                echo '<th>' . $username . '</th>';
+                echo '</tr>';
+                echo '<tr>';
+                echo '<th>問題</th>';
+                echo '<th>' . $problem . '</th>';
+                echo '</tr>';
+                echo '<tr>';
+                echo '<th>結果</th>';
+                echo '<th>' . $outputs[3] . '</th>';
+                echo '</tr>';
+                echo '<tr>';
+                echo '<th>実行時間</th>';
+                echo '<th>' . $outputs[1] . ' [ms]</th>';
+                echo '</tr>';
+                echo '<tr>';
+                echo '<th>メモリ使用量</th>';
+                echo '<th>' . $outputs[2] . ' [kB]</th>';
+                echo '</tr>';
+                echo '<tr>';
+                echo '<th>得点</th>';
+                echo '<th>' . $outputs[4] . '</th>';
+                echo '</tr>';
+                echo '</tbody>';
+                echo '</table>';
+                
+            }
                 ?>
             </div>
         </div>

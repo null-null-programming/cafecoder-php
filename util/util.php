@@ -1,9 +1,9 @@
 <?php
 /*
-*username codesession contestid documentroot からcode sessionの絶対パスを返す
+*username codesession contestid documentroot からcode sessionの相対パスを返す
 */
-function get_uploaded_session_path($username, $code_session, $contest_id, $docroot){
-    return $docroot."/".$username."/"."codes"."/".$contest_id."/".$code_session;
+function get_uploaded_session_path($username, $contest_id, $problem, $code_session){
+    return "users/$username/codes/$contest_id/$problem/$code_session";
 }
 function echo_nav_card($contest_id){
     echo '    <div class="container">

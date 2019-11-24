@@ -19,5 +19,6 @@ CREATE TABLE kakecoder.uploads (
     user_id varchar(32) NOT NULL,
     lang varchar(32) NOT NULL,
     upload_date datetime,
+    result varchar(8),
     PRIMARY KEY (code_session)
 );
