@@ -86,7 +86,7 @@ try{
         echo $line["problem"];
         echo '</th>';
         echo '<th>';
-        echo '<a href="/result.php?code_session='.$line["code_session"].'">詳細</a>';
+        echo '<a href="/result.php?code_session='.$line["code_session"].'&contest_id='.$contest_id.'">詳細</a>';
         echo '</th></tr>';
     }
 }catch(Exception $e){

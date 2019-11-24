@@ -6,6 +6,10 @@ function get_uploaded_session_path($username, $contest_id, $problem, $code_sessi
     return "users/$username/codes/$contest_id/$problem/$code_session";
 }
 function echo_nav_card($contest_id){
+    if(!preg_match("/^[a-zA-Z0-9]+$/", $contest_id)){
+        echo "CONTEST ID ERROR";
+        die();
+    }
     try{
     include_once("../database/connection.php");
     $con = new DBC();
