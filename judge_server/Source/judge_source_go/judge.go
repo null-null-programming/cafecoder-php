@@ -258,7 +258,7 @@ func main() {
 	submit.score, _ = strconv.Atoi(args[5])
 	submit.langExtention = lang[submit.lang]
 
-	//defer deleteUserDir(submit)
+	defer deleteUserDir(submit)
 
 	ret := compile(&submit)
 	if ret == -2 {
