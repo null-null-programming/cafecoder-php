@@ -51,6 +51,12 @@ echo '<a href="all_submit.php?page='.($page+1).'&contest_id='.$_GET["contest_id"
         <th>RANK</th>
         <th>Username</th>
         <th>Point</th>
+        <th>A</th>
+        <th>B</th>
+        <th>C</th>
+        <th>D</th>
+        <th>E</th>
+        <th>F</th>
     </tr>
 </thead>
 <tbody>
@@ -111,7 +117,9 @@ $con->prepare_execute("CREATE VIEW first_ac AS SELECT user_id, upload_date, resu
 try{
     $rec=$con->prepare_execute("SELECT username,user_id, SUM(point) AS sum_point FROM first_ac,users,problem WHERE user_id=uid AND problem.problem_id=first_ac.problem GROUP BY user_id ORDER BY sum_point DESC",array($contest_id,$contest_id));
     // var_dump($rec);
+    $enum_problem = array("A"=>0,"B"=>1,"C"=>2,"D"=>3,"E"=>4,"F"=>5);
     foreach ($rec as $rank => $line) {
+        $now_state=$con->prepare_execute("SELECT first_ac.problem,result,point FROM first_ac,problem WHERE user_id=? AND first_ac.problem=problem_id ORDER BY problem ASC",array($line["user_id"]));
         echo '<tr><th>';
         echo (int)($rank)+1;
         echo '</th>';
@@ -120,7 +128,20 @@ try{
         echo '</th>';
         echo '<th>';
         echo $line["sum_point"];
-        echo '</th></tr>';
+        echo '</th>';
+        for($i=0; $i < 6; $i++){
+            if($enum_problem[$now_state[$i]["problem"]] == $i){
+                echo '<th>';
+                echo $now_state[$i]["point"];
+                echo '</th>';
+            }else{
+                echo '<th>';
+                echo "-";
+                echo '</th>';
+
+            }
+        }
+        echo '</tr>';
     }
 }catch(Exception $e){
     var_dump($e);
