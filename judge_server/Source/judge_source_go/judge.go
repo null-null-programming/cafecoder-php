@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"bytes"
+	"encoding/binary"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -11,7 +12,6 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
-	"time"
 )
 
 const (
@@ -180,11 +180,29 @@ func tryTestcase(submit *submitT) int {
 
 		executeUsercodeCmd.Stderr = &stderr
 
-		startTime := time.Now().UnixNano()
+		err = exec.Command("ts=$(data+%s%N)").Run()
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "%s\n", err)
+			return -1
+		}
 		userOut, runtimeErr = executeUsercodeCmd.Output()
-		endTime := time.Now().UnixNano()
+		err = exec.Command("tt=$((($(date +%s%N) - $ts)/1000000))").Run()
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "%s\n", err)
+			return -1
+		}
+		timeOut, err := exec.Command("echo \"$tt\"").Output()
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "%s\n", err)
+			return -1
+		}
+		buf := bytes.NewReader(timeOut)
+		err = binary.Read(buf, binary.LittleEndian, &submit.testcaseTime[i])
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "%s\n", err)
+			return -1
+		}
 
-		submit.testcaseTime[i] = (endTime - startTime) / 1000000
 		if submit.overallTime < submit.testcaseTime[i] {
 			submit.overallTime = submit.testcaseTime[i]
 		}
