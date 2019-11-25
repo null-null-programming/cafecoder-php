@@ -144,7 +144,7 @@ func tryTestcase(submit *submitT) int {
 	}
 
 	for i := 0; i < testcaseN; i++ {
-		executeUsercodeCmd := exec.Command("docker", "exec", "-i", "ubuntuForJudge", "./executeUsercode.sh", string(submit.lang), submit.sessionID)
+		executeUsercodeCmd := exec.Command("docker", "exec", "-i", "ubuntuForJudge", "./executeUsercode.sh", strconv.Itoa(submit.lang), submit.sessionID)
 		stdin, err := executeUsercodeCmd.StdinPipe()
 		testcaseName[i] = strings.TrimSpace(testcaseName[i]) //delete \n\r
 		inputTestcase, err := ioutil.ReadFile(submit.testcaseDirPath + "/in/" + testcaseName[i])
@@ -164,17 +164,17 @@ func tryTestcase(submit *submitT) int {
 		runtimeErr = executeUsercodeCmd.Run()
 		userStdout, err := exec.Command("docker", "exec", "-i", "ubuntuForJudge", "cat", "/cafecoderUsers/"+submit.sessionID+"/userStdout.txt").Output()
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "%s\n", err)
+			fmt.Fprintf(os.Stderr, "1:%s\n", stderr.String())
 			return -1
 		}
 		userStderr, err := exec.Command("docker", "exec", "-i", "ubuntuForJudge", "cat", "/cafecoderUsers/"+submit.sessionID+"/userStderr.txt").Output()
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "%s\n", err)
+			fmt.Fprintf(os.Stderr, "2:%s\n", err)
 			return -1
 		}
 		userTime, err := exec.Command("docker", "exec", "-i", "ubuntuForJudge", "cat", "/cafecoderUsers/"+submit.sessionID+"/userTime.txt").Output()
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "%s\n", err)
+			fmt.Fprintf(os.Stderr, "3:%s\n", err)
 			return -1
 		}
 
@@ -196,7 +196,7 @@ func tryTestcase(submit *submitT) int {
 		for j := 0; j < len(userStderrLines); j++ {
 			fmt.Fprintf(os.Stderr, "%s\n", userStderrLines[j])
 		}
-		
+
 		if submit.testcaseTime[i] <= 2000 {
 			if runtimeErr != nil {
 				fmt.Fprintf(os.Stderr, "%s\n", runtimeErr)
