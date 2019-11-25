@@ -92,7 +92,7 @@ foreach($rec as $line){
 //get first ac
 try{
 $con->prepare_execute("DROP VIEW IF EXISTS first_ac",array());
-$con->prepare_execute("CREATE VIEW first_ac AS SELECT user_id as u,result,problem as p,upload_date FROM uploads a WHERE contest_id=? AND upload_date BETWEEN (SELECT start_time FROM contests WHERE contest_id=?) AND (SELECT end_time FROM contests WHERE contest_id=?) GROUP BY user_id, problem,result,upload_date HAVING result='AC' AND upload_date=(SELECT MIN(upload_date) FROM uploads WHERE contest_id=? AND problem=p AND user_id=u )  ORDER BY upload_date ASC",array($contest_id,$contest_id,$contest_id,$contest_id));
+$con->prepare_execute("CREATE VIEW first_ac AS SELECT user_id as u,result,problem as p,upload_date FROM uploads a WHERE contest_id=? AND upload_date BETWEEN (SELECT start_time FROM contests WHERE contest_id=?) AND (SELECT end_time FROM contests WHERE contest_id=?) GROUP BY user_id, problem,result,upload_date,contest_id HAVING result='AC' AND upload_date=(SELECT MIN(upload_date) FROM uploads WHERE contest_id=? AND problem=p AND user_id=u )  ORDER BY upload_date ASC",array($contest_id,$contest_id,$contest_id,$contest_id));
 }catch(Exception $e){
     echo("DB VIEW ERROR");
     var_dump($e);
@@ -100,7 +100,7 @@ $con->prepare_execute("CREATE VIEW first_ac AS SELECT user_id as u,result,proble
 }
 //get point
 try{
-    $rec=$con->prepare_execute("SELECT username,u, SUM(point) AS sum_point FROM first_ac,users,problem WHERE u=uid AND problem.problem_id=first_ac.p GROUP BY u ORDER BY sum_point DESC",array($contest_id,$contest_id));
+    $rec=$con->prepare_execute("SELECT username,u, SUM(point) AS sum_point FROM first_ac,users,problem WHERE u=uid AND problem.problem_id=first_ac.p GROUP BY u HAVING u=(SELECT uid from users where u=uid) ORDER BY sum_point DESC",array($contest_id,$contest_id));
     // var_dump($rec);
     $enum_problem = array("A"=>0,"B"=>1,"C"=>2,"D"=>3,"E"=>4,"F"=>5);
     foreach ($rec as $rank => $line) {
