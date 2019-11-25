@@ -199,7 +199,7 @@ func tryTestcase(submit *submitT) int {
 		}
 
 		if submit.testcaseTime[i] <= 2000 {
-			if runtimeErr != nil {
+			if runtimeErr != nil || string(userStderr) != "" {
 				fmt.Fprintf(os.Stderr, "%s\n", runtimeErr)
 				submit.testcaseResult[i] = 3 //RE
 			} else {
