@@ -114,7 +114,11 @@ try{
         echo $line["problem"];
         echo '</th>';
         echo '<th>';
-        echo $line["result"];
+        if($line["result"] != ""){
+            echo $line["result"];
+        }else{
+            echo 'WJ...';
+        }
         echo '</th>';
         echo '<th>';
         echo '<a href="/result.php?code_session='.$line["code_session"].'&contest_id='.$contest_id.'">提出コード</a>';

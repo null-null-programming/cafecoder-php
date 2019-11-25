@@ -130,9 +130,10 @@ echo_nav_card($_GET["contest_id"]);
 
                 $cnt = 0;
                 $result_path = $user_code_base . ".result";
-                $file = new SplFileObject($result_path);
-                $file->setFlags(SplFileObject::READ_CSV);
-                
+                if(file_exists($result_path)){
+                    $file = new SplFileObject($result_path);
+                    $file->setFlags(SplFileObject::READ_CSV);
+                }
                 $inn = file_get_contents($testcase_list_path);
                 $inn = explode("\n", $inn);
                 //print  code
@@ -158,6 +159,7 @@ echo_nav_card($_GET["contest_id"]);
                 echo '<tbody>';
 
 
+                if(file_exists($result_path)){
                 foreach ($file as $outputs) {
                 $start = 5;
                 $end = count($outputs);
@@ -169,6 +171,7 @@ echo_nav_card($_GET["contest_id"]);
                     echo '<th><span class="' . $outputs[$i] . '">' . $outputs[$i] . '</span></th>';
                     echo '<th>' . $tim . '[ms]</th>';
                     }
+                }
                 }
                 echo '</tr>';
                 echo '</tbody>';
@@ -185,7 +188,7 @@ echo_nav_card($_GET["contest_id"]);
                 echo '</tr>';
                 echo '<tr>';
                 echo '<th>結果</th>';
-                if(file_exists($result_path)){
+                if(isset($outputs[3])){
                     echo '<th>' . $outputs[3] . '</th>';
                 }else{
                     echo '<th>' . 'WJ...' . '</th>';
