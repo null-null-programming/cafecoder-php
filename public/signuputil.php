@@ -21,6 +21,10 @@ function signup($username, $password, $email, $role){
     if($username == null || $password == null){
         return false;
     }
+    if(strlen($username) > 30){
+        echo "ユーザー名が長すぎます。";
+        return false;
+    }
 
     $con = new DBC();
     //is there username

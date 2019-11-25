@@ -91,7 +91,7 @@ try{
     exit();
 }
 //call
-system("../judge_server/JUDGE $code_session $code_path ".$language." $testcase_dir $point > ".$code_dir.$code_session.".result 2> ".$code_dir.$code_session.".error");
+exec("../judge_server/JUDGE $code_session $code_path ".$language." $testcase_dir $point > ".$code_dir.$code_session.".result 2> ".$code_dir.$code_session.".error &");
 header("Location: /result.php?username=".$_SESSION["username"]."&code_session=".$code_session."&contest_id=".$contest_id);
 exit();
 ?>

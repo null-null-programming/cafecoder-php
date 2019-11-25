@@ -3,7 +3,7 @@
     <div class="card" style="width:auto">
         <div class="card-body">
             <form action="../../change.php" method="POST">
-                <p>サインイン</p>
+                <p>ユーザーページ(仮)</p>
                 <p2>ユーザーネーム</p2>
                 <p class="username"><input type="text" name="username" maxlength="32" autocomplete="OFF" value="<?=$_SESSION["username"]?>"/></p>
                 <p2>パスワード</p2>
