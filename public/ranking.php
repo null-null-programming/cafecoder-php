@@ -104,7 +104,7 @@ try{
     // var_dump($rec);
     $enum_problem = array("A"=>0,"B"=>1,"C"=>2,"D"=>3,"E"=>4,"F"=>5);
     foreach ($rec as $rank => $line) {
-        $now_state=$con->prepare_execute("SELECT point,p  FROM problem ,first_ac WHERE p=problem.problem_id,contest_id=? AND u=? GROUP BY p,u,point ORDER BY p ASC",array($contest_id,$line["u"]));
+        $now_state=$con->prepare_execute("SELECT point,p  FROM problem ,first_ac WHERE p=problem.problem_id AND contest_id=? AND u=? GROUP BY p,u,point ORDER BY p ASC",array($contest_id,$line["u"]));
         echo '<tr><th>';
         echo (int)($rank)+1;
         echo '</th>';
