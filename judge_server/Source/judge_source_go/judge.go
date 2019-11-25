@@ -144,7 +144,7 @@ func tryTestcase(submit *submitT) int {
 	}
 
 	for i := 0; i < testcaseN; i++ {
-		executeUsercodeCmd := exec.Command("docker", "exec", "-u", "rbash_user", "-i", "ubuntuForJudge", "./executeUsercode.sh", strconv.Itoa(submit.lang), submit.sessionID)
+		executeUsercodeCmd := exec.Command("docker", "rbash_user", "-i", "ubuntuForJudge", "./executeUsercode.sh", strconv.Itoa(submit.lang), submit.sessionID)
 		stdin, err := executeUsercodeCmd.StdinPipe()
 		testcaseName[i] = strings.TrimSpace(testcaseName[i]) //delete \n\r
 		inputTestcase, err := ioutil.ReadFile(submit.testcaseDirPath + "/in/" + testcaseName[i])
@@ -194,13 +194,11 @@ func tryTestcase(submit *submitT) int {
 		userStderrLines := strings.Split(string(userStderr), "\n")
 		outputTestcaseLines := strings.Split(string(outputTestcase), "\n")
 
-		for j := 0; j < len(userStderrLines); j++ {
-			fmt.Fprintf(os.Stderr, "%s\n", userStderrLines[j])
-		}
-
 		if submit.testcaseTime[i] <= 2000 {
-			if runtimeErr != nil {
-				fmt.Fprintf(os.Stderr, "%s\n", runtimeErr)
+			if runtimeErr != nil || string(userStderr) != "" {
+				for j := 0; j < len(userStderrLines); j++ {
+					fmt.Fprintf(os.Stderr, "%s\n", userStderrLines[j])
+				}
 				submit.testcaseResult[i] = 3 //RE
 			} else {
 				submit.testcaseResult[i] = 1 //WA
