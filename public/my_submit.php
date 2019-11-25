@@ -76,7 +76,7 @@ $page_to = (int)($page * 50 + 50);
 
 //get result
 try{
-$rec = $con->prepare_execute("SELECT username, user_id, problem, code_session FROM uploads LEFT JOIN users ON uid=user_id WHERE contest_id=?",array($contest_id));
+$rec = $con->prepare_execute("SELECT username, user_id, problem, code_session FROM uploads LEFT JOIN users ON uid=? WHERE contest_id=?",array($_SESSION["uid"],$contest_id));
 }catch(Exception $e){
     echo "DB SELECT ERROR 1";
     exit();
