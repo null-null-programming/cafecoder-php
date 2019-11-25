@@ -132,6 +132,7 @@ echo_nav_card($_GET["contest_id"]);
                 $result_path = $user_code_base . ".result";
                 $file = new SplFileObject($result_path);
                 $file->setFlags(SplFileObject::READ_CSV);
+                
                 $inn = file_get_contents($testcase_list_path);
                 $inn = explode("\n", $inn);
                 //print  code
@@ -184,7 +185,11 @@ echo_nav_card($_GET["contest_id"]);
                 echo '</tr>';
                 echo '<tr>';
                 echo '<th>結果</th>';
-                echo '<th>' . $outputs[3] . '</th>';
+                if(file_exists($result_path)){
+                    echo '<th>' . $outputs[3] . '</th>';
+                }else{
+                    echo '<th>' . 'WJ...' . '</th>';
+                }
                 echo '</tr>';
                 echo '<tr>';
                 echo '<th>実行時間</th>';
