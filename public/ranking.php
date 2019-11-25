@@ -104,7 +104,7 @@ try{
     // var_dump($rec);
     $enum_problem = array("A"=>0,"B"=>1,"C"=>2,"D"=>3,"E"=>4,"F"=>5);
     foreach ($rec as $rank => $line) {
-        $now_state=$con->prepare_execute("SELECT u ,sum(point) AS sum_point FROM first_ac,problem WHERE p=problem_id and contest_id = ? GROUP BY u ORDER BY sum_point DESC",array($contest_id));
+        $now_state=$con->prepare_execute("SELECT u ,sum(point) AS sum_point FROM first_ac,problem WHERE p=problem_id u=? and contest_id = ? GROUP BY u ORDER BY sum_point DESC",array($line["u"],$contest_id));
         echo '<tr><th>';
         echo (int)($rank)+1;
         echo '</th>';
