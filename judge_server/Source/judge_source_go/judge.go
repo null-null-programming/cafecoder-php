@@ -144,7 +144,7 @@ func tryTestcase(submit *submitT) int {
 	}
 
 	for i := 0; i < testcaseN; i++ {
-		executeUsercodeCmd := exec.Command("docker", "exec", "-i", "ubuntuForJudge", "./executeUsercode.sh", strconv.Itoa(submit.lang), submit.sessionID)
+		executeUsercodeCmd := exec.Command("docker", "exec", "-u", "rbash_user", "-i", "ubuntuForJudge", "./executeUsercode.sh", strconv.Itoa(submit.lang), submit.sessionID)
 		stdin, err := executeUsercodeCmd.StdinPipe()
 		testcaseName[i] = strings.TrimSpace(testcaseName[i]) //delete \n\r
 		inputTestcase, err := ioutil.ReadFile(submit.testcaseDirPath + "/in/" + testcaseName[i])
