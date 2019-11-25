@@ -100,11 +100,11 @@ $con->prepare_execute("CREATE VIEW first_ac AS SELECT user_id as u,result,proble
 }
 //get point
 try{
-    $rec=$con->prepare_execute("SELECT username,u, SUM(point) AS sum_point FROM first_ac,users,problem WHERE u=uid AND problem.problem_id=first_ac.p GROUP BY u HAVING u=(SELECT uid from users where u=uid) ORDER BY sum_point DESC",array($contest_id,$contest_id));
+    $rec=$con->prepare_execute("SELECT username,u ,SUM(point) AS sum_point FROM first_ac,users,problem WHERE u=uid AND problem.problem_id=first_ac.p GROUP BY u,username  ORDER BY sum_point DESC",array($contest_id,$contest_id));
     // var_dump($rec);
     $enum_problem = array("A"=>0,"B"=>1,"C"=>2,"D"=>3,"E"=>4,"F"=>5);
     foreach ($rec as $rank => $line) {
-        $now_state=$con->prepare_execute("SELECT first_ac.p,result,point FROM first_ac,problem WHERE u=? AND first_ac.p=problem_id ORDER BY p ASC",array($line["u"]));
+        $now_state=$con->prepare_execute("SELECT u ,sum(point) AS sum_point FROM first_ac,problem WHERE p=problem_id and contest_id = ? GROUP BY u ORDER BY sum_point DESC",array($contest_id));
         echo '<tr><th>';
         echo (int)($rank)+1;
         echo '</th>';
