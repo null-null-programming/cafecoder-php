@@ -1,4 +1,4 @@
-!doctype html>
+<!doctype html>
 <html lang="ja">
 <head>
 <?php include_once "../../template/head.php"; ?>
@@ -27,11 +27,11 @@
                     <div class="collapse navbar-collapse" id="navmenu1">
                         <div class="navbar-nav">
                             <?php
-                            echo '<a class="nav-item nav-link" href="' . $address . '/tea003">コンテストTOP</a>';
-                            echo '<a class="nav-item nav-link" href="' . $address . '/tea003/problem_list.php">問題一覧</a>';
-                            echo '<a class="nav-item nav-link" href="' . $address . '/tea003/ranking.php">ランキング</a>';
-                            echo '<a class="nav-item nav-link" href="' . $address . '/tea003/my_submit.php">自分の提出</a>';
-                            echo '<a class="nav-item nav-link" href="' . $address . '/tea003/all_submit.php">みんなの提出</a>';
+                            echo '<a class="nav-item nav-link" href="/tea003/">コンテストTOP</a>';
+                            echo '<a class="nav-item nav-link" href="/tea003/problem_list.php">問題一覧</a>';
+                            echo '<a class="nav-item nav-link" href="/ranking.php?contest_id=3">ランキング</a>';
+                            echo '<a class="nav-item nav-link" href="/my_submit.php?contest_id=3">自分の提出</a>';
+                            echo '<a class="nav-item nav-link" href="/all_submit.php?contest_id=3">みんなの提出</a>';
                             ?>
                         </div>
                     </div>

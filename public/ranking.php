@@ -34,7 +34,7 @@ echo_nav_card($_GET["contest_id"]);
 <table class="table table-bordered">
 <thead>
     <tr>
-        <th>RANK</th>
+        <th>Rank</th>
         <th>Username</th>
         <th>Point</th>
         <th>A</th>
@@ -92,7 +92,7 @@ foreach($rec as $line){
 //get first ac
 try{
 $con->prepare_execute("DROP VIEW IF EXISTS first_ac",array());
-$con->prepare_execute("CREATE VIEW first_ac AS SELECT user_id, upload_date, result, problem  FROM uploads a WHERE a.upload_date BETWEEN (SELECT start_time FROM contests WHERE contest_id=?) AND (SELECT end_time FROM contests WHERE contest_id=?) GROUP BY user_id, problem,result,upload_date HAVING a.result='AC' AND upload_date=(SELECT MIN(upload_date) FROM uploads b WHERE a.user_id=b.user_id AND a.problem=b.problem) ORDER BY upload_date ASC",array($contest_id,$contest_id));
+$con->prepare_execute("CREATE VIEW first_ac AS SELECT user_id as u,result,problem as p,upload_date FROM uploads a WHERE contest_id=? AND upload_date BETWEEN (SELECT start_time FROM contests WHERE contest_id=?) AND (SELECT end_time FROM contests WHERE contest_id=?) GROUP BY user_id, problem,result,upload_date HAVING result='AC' AND upload_date=(SELECT MIN(upload_date) FROM uploads WHERE contest_id=? AND problem=p AND user_id=u )  ORDER BY upload_date ASC",array($contest_id,$contest_id,$contest_id,$contest_id));
 }catch(Exception $e){
     echo("DB VIEW ERROR");
     var_dump($e);
@@ -100,11 +100,11 @@ $con->prepare_execute("CREATE VIEW first_ac AS SELECT user_id, upload_date, resu
 }
 //get point
 try{
-    $rec=$con->prepare_execute("SELECT username,user_id, SUM(point) AS sum_point FROM first_ac,users,problem WHERE user_id=uid AND problem.problem_id=first_ac.problem GROUP BY user_id ORDER BY sum_point DESC",array($contest_id,$contest_id));
+    $rec=$con->prepare_execute("SELECT username,u, SUM(point) AS sum_point FROM first_ac,users,problem WHERE u=uid AND problem.problem_id=first_ac.p GROUP BY u ORDER BY sum_point DESC",array($contest_id,$contest_id));
     // var_dump($rec);
     $enum_problem = array("A"=>0,"B"=>1,"C"=>2,"D"=>3,"E"=>4,"F"=>5);
     foreach ($rec as $rank => $line) {
-        $now_state=$con->prepare_execute("SELECT first_ac.problem,result,point FROM first_ac,problem WHERE user_id=? AND first_ac.problem=problem_id ORDER BY problem ASC",array($line["user_id"]));
+        $now_state=$con->prepare_execute("SELECT first_ac.p,result,point FROM first_ac,problem WHERE u=? AND first_ac.p=problem_id ORDER BY p ASC",array($line["u"]));
         echo '<tr><th>';
         echo (int)($rank)+1;
         echo '</th>';
@@ -115,7 +115,7 @@ try{
         echo $line["sum_point"];
         echo '</th>';
         for($i=0,$j=0; $i < 6; $i++){
-            if($enum_problem[$now_state[$j]["problem"]] == $i){
+            if($enum_problem[$now_state[$j]["p"]] == $i){
                 echo '<th>';
                 echo $now_state[$j]["point"];
                 echo '</th>';

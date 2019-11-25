@@ -13,24 +13,9 @@
         <br>
         <div class="card" style="width: auto">
             <div class="card-body">
-                <nav class="navbar navbar-expand-sm navbar-light bg-light">
-
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navmenu1"
-                        aria-controls="navmenu1" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navmenu1">
-                        <div class="navbar-nav">
-                            <?php
-                            echo '<a class="nav-item nav-link" href="' . $address . '/tea003">コンテストTOP</a>';
-                            echo '<a class="nav-item nav-link" href="' . $address . '/tea003/problem_list.php">問題一覧</a>';
-                            echo '<a class="nav-item nav-link" href="' . $address . '/tea003/ranking.php">ランキング</a>';
-                            echo '<a class="nav-item nav-link" href="' . $address . '/tea003/my_submit.php">自分の提出</a>';
-                            echo '<a class="nav-item nav-link" href="' . $address . '/tea003/all_submit.php">みんなの提出</a>';
-                            ?>
-                        </div>
-                    </div>
-                </nav>
+               <?include_once("../../util/util.php"); 
+               echo_nav_card("3");
+               ?>
 
                 <br>
                 <h1>
