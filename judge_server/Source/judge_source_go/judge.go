@@ -150,7 +150,14 @@ func tryTestcase(submit *submitT) int {
 			fmt.Fprintf(os.Stderr, "%s\n", err)
 			return -1
 		}
+		//cpCmd := exec.Command("docker", "cp", submit.usercodePath, "ubuntuForJudge:/cafecoderUsers/"+submit.sessionID+"/Main"+submit.langExtention)
 		testcaseCpCmd := exec.Command("docker", "cp", submit.testcaseDirPath+"/in/"+testcaseName[i], "ubuntuForJudge:/cafecoderUsers/"+submit.sessionID+"/testcase.txt")
+		err = testcaseCpCmd.Run()
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "%s\n", err)
+			return -1
+		}
+		testcaseCpCmd = exec.Command("docker", "cp", submit.testcaseDirPath+"/in/"+testcaseName[i], "ubuntuForJudge:/testcase.txt")
 		err = testcaseCpCmd.Run()
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "%s\n", err)
