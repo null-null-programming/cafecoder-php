@@ -58,7 +58,7 @@ func compile(submit *submitT) int {
 		fmt.Fprintf(os.Stderr, "%s\n", stderr.String())
 		return -2
 	}
-	os.Mkdir("../judge_server/tmp"+submit.sessionID, 0777)
+	os.Mkdir("../judge_server/tmp/"+submit.sessionID, 0777)
 
 	cpCmd := exec.Command("docker", "cp", submit.usercodePath, "ubuntuForJudge:/cafecoderUsers/"+submit.sessionID+"/Main"+submit.langExtention)
 	cpCmd.Stderr = &stderr
