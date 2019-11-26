@@ -177,7 +177,7 @@ func tryTestcase(submit *submitT) int {
 			fmt.Fprintf(os.Stderr, "3:%s\n", err)
 			return -1
 		}
-		
+
 		var tmpInt64 int64
 		tmpInt64, parseerr := strconv.ParseInt(string(userTime), 10, 64)
 		submit.testcaseTime[i] = tmpInt64
@@ -204,10 +204,16 @@ func tryTestcase(submit *submitT) int {
 				submit.testcaseResult[i] = 1 //WA
 				for j := 0; j < len(userStdoutLines) && j < len(outputTestcaseLines); j++ {
 					submit.testcaseResult[i] = 0 //AC
-					if string(userStdoutLines[j]) != string(outputTestcaseLines[j]) {
+					if strings.TrimSpace(string(userStdoutLines[j])) != strings.TrimSpace(string(outputTestcaseLines[j])) {
 						submit.testcaseResult[i] = 1 //WA
 						break
 					}
+					/*
+						if string(userStdoutLines[j]) != string(outputTestcaseLines[j]) {
+							submit.testcaseResult[i] = 1 //WA
+							break
+						}
+					*/
 				}
 			}
 		} else {
