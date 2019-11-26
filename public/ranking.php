@@ -58,6 +58,7 @@ $contest_id = $_GET["contest_id"];
 try{
 include_once "../database/connection.php";
 include_once "../util/util.php";
+block_out_of_contest($contest_id);
 $con = new DBC();
 }catch(Exception $e){
     echo "RANKING INIT ERROR";
