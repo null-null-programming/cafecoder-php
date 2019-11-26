@@ -177,7 +177,7 @@ func tryTestcase(submit *submitT) int {
 			fmt.Fprintf(os.Stderr, "3:%s\n", err)
 			return -1
 		}
-		fmt.Fprintf(os.Stderr, ">>%s\n", string(userTime))
+		
 		var tmpInt64 int64
 		tmpInt64, parseerr := strconv.ParseInt(string(userTime), 10, 64)
 		submit.testcaseTime[i] = tmpInt64
@@ -222,6 +222,7 @@ func tryTestcase(submit *submitT) int {
 
 func deleteUserDir(submit submitT) {
 	exec.Command("docker", "exec", "-i", "ubuntuForJudge", "rm", "-r", "cafecoderUsers/"+submit.sessionID).Run()
+	exec.Command("rm", "-r", "../judge_server/tmp/"+submit.sessionID).Run()
 }
 
 func deleteUserCode(submit submitT) {
@@ -262,9 +263,7 @@ func main() {
 	submit.score, _ = strconv.Atoi(args[5])
 	submit.langExtention = lang[submit.lang]
 
-	//fmt.Fprintf(os.Stderr, "%s\n", submit.testcaseDirPath)
-
-	//defer deleteUserDir(submit)
+	defer deleteUserDir(submit)
 
 	ret := compile(&submit)
 	if ret == -2 {
