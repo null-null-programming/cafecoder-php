@@ -165,6 +165,11 @@ func tryTestcase(submit *submitT) int {
 		}
 
 		runtimeErr = executeUsercodeCmd.Run()
+		if runtimeErr != nil {
+			fmt.Fprintf(os.Stderr, "%s\n", runtimeErr)
+			submit.testcaseResult[i] = 3
+			return 0
+		}
 		userStdout, err := exec.Command("docker", "exec", "-i", "ubuntuForJudge", "cat", "/cafecoderUsers/"+submit.sessionID+"/userStdout.txt").Output()
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "1:%s\n", stderr.String())
