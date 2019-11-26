@@ -161,7 +161,7 @@ func tryTestcase(submit *submitT) int {
 		executeUsercodeCmd := exec.Command("docker", "exec", "-i", "ubuntuForJudge", "./executeUsercode.sh", strconv.Itoa(submit.lang), submit.sessionID)
 		runtimeErr = executeUsercodeCmd.Run()
 
-		exec.Command("docker", "cp", "ubuntuForJudge:/cafecoderUsers/"+submit.sessionID+"/user*", "../judge_server/tmp/"+submit.sessionID).Run()
+		exec.Command("docker", "cp", "ubuntuForJudge:/cafecoderUsers/"+submit.sessionID+"/.", "../judge_server/tmp/"+submit.sessionID).Run()
 		userStdout, err := exec.Command("cat", "../judge_server/tmp/"+submit.sessionID+"/userStdout.txt").Output()
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "1:%s\n", stderr.String())
