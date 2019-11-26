@@ -30,10 +30,10 @@ type submitT struct {
 	langExtention string
 
 	//0:AC 1:WA 2:TLE 3:RE 4:MLE 5:CE 6:IE *Please reference atcoder.
-	testcaseResult [50]int
+	testcaseResult [100]int
 	overallResult  int
 
-	testcaseTime [50]int64
+	testcaseTime [100]int64
 	overallTime  int64
 	testcaseCnt  int
 	memoryUsed   int
