@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
-	"io"
 	"io/ioutil"
 	"os"
 	"os/exec"
@@ -145,21 +144,18 @@ func tryTestcase(submit *submitT) int {
 
 	for i := 0; i < testcaseN; i++ {
 		executeUsercodeCmd := exec.Command("docker", "rbash_user", "-i", "ubuntuForJudge", "./executeUsercode.sh", strconv.Itoa(submit.lang), submit.sessionID)
-		stdin, err := executeUsercodeCmd.StdinPipe()
 		testcaseName[i] = strings.TrimSpace(testcaseName[i]) //delete \n\r
-		inputTestcase, err := ioutil.ReadFile(submit.testcaseDirPath + "/in/" + testcaseName[i])
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "[%s]-->%s\n", testcaseName[i], err)
-			return -1
-		}
 		outputTestcase, err := ioutil.ReadFile(submit.testcaseDirPath + "/out/" + testcaseName[i])
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "%s\n", err)
 			return -1
 		}
-		io.WriteString(stdin, string(inputTestcase))
-		stdin.Close()
-		executeUsercodeCmd.Stderr = &stderr
+		testcaseCpCmd := exec.Command("docker", "cp", submit.usercodePath+"/in/"+testcaseName[i], "ubuntuForJudge:/cafecoderUsers/"+submit.sessionID+"/testcase.txt")
+		err = testcaseCpCmd.Run()
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "%s\n", err)
+			return -1
+		}
 
 		runtimeErr = executeUsercodeCmd.Run()
 		userStdout, err := exec.Command("docker", "exec", "-i", "ubuntuForJudge", "cat", "/cafecoderUsers/"+submit.sessionID+"/userStdout.txt").Output()
@@ -275,6 +271,7 @@ func main() {
 	ret = tryTestcase(&submit)
 	if ret == -1 {
 		fmt.Fprintf(os.Stdout, "%s,-1,undef,%s,0,", submit.sessionID, result[6])
+		return
 	} else {
 		fmt.Fprintf(os.Stdout, "%s,%d,undef,%s,", submit.sessionID, submit.overallTime, result[submit.overallResult])
 		if submit.overallResult == 0 {
