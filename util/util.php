@@ -43,18 +43,17 @@ function echo_nav_card_footer(){
     </div>';
 }
 
-function block_out_of_contest($contest_id){
-    if(!preg_match("/^[a-zA-Z0-9]+$/", $contest_id)){
-            echo "CONTEST ID ERROR";
-            die();
-    }
-    include_once("../database/connection.php");
+function block_out_of_contest(){
+    require(dirname(__FILE__)."/../database/connection.php");
     try{
         $con = new DBC();
-        $start_time = $con->prepare_execute("SELECT start_time FROM contests WHERE contest_id = ? AND start_time < NOW()", array($contest_id))[0]["start_time"];
-        if($start_time == ""){
-            echo "コンテストは開始前です。";
-            die();
+        $rec = $con->prepare_execute("SELECT contest_name ,start_time FROM contests WHERE start_time > NOW() ORDER BY start_time ASC", array());
+        foreach($rec as $line){
+            $contest_name = $line["contest_name"];
+            if(strpos(getcwd(),$contest_name) !== false){
+                echo "コンテストは開始前です。";
+                die();
+            }
         }
     }catch(Exception $e){
         echo "TIME ERROR";
