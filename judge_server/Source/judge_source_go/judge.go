@@ -161,18 +161,18 @@ func tryTestcase(submit *submitT) int {
 		executeUsercodeCmd := exec.Command("docker", "exec", "-i", "ubuntuForJudge", "./executeUsercode.sh", strconv.Itoa(submit.lang), submit.sessionID)
 		runtimeErr = executeUsercodeCmd.Run()
 
-		exec.Command("docker", "ubuntuForJudge:/cafecoderUsers/"+submit.sessionID+"/user*", "tmp/"+submit.sessionID).Run()
-		userStdout, err := exec.Command("cat", "tmp/"+submit.sessionID+"/userStdout.txt").Output()
+		exec.Command("docker", "ubuntuForJudge:/cafecoderUsers/"+submit.sessionID+"/user*", "../judge_server/tmp/"+submit.sessionID).Run()
+		userStdout, err := exec.Command("cat", "../judge_server/tmp/"+submit.sessionID+"/userStdout.txt").Output()
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "1:%s\n", stderr.String())
 			return -1
 		}
-		userStderr, err := exec.Command("cat", "tmp/"+submit.sessionID+"/userStderr.txt").Output()
+		userStderr, err := exec.Command("cat", "../judge_server/tmp/"+submit.sessionID+"/userStderr.txt").Output()
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "2:%s\n", err)
 			return -1
 		}
-		userTime, err := exec.Command("cat", "tmp/"+submit.sessionID+"/userTime.txt").Output()
+		userTime, err := exec.Command("cat", "../judge_server/tmp/"+submit.sessionID+"/userTime.txt").Output()
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "3:%s\n", err)
 			return -1
