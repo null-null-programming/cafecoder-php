@@ -45,7 +45,7 @@ function echo_nav_card_footer(){
 
 function block_out_of_contest(){
     if($_SESSION["role"]==="admin"){
-        return;
+        return true;
     }
     require(dirname(__FILE__)."/../database/connection.php");
     try{
