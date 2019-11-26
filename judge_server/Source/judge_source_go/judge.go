@@ -258,6 +258,8 @@ func main() {
 	submit.score, _ = strconv.Atoi(args[5])
 	submit.langExtention = lang[submit.lang]
 
+	fmt.Fprintf(os.Stderr, "%s\n", submit.testcaseDirPath)
+
 	defer deleteUserDir(submit)
 
 	ret := compile(&submit)
