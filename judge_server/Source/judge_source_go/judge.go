@@ -177,7 +177,7 @@ func tryTestcase(submit *submitT) int {
 			fmt.Fprintf(os.Stderr, "3:%s\n", err)
 			return -1
 		}
-
+		fmt.Fprintf(os.Stderr, ">>%s\n", string(userTime))
 		var tmpInt64 int64
 		tmpInt64, parseerr := strconv.ParseInt(string(userTime), 10, 64)
 		submit.testcaseTime[i] = tmpInt64
