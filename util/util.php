@@ -11,7 +11,7 @@ function echo_nav_card($contest_id){
         die();
     }
     try{
-    include_once("../database/connection.php");
+    require(dirname(__FILE__)."/../database/connection.php");
     $con = new DBC();
     $contest_name = $con->prepare_execute("SELECT contest_name FROM contests WHERE contest_id=?",array($contest_id))[0]["contest_name"];
     echo '    <div class="container">
