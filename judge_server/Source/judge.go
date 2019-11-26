@@ -45,7 +45,6 @@ func checkRegexp(reg, str string) bool {
 
 func compile(submit *submitT) int {
 	var (
-		//cpUsercodeCmd *exec.Cmd
 		compileCmd *exec.Cmd
 		stderr     bytes.Buffer
 	)
