@@ -24,11 +24,11 @@ function echo_nav_card($contest_id){
                     </button>
                     <div class="collapse navbar-collapse" id="navmenu1">
                         <div class="navbar-nav">
-                            <a class="nav-item nav-link" href="index.php">コンテストTOP</a>
-                            <a class="nav-item nav-link" href="/'.$contest_name.'/problem_list.php">問題一覧</a>
-                            <a class="nav-item nav-link" href="/ranking.php?contest_id='.$contest_id.'">ランキング</a>
-                            <a class="nav-item nav-link" href="/my_submit.php?contest_id='.$contest_id.'">自分の提出</a>
-                            <a class="nav-item nav-link" href="/all_submit.php?contest_id='.$contest_id.'">みんなの提出</a>
+                            <a class="nav-item nav-link" href="https://www.kakecoder.com/'.$contest_name.'/index.php">コンテストTOP</a>
+                            <a class="nav-item nav-link" href="https://www.kakecoder.com/'.$contest_name.'/problem_list.php">問題一覧</a>
+                            <a class="nav-item nav-link" href="https://www.kakecoder.com/ranking.php?contest_id='.$contest_id.'">ランキング</a>
+                            <a class="nav-item nav-link" href="https://www.kakecoder.com/my_submit.php?contest_id='.$contest_id.'">自分の提出</a>
+                            <a class="nav-item nav-link" href="https://www.kakecoder.com/all_submit.php?contest_id='.$contest_id.'">みんなの提出</a>
 
                         </div>
                     </div>
