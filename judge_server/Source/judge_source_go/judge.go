@@ -58,7 +58,7 @@ func compile(submit *submitT) int {
 		fmt.Fprintf(os.Stderr, "%s\n", stderr.String())
 		return -2
 	}
-	mkdirCmd = exec.Command("mkdir", "tmp/"+submit.sessionID)
+	mkdirCmd = exec.Command("mkdir tmp/"+submit.sessionID)
 	mkdirCmd.Stderr = &stderr
 	err = mkdirCmd.Run()
 	if err != nil {
