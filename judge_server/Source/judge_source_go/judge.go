@@ -143,7 +143,7 @@ func tryTestcase(submit *submitT) int {
 	}
 
 	for i := 0; i < testcaseN; i++ {
-		executeUsercodeCmd := exec.Command("docker", "rbash_user", "-i", "ubuntuForJudge", "./executeUsercode.sh", strconv.Itoa(submit.lang), submit.sessionID)
+		executeUsercodeCmd := exec.Command("docker", "-i", "ubuntuForJudge", "./executeUsercode.sh", strconv.Itoa(submit.lang), submit.sessionID)
 		testcaseName[i] = strings.TrimSpace(testcaseName[i]) //delete \n\r
 		outputTestcase, err := ioutil.ReadFile(submit.testcaseDirPath + "/out/" + testcaseName[i])
 		if err != nil {
@@ -165,11 +165,6 @@ func tryTestcase(submit *submitT) int {
 		}
 
 		runtimeErr = executeUsercodeCmd.Run()
-		if runtimeErr != nil {
-			fmt.Fprintf(os.Stderr, "%s\n", runtimeErr)
-			submit.testcaseResult[i] = 3
-			return 0
-		}
 		userStdout, err := exec.Command("docker", "exec", "-i", "ubuntuForJudge", "cat", "/cafecoderUsers/"+submit.sessionID+"/userStdout.txt").Output()
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "1:%s\n", stderr.String())
