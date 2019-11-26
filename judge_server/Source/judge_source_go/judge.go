@@ -267,7 +267,7 @@ func main() {
 
 	//fmt.Fprintf(os.Stderr, "%s\n", submit.testcaseDirPath)
 
-	defer deleteUserDir(submit)
+	//defer deleteUserDir(submit)
 
 	ret := compile(&submit)
 	if ret == -2 {
