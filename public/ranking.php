@@ -96,7 +96,6 @@ $con->prepare_execute("DROP VIEW IF EXISTS first_ac",array());
 $con->prepare_execute("CREATE VIEW first_ac AS SELECT user_id as u,result,problem as p,upload_date FROM uploads a WHERE contest_id=? AND upload_date BETWEEN (SELECT start_time FROM contests WHERE contest_id=?) AND (SELECT end_time FROM contests WHERE contest_id=?) GROUP BY user_id, problem,result,upload_date,contest_id HAVING result='AC' AND upload_date=(SELECT MIN(upload_date) FROM uploads WHERE contest_id=? AND problem=p AND user_id=u )  ORDER BY upload_date ASC",array($contest_id,$contest_id,$contest_id,$contest_id));
 }catch(Exception $e){
     echo("DB VIEW ERROR");
-    var_dump($e);
     exit();
 }
 //get point
@@ -131,7 +130,6 @@ try{
         echo '</tr>';
     }
 }catch(Exception $e){
-    var_dump($e);
     echo "DB SELECT ERROR 2";
 }
 ?>
