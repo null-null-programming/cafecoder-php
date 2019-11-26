@@ -110,7 +110,7 @@ echo_nav_card($_GET["contest_id"]);
 
                 //if contest time
                 if ($contest_name != "") {
-                    if ($_SESSION["username"] != $username) {
+                    if ($_SESSION["username"] != $username && $_SESSION["role"] !== "admin") {
                         echo "コンテスト中は本人のみが確認できます。";
                         exit();
                     }
