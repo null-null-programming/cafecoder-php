@@ -150,7 +150,7 @@ func tryTestcase(submit *submitT) int {
 			fmt.Fprintf(os.Stderr, "%s\n", err)
 			return -1
 		}
-		testcaseCpCmd := exec.Command("docker", "cp", submit.usercodePath+"/in/"+testcaseName[i], "ubuntuForJudge:/cafecoderUsers/"+submit.sessionID+"/testcase.txt")
+		testcaseCpCmd := exec.Command("docker", "cp", submit.testcaseDirPath+"/in/"+testcaseName[i], "ubuntuForJudge:/cafecoderUsers/"+submit.sessionID+"/testcase.txt")
 		err = testcaseCpCmd.Run()
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "%s\n", err)
@@ -257,6 +257,8 @@ func main() {
 	submit.testcaseDirPath = args[4]
 	submit.score, _ = strconv.Atoi(args[5])
 	submit.langExtention = lang[submit.lang]
+
+	//fmt.Fprintf(os.Stderr, "%s\n", submit.testcaseDirPath)
 
 	defer deleteUserDir(submit)
 
