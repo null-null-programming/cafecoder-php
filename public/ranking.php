@@ -58,7 +58,6 @@ $contest_id = $_GET["contest_id"];
 try{
 include_once "../database/connection.php";
 include_once "../util/util.php";
-block_out_of_contest($contest_id);
 $con = new DBC();
 }catch(Exception $e){
     echo "RANKING INIT ERROR";
@@ -93,7 +92,7 @@ foreach($rec as $line){
 //get first ac
 try{
 $con->prepare_execute("DROP VIEW IF EXISTS first_ac",array());
-$con->prepare_execute("CREATE VIEW first_ac AS SELECT user_id as u,result,problem as p,upload_date FROM uploads a WHERE contest_id=? AND upload_date BETWEEN (SELECT start_time FROM contests WHERE contest_id=?) AND (SELECT end_time FROM contests WHERE contest_id=?) GROUP BY user_id, problem,result,upload_date,contest_id HAVING result='AC' AND upload_date=(SELECT MIN(upload_date) FROM uploads WHERE contest_id=? AND problem=p AND user_id=u )  ORDER BY upload_date ASC",array($contest_id,$contest_id,$contest_id,$contest_id));
+$con->prepare_execute("CREATE VIEW first_ac AS SELECT user_id AS u,result AS r,problem AS p,upload_date FROM uploads a WHERE contest_id=? AND upload_date BETWEEN (SELECT start_time FROM contests WHERE contest_id=?) AND (SELECT end_time FROM contests WHERE contest_id=?) GROUP BY user_id, problem,result,upload_date,contest_id HAVING result='AC' AND upload_date=(SELECT MIN(upload_date) FROM uploads WHERE contest_id=? AND problem=p AND user_id=u AND result=r AND upload_date BETWEEN (SELECT start_time FROM contests WHERE contest_id=?) AND (SELECT end_time FROM contests WHERE contest_id=?))  ORDER BY upload_date ASC",array($contest_id,$contest_id,$contest_id,$contest_id,$contest_id,$contest_id));
 }catch(Exception $e){
     echo("DB VIEW ERROR");
     exit();
