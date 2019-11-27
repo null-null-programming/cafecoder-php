@@ -13,7 +13,7 @@
         <br>
         <div class="card" style="width: auto">
             <div class="card-body">
-               <?
+               <?php
                include_once("../../util/util.php"); 
                echo_nav_card("3");
                ?>
