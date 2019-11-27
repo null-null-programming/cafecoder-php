@@ -99,7 +99,7 @@ echo_nav_card($_GET["contest_id"]);
                 $username = $rec["username"];
 
                 //check time and login
-                $sql = "SELECT contest_name FROM contests WHERE contest_id=? AND NOW() BETWEEN start_time AND end_time";
+                $sql = "SELECT contest_name FROM contests WHERE contest_id=? AND NOW() < end_time";
                 try {
                     $rec = $con->prepare_execute($sql, array($contest_id))[0];
                 } catch (Exception $e) {
