@@ -68,66 +68,48 @@
                     <tbody>
                         <tr>
                             <th scope="row">Green</th>
-<<<<<<< HEAD
                             <td><a href="./Problems/A.php">Hop Step Jump!</a>
-=======
                             <td><a href="/tea003/Problems/A.php">Hop Step Jump!</a>
->>>>>>> ee61467ae837f88635dd4b29b29bd0c6f4630f60
                             </td>
                             <td>2sec</td>
                             <td>null</td>
                         </tr>
                         <tr>
                             <th scope="row">Ceylon</th>
-<<<<<<< HEAD
                             <td><a href="./Problems/B.php">Sound!</a>
-=======
                             <td><a href="/tea003/Problems/B.php">Sound!</a>
->>>>>>> ee61467ae837f88635dd4b29b29bd0c6f4630f60
                             </td>
                             <td>2sec</td>
                             <td>ir_1st_vil</td>
                         </tr>
                         <tr>
                             <th scope="row">Dimbula</th>
-<<<<<<< HEAD
                             <td><a href="./Problems/C.php">Good Triangle</a>
-=======
                             <td><a href="/tea003/Problems/C.php">Good Triangle</a>
->>>>>>> ee61467ae837f88635dd4b29b29bd0c6f4630f60
                             </td>
                             <td>2sec</td>
                             <td>null</td>
                         </tr>
                         <tr>
                             <th scope="row">Darjeeling</th>
-<<<<<<< HEAD
                             <td><a href="./Problems/D.php">Breaker</a>
-=======
                             <td><a href="/tea003/Problems/D.php">Breaker</a>
->>>>>>> ee61467ae837f88635dd4b29b29bd0c6f4630f60
                             </td>
                             <td>2sec</td>
                             <td>ir_1st_vil</td>
                         </tr>
                         <tr>
                             <th scope="row">Earlgray</th>
-<<<<<<< HEAD
                             <td><a href="./Problems/E.php">Cafe Road</a>
-=======
                             <td><a href="/tea003/Problems/E.php">Cafe Road</a>
->>>>>>> ee61467ae837f88635dd4b29b29bd0c6f4630f60
                             </td>
                             <td>2sec</td>
                             <td>holeguma</td>
                         </tr>
                         <tr>
                             <th scope="row">Keemun</th>
-<<<<<<< HEAD
                             <td><a href="./Problems/F.php">'0' or '1'</a>
-=======
                             <td><a href="/tea003/Problems/F.php">'0' or '1'</a>
->>>>>>> ee61467ae837f88635dd4b29b29bd0c6f4630f60
                             </td>
                             <td>2sec</td>
                             <td>sanada</td>
