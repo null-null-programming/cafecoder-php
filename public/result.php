@@ -99,7 +99,11 @@ echo_nav_card($_GET["contest_id"]);
                 $username = $rec["username"];
 
                 //check time and login
+<<<<<<< HEAD
                 $sql = "SELECT contest_name FROM contests WHERE contest_id=? AND NOW() < end_time";
+=======
+                $sql = "SELECT contest_name FROM contests WHERE contest_id=? AND NOW() < AND end_time";
+>>>>>>> ee61467ae837f88635dd4b29b29bd0c6f4630f60
                 try {
                     $rec = $con->prepare_execute($sql, array($contest_id))[0];
                 } catch (Exception $e) {
@@ -115,7 +119,6 @@ echo_nav_card($_GET["contest_id"]);
                         exit();
                     }
                 }
-
                 //get test_case_list path
                 $sql = "SELECT testcase_list_dir,point FROM problem WHERE contest_id=? and problem_id=?";
                 try {
