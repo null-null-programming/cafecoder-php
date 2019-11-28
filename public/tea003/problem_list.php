@@ -69,7 +69,6 @@
                         <tr>
                             <th scope="row">Green</th>
                             <td><a href="./Problems/A.php">Hop Step Jump!</a>
-                            <td><a href="/tea003/Problems/A.php">Hop Step Jump!</a>
                             </td>
                             <td>2sec</td>
                             <td>null</td>
@@ -77,7 +76,6 @@
                         <tr>
                             <th scope="row">Ceylon</th>
                             <td><a href="./Problems/B.php">Sound!</a>
-                            <td><a href="/tea003/Problems/B.php">Sound!</a>
                             </td>
                             <td>2sec</td>
                             <td>ir_1st_vil</td>
@@ -85,7 +83,6 @@
                         <tr>
                             <th scope="row">Dimbula</th>
                             <td><a href="./Problems/C.php">Good Triangle</a>
-                            <td><a href="/tea003/Problems/C.php">Good Triangle</a>
                             </td>
                             <td>2sec</td>
                             <td>null</td>
@@ -93,7 +90,6 @@
                         <tr>
                             <th scope="row">Darjeeling</th>
                             <td><a href="./Problems/D.php">Breaker</a>
-                            <td><a href="/tea003/Problems/D.php">Breaker</a>
                             </td>
                             <td>2sec</td>
                             <td>ir_1st_vil</td>
@@ -101,7 +97,6 @@
                         <tr>
                             <th scope="row">Earlgray</th>
                             <td><a href="./Problems/E.php">Cafe Road</a>
-                            <td><a href="/tea003/Problems/E.php">Cafe Road</a>
                             </td>
                             <td>2sec</td>
                             <td>holeguma</td>
@@ -109,7 +104,6 @@
                         <tr>
                             <th scope="row">Keemun</th>
                             <td><a href="./Problems/F.php">'0' or '1'</a>
-                            <td><a href="/tea003/Problems/F.php">'0' or '1'</a>
                             </td>
                             <td>2sec</td>
                             <td>sanada</td>
