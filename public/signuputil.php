@@ -1,6 +1,6 @@
 <?php
 try{
-include_once("../database/connection.php");
+include_once("./call_api.php");
 }catch(Exception $e){
     echo "DB INIT ERROR";
     exit();
@@ -26,26 +26,25 @@ function signup($username, $password, $email, $role){
         return false;
     }
 
-    $con = new DBC();
     //is there username
     try{
-        $rec = $con->prepare_execute("SELECT uid FROM users WHERE username=? ", array($username))[0];
+        $res = call_api("user","GET",array('username'=>$username));
     }catch(Exception $e){
         echo "DB SELECT ERROR";
         exit();
     }
-    if ($rec["uid"] != null){
+    if ($res["result"]){
         echo "すでに同名のユーザーがいます。";
         return false; 
     }
     //insert
     try{
-        $con->prepare_execute("INSERT INTO users (uid, username, password_hash, role) VALUES (?, ?, ?, ?)", array(md5(rand()), $username, $con->sha256hash($password),$role));
+        $res = call_api("user","POST",array('username'=>$username,'password'=>$password));
     }catch(Exception $e){
         echo "エラーが発生しました。";
         return false;
     }
-    return true;
+    return $res["result"];
 }
 
     if(isset($_POST["username"]) && isset($_POST["password"])){

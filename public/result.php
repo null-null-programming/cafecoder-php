@@ -63,7 +63,6 @@
     <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
     <?php include_once("../template/nav.php");
 include_once("../util/util.php");
-echo_nav_card($_GET["contest_id"]);
 ?>
 
     <?php
@@ -76,37 +75,15 @@ echo_nav_card($_GET["contest_id"]);
                     "3"=>"py",
                     "4"=>"cs",
                 );
-                include_once("../database/connection.php");
+                include_once("./call_api.php");
                 if (!preg_match("/^[0-9a-zA-Z]+$/", $_GET["code_session"])) {
                     echo "CODE SESSION ERROR";
                     exit();
                 }
 
                 $code_session = $_GET["code_session"];
-                $con = new DBC();
-
-               //get user_code path
-                $sql = "SELECT username,problem,contest_id,contest_id,lang FROM uploads,users WHERE uid=user_id AND code_session=?";
-                try {
-                    $rec = $con->prepare_execute($sql, array($code_session))[0];
-                } catch (Exception $e) {
-                    echo "DB SELECT ERROR 1";
-                }
-                $problem = $rec["problem"];
-                $contest_id = $rec["contest_id"];
-                $language = $rec["lang"];
-                $user_id = $rec["user_id"];
-                $username = $rec["username"];
-
+                $contest_id = $_GET["contest_id"];
                 //check time and login
-                $sql = "SELECT contest_name FROM contests WHERE contest_id=? AND NOW() < end_time";
-                try {
-                    $rec = $con->prepare_execute($sql, array($contest_id))[0];
-                } catch (Exception $e) {
-                    echo "DB SELECT ERROR 2";
-                    exit();
-                }
-                $contest_name = $rec["contest_name"];
 
                 //if contest time
                 if ($contest_name != "") {
@@ -116,37 +93,21 @@ echo_nav_card($_GET["contest_id"]);
                     }
                 }
                 //get test_case_list path
-                $sql = "SELECT testcase_list_dir,point FROM problem WHERE contest_id=? and problem_id=?";
-                try {
-                    $rec = $con->prepare_execute($sql, array($contest_id, $problem))[0];
-                } catch (Exception $e) {
-                    echo "DB SELECT ERROR 3";
-                }
-                $testcase_list_path = $rec["testcase_list_dir"]. "/testcase_list.txt";
+                //get usercode
+                //get error
+                $res = call_api("result","GET",array("code_session"=>$code_session,"auth_token"=>$_SESSION["token"]));
+                $testcases = call_api("testcase","GET",array("code_session"=>$code_session,"auth_token"=>$_SESSION["token"]));
+                $code = call_api("code","GET",array("code_session"=>$code_session,"auth_token"=>$_SESSION["token"]));
                 //get user_code
-                $user_code_base = "./users/$username/codes/$contest_id/$problem/$code_session";
-                $user_code_path = $user_code_base .".". $ext[$language];
-                $user_error_path = $user_code_base . ".error";
-                $user_code = file_get_contents($user_code_path);
-                $user_error = file_get_contents($user_error_path);
-
-                $cnt = 0;
-                $result_path = $user_code_base . ".result";
-                if (file_exists($result_path)) {
-                    $file = new SplFileObject($result_path);
-                    $file->setFlags(SplFileObject::READ_CSV);
-                }
-                $inn = file_get_contents($testcase_list_path);
-                $inn = explode("\n", $inn);
                 //print  code
                 echo 'CODE : <br/> ';
                 echo '<pre class="prettyprint">';
-                echo htmlspecialchars($user_code);
+                echo htmlspecialchars(base64_decode($code["code"]));
                 //print error
                 echo '</pre>';
                 echo 'ERROR : <br/> ';
                 echo '<pre>';
-                echo htmlspecialchars($user_error);
+                //echo htmlspecialchars($user_error);
                 echo '</pre>';
 
                 echo '<table class="table table-bordered">';
@@ -157,23 +118,14 @@ echo_nav_card($_GET["contest_id"]);
                 echo '<th>実行時間</th>';
                 echo '</tr>';
                 echo '</thead>';
-
                 echo '<tbody>';
 
 
-                if (file_exists($result_path)) {
-                    foreach ($file as $outputs) {
-                        $start = 5;
-                        $end = count($outputs);
-                        for ($i = $start; $i <= $end - 2; $i += 2) {
-                            $case_number = intdiv(($i - 4), 2);
-                            $tim = $outputs[$i + 1];
-                            echo '<tr>';
-                            echo '<th>' . $inn[$case_number] . '</th>';
-                            echo '<th><span class="' . $outputs[$i] . '">' . $outputs[$i] . '</span></th>';
-                            echo '<th>' . $tim . '[ms]</th>';
-                        }
-                    }
+                foreach ($testcases["testcases"] as $case) {
+                    echo '<tr>';
+                    echo '<th>' . $case["testcase_name"] . '</th>';
+                    echo '<th><span class="' . $case["result"] . '">' . $case["result"] . '</span></th>';
+                    echo '<th>' . $case["runtime"]. '[ms]</th>';
                 }
                 echo '</tr>';
                 echo '</tbody>';
@@ -182,31 +134,27 @@ echo_nav_card($_GET["contest_id"]);
                 echo '<tbody>';
                 echo '<tr>';
                 echo '<th>ユーザID</th>';
-                echo '<th>' . $username . '</th>';
+                echo '<th>' . $res["username"] . '</th>';
                 echo '</tr>';
                 echo '<tr>';
                 echo '<th>問題</th>';
-                echo '<th>' . $problem . '</th>';
+                echo '<th>' . $res["problem"] . '</th>';
                 echo '</tr>';
                 echo '<tr>';
                 echo '<th>結果</th>';
-                if (isset($outputs[3])) {
-                    echo '<th class=".'.$outputs[3].'">' . $outputs[3] . '</th>';
-                } else {
-                    echo '<th>' . 'WJ...' . '</th>';
-                }
+                echo '<th class=".'.$res["result"].'">' . $res["result"] . '</th>';
                 echo '</tr>';
                 echo '<tr>';
                 echo '<th>実行時間</th>';
-                echo '<th>' . $outputs[1] . ' [ms]</th>';
+                echo '<th>' . $res["runtime"] . ' [ms]</th>';
                 echo '</tr>';
                 echo '<tr>';
                 echo '<th>メモリ使用量</th>';
-                echo '<th>' . $outputs[2] . ' [kB]</th>';
+                echo '<th>' . "undef" . ' [kB]</th>';
                 echo '</tr>';
                 echo '<tr>';
                 echo '<th>得点</th>';
-                echo '<th>' . $outputs[4] . '</th>';
+                echo '<th>' . $res["point"] . '</th>';
                 echo '</tr>';
                 echo '</tbody>';
                 echo '</table>';
