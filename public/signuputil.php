@@ -50,7 +50,7 @@ function signup($username, $password, $email, $role){
     if(isset($_POST["username"]) && isset($_POST["password"])){
 	$username = htmlspecialchars($_POST["username"], ENT_QUOTES);
         if(signup($username, $_POST["password"], "", "user")){
-	    mkdir("./users/".$username);
+	    mkdir("./users/".$username, true);
 	    copy("../template/userpage/template.php","users/".$username."/index.php");
         echo "登録が完了しました。<br /><a href=\"signin.php\">サインイン</a>";
         }

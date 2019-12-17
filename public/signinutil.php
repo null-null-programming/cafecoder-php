@@ -32,6 +32,7 @@ function signin($username, $password){
     include_once("./call_api.php");
     $q = array('username'=>$username,'password'=>$password);
     $response = call_api("auth","POST",$q);
+    session_start();
     $_SESSION["token"] = $response["auth_token"];
     $_SESSION["username"] = $username;
     return $response["result"];

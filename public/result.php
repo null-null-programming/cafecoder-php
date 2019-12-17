@@ -107,7 +107,7 @@ include_once("../util/util.php");
                 echo '</pre>';
                 echo 'ERROR : <br/> ';
                 echo '<pre>';
-                //echo htmlspecialchars($user_error);
+                echo htmlspecialchars(base64_decode($res["error"]));
                 echo '</pre>';
 
                 echo '<table class="table table-bordered">';
@@ -146,7 +146,7 @@ include_once("../util/util.php");
                 echo '</tr>';
                 echo '<tr>';
                 echo '<th>実行時間</th>';
-                echo '<th>' . $res["runtime"] . ' [ms]</th>';
+                echo '<th>' . $res["max_runtime"] . ' [ms]</th>';
                 echo '</tr>';
                 echo '<tr>';
                 echo '<th>メモリ使用量</th>';
