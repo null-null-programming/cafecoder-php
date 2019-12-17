@@ -66,6 +66,7 @@
 <?php
 include_once("../template/nav.php");
 include_once("../util/util.php");
+echo_nav_card($_GET["contest_id"]);
 ?>
 <div class="card" style="width: auto"> <div class="card-body"> 
 <?php
@@ -93,7 +94,7 @@ include_once("../util/util.php");
                 $username = $res["username"];
                 //if contest time
                 if ($con["is_open"]) {
-                    if ($_SESSION["username"] != $username && $_SESSION["role"] !== "admin") {
+                    if ($_SESSION["username"] != $username && ( !isset($_SESSION["role"]) || $_SESSION["role"] !== "admin")) {
                         echo "コンテスト中は本人のみが確認できます。";
                         exit();
                     }

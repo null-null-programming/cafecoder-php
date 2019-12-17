@@ -57,11 +57,8 @@ th{
 <?php
 include_once("../template/nav.php");
 include_once("../util/util.php");
+echo_nav_card($_GET["contest_id"]);
 ?>
-<div class="container">
-    <div class="card" style="width: auto">
-        <div class="card-body">
-            <nav class="navbar navbar-expand-sm navbar-light bg-light">
 
 
 <table class="table table-bordered">
@@ -105,7 +102,7 @@ try{
     foreach ($res as $user) {
         echo '<tr><th>';
         echo '<div class="point">';
-        echo $user["rank"]+1;
+        echo $user["rank"];
         echo '</div>';
         echo '</th>';
         echo '<th>';

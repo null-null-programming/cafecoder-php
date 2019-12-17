@@ -11,9 +11,8 @@ function echo_nav_card($contest_id){
         die();
     }
     try{
-    require(dirname(__FILE__)."/../database/connection.php");
-    $con = new DBC();
-    $contest_name = $con->prepare_execute("SELECT contest_name FROM contests WHERE contest_id=?",array($contest_id))[0]["contest_name"];
+    require(dirname(__FILE__)."/../public/call_api.php");
+    $contest_name = call_api("contest","GET",array("contest_id"=>$contest_id))["contest_name"];
     echo '    <div class="container">
         <div class="card" style="width: auto">
             <div class="card-body">
@@ -24,11 +23,11 @@ function echo_nav_card($contest_id){
                     </button>
                     <div class="collapse navbar-collapse" id="navmenu1">
                         <div class="navbar-nav">
-                            <a class="nav-item nav-link" href="https://www.kakecoder.com/'.$contest_name.'/index.php">コンテストTOP</a>
-                            <a class="nav-item nav-link" href="https://www.kakecoder.com/'.$contest_name.'/problem_list.php">問題一覧</a>
-                            <a class="nav-item nav-link" href="https://www.kakecoder.com/ranking.php?contest_id='.$contest_id.'">ランキング</a>
-                            <a class="nav-item nav-link" href="https://www.kakecoder.com/my_submit.php?contest_id='.$contest_id.'">自分の提出</a>
-                            <a class="nav-item nav-link" href="https://www.kakecoder.com/all_submit.php?contest_id='.$contest_id.'">みんなの提出</a>
+                            <a class="nav-item nav-link" href="/'.$contest_name.'/index.php">コンテストTOP</a>
+                            <a class="nav-item nav-link" href="/'.$contest_name.'/problem_list.php">問題一覧</a>
+                            <a class="nav-item nav-link" href="/ranking.php?contest_id='.$contest_id.'">ランキング</a>
+                            <a class="nav-item nav-link" href="/my_submit.php?contest_id='.$contest_id.'">自分の提出</a>
+                            <a class="nav-item nav-link" href="/all_submit.php?contest_id='.$contest_id.'">みんなの提出</a>
 
                         </div>
                     </div>
@@ -43,21 +42,18 @@ function echo_nav_card_footer(){
     </div>';
 }
 
-function block_out_of_contest(){
+function block_out_of_contest($contest_id){
     if($_SESSION["role"]==="admin"){
         return true;
     }
-    require(dirname(__FILE__)."/../database/connection.php");
+    require(dirname(__FILE__)."/../public/call_api.php");
     try{
-        $con = new DBC();
-        $rec = $con->prepare_execute("SELECT contest_name ,start_time FROM contests WHERE start_time > NOW() ORDER BY start_time ASC", array());
-        foreach($rec as $line){
-            $contest_name = $line["contest_name"];
-            if(strpos(getcwd(),$contest_name) !== false){
+        $contest= call_api("contest","GET",array("contest_id"=>$contest_id));
+        $contest_name = $contest["contest_name"];
+            if(!$contest["is_open"]){
                 echo "コンテストは開始前です。";
                 die();
             }
-        }
     }catch(Exception $e){
         echo "TIME ERROR";
         die();

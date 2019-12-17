@@ -28,11 +28,12 @@
 <body>
 
 <?php
+ini_set('display_errors', "On");
 include_once("../template/nav.php");
 include_once("../util/util.php");
+echo_nav_card($_GET["contest_id"]);
 ?>
 
-<div class="card" style="width: auto"> <div class="card-body"> <nav class="navbar navbar-expand-sm navbar-light bg-light"> 
 <table class="table table-bordered">
 <div class="pager">
 </div>

@@ -28,6 +28,7 @@
 <body>
  <?php include_once("../template/nav.php");
 include_once("../util/util.php");
+echo_nav_card($_GET["contest_id"]);
 ?>
 
 

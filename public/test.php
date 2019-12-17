@@ -24,31 +24,13 @@
 
 
     <!--メインコン�?ン�?-->
-    <div class="container">
-        <div class="card" style="width: auto">
-            <div class="card-body">
-                <nav class="navbar navbar-expand-sm navbar-light bg-light">
 
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navmenu1"
-                        aria-controls="navmenu1" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navmenu1">
-                        <div class="navbar-nav">
-                            <a class="nav-item nav-link" href="https://www.kakecoder.com/tea002">コンテストTOP</a>
-                            <a class="nav-item nav-link"
-                                href="https://www.kakecoder.com/tea002/problem_list.html">問題一覧</a>
-                            <a class="nav-item nav-link" href="https://www.kakecoder.com/tea002/ranking.html">ランキング</a>
-                            <a class="nav-item nav-link"
-                                href="https://www.kakecoder.com/tea002/my_submit.html">自分の提出</a>
-                            <a class="nav-item nav-link"
-                                href="https://www.kakecoder.com/tea002/all_submit.html">みんなの提出</a>
-
-                        </div>
-                    </div>
-                </nav>
-
-                <br>
+<?php
+include_once("../template/nav.php");
+include_once("../util/util.php");
+echo_nav_card("0");
+?>
+               <br>
                 <h3>Green - Semiprime-like　【配点：100 点】</h3>
                 <hr>
                 <h4><strong>問題文</strong></h4>
