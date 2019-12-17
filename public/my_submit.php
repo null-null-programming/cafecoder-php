@@ -26,26 +26,16 @@
 </head>
 
 <body>
-<?php include_once("../template/nav.php");
+ <?php include_once("../template/nav.php");
 include_once("../util/util.php");
-echo_nav_card($_GET["contest_id"]);
 ?>
 
+
+<div class="card" style="width: auto"> <div class="card-body"> <nav class="navbar navbar-expand-sm navbar-light bg-light"> 
 <table class="table table-bordered">
 <div class="pager">
-<?php 
-$page = (isset($_GET["page"]) && $_GET["page"] >= 0)? $_GET["page"] : 0 ;
-if(!preg_match("/^[0-9]+$/",$page)){
-    echo "PAGE ERROR";
-    exit();
-}
-if($page > 0){
-echo '<a href="my_submit.php?page='.((int)$page-1)."&contest_id=".$_GET["contest_id"].'">前へ</a>';
-}
-echo $page;
-echo '<a href="my_submit.php?page='.((int)$page+1).'&contest_id='.$_GET["contest_id"].'">次へ</a>';
-?>
 </div>
+
 <thead>
     <tr>
         <th>Username</th>
@@ -56,83 +46,39 @@ echo '<a href="my_submit.php?page='.((int)$page+1).'&contest_id='.$_GET["contest
     </tr>
 </thead>
 <tbody>
-
 <?php
 
-$page = (isset($_GET["page"]) && $_GET["page"] >= 0)? $_GET["page"] : 0 ;
 if(!isset($_GET["contest_id"])){
     echo "contest_idを指定してください。";
     exit();
 }
-if(!preg_match("/^[0-9]+$/",$page)){
-    echo "PAGE ERROR";
-    exit();
-}
 $contest_id = $_GET["contest_id"];
-include_once "../database/connection.php";
-$con = new DBC();
-$page_from = (int)($page * 50);
-$page_to = (int)($page * 50 + 50);
-
+include_once "./call_api.php";
 //get result
 try{
-$rec = $con->prepare_execute("SELECT username, user_id, problem, code_session FROM uploads LEFT JOIN users ON uid=? WHERE contest_id=?",array($_SESSION["uid"],$contest_id));
+    $res = call_api("submits","GET",array("username"=>$_SESSION["username"],"contest_id"=>$contest_id));
 }catch(Exception $e){
     echo "DB SELECT ERROR 1";
     exit();
 }
-$all_path = array();
-foreach($rec as $line){
-    $user_code_path = get_uploaded_session_path($line["username"], $contest_id, $line["problem"], $line["code_session"]).".result";
-    if(!file_exists($user_code_path)){
-        continue;
-    }
-    try{
-    $fp = fopen($user_code_path,"r");
-    $csv = fgetcsv($fp);
-    $result = $csv[3];
-    }catch(Exception $e){
-        echo "csv load error";
-    }
-    try{
-    $con->prepare_execute("UPDATE uploads SET result=? WHERE code_session=?",array($result, $line["code_session"]),array($result));
-    }catch(Exception $e){
-        echo("DB UPDATE ERROR");
-    }
-}
-try{
-    $rec = $con->prepare_execute("SELECT problem, code_session,upload_date,result FROM uploads LEFT JOIN users ON user_id=uid WHERE user_id=? AND contest_id=? ORDER BY upload_date DESC LIMIT 50 OFFSET $page_from",array($_SESSION["uid"],$contest_id));
-    // var_dump($rec);
-    foreach ($rec as $line) {
+    foreach ($res["submits"] as $line) {
         echo '<tr><th>';
         echo $_SESSION["username"];
         echo '</th>';
         echo '<th>';
-        echo $line["upload_date"];
+        echo $line["submit_time"];
         echo '</th>';
         echo '<th>';
-        echo $line["problem"];
+        echo $line["problem_name"];
         echo '</th>';
         echo '<th>';
-        if($line["result"] != ""){
-            echo $line["result"];
-        }else{
-            echo 'WJ...';
-        }
+        echo $line["result"];
         echo '</th>';
         echo '<th>';
-        echo '<a href="/result.php?code_session='.$line["code_session"].'&contest_id='.$contest_id.'">提出コード</a>';
+        echo '<a href="/result.php?code_session='.$line["submit_id"].'&contest_id='.$contest_id.'">提出コード</a>';
         echo '</th></tr>';
     }
-}catch(Exception $e){
-    var_dump($e);
-    echo "DB SELECT ERROR";
-}
 ?>
 </tbody>
 </table>
-<?php
-include_once("../util/util.php");
-echo_nav_card_footer();
-?>
 </body>

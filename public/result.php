@@ -61,11 +61,14 @@
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
     </script>
     <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
-    <?php include_once("../template/nav.php");
+
+
+<?php
+include_once("../template/nav.php");
 include_once("../util/util.php");
 ?>
-
-    <?php
+<div class="card" style="width: auto"> <div class="card-body"> 
+<?php
 
                 //todo magic number to config
                 $ext = array(
@@ -85,8 +88,11 @@ include_once("../util/util.php");
                 $contest_id = $_GET["contest_id"];
                 //check time and login
 
+                $con = call_api("contest","GET",array("contest_id"=>$contest_id));
+                $res = call_api("result","GET",array("code_session"=>$code_session,"auth_token"=>$_SESSION["token"]));
+                $username = $res["username"];
                 //if contest time
-                if ($contest_name != "") {
+                if ($con["is_open"]) {
                     if ($_SESSION["username"] != $username && $_SESSION["role"] !== "admin") {
                         echo "コンテスト中は本人のみが確認できます。";
                         exit();
@@ -95,7 +101,6 @@ include_once("../util/util.php");
                 //get test_case_list path
                 //get usercode
                 //get error
-                $res = call_api("result","GET",array("code_session"=>$code_session,"auth_token"=>$_SESSION["token"]));
                 $testcases = call_api("testcase","GET",array("code_session"=>$code_session,"auth_token"=>$_SESSION["token"]));
                 $code = call_api("code","GET",array("code_session"=>$code_session,"auth_token"=>$_SESSION["token"]));
                 //get user_code

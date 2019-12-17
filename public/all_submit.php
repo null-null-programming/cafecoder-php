@@ -26,77 +26,60 @@
 </head>
 
 <body>
-<?php 
+
+<?php
 include_once("../template/nav.php");
 include_once("../util/util.php");
-echo_nav_card($_GET["contest_id"]);
 ?>
+
+<div class="card" style="width: auto"> <div class="card-body"> <nav class="navbar navbar-expand-sm navbar-light bg-light"> 
 <table class="table table-bordered">
 <div class="pager">
-<?php 
-$page = (isset($_GET["page"]) && $_GET["page"] >= 0)? $_GET["page"] : 0 ;
-if(!preg_match("/^[0-9]+$/",$page)){
-    echo "PAGE ERROR";
-    exit();
-}
-if($page > 0){
-echo '<a href="all_submit.php?page='.($page-1)."&contest_id=".$_GET["contest_id"].'">前へ</a>';
-}
-echo $page;
-echo '<a href="all_submit.php?page='.($page+1).'&contest_id='.$_GET["contest_id"].'">次へ</a>';
-?>
 </div>
+
 <thead>
     <tr>
         <th>Username</th>
         <th>Date</th>
         <th>Problem</th>
-        <th>source</th>
+        <th>Result</th>
+        <th>Source</th>
     </tr>
 </thead>
 <tbody>
-
 <?php
 
-$page = (isset($_GET["page"]) && $_GET["page"] >= 0)? $_GET["page"] : 0 ;
 if(!isset($_GET["contest_id"])){
     echo "contest_idを指定してください。";
     exit();
 }
-if(!preg_match("/^[0-9]+$/",$page)){
-    echo "PAGE ERROR";
+$contest_id = $_GET["contest_id"];
+include_once "./call_api.php";
+//get result
+try{
+    $res = call_api("allsubmits","GET",array("contest_id"=>$contest_id));
+}catch(Exception $e){
+    echo "DB SELECT ERROR 1";
     exit();
 }
-
-$contest_id = $_GET["contest_id"];
-include_once "../database/connection.php";
-$con = new DBC();
-$page_from = (int)($page * 50);
-try{
-    $rec = $con->prepare_execute("SELECT username,user_id, problem, code_session, upload_date FROM uploads LEFT JOIN users ON uid=user_id WHERE contest_id=? AND upload_date > ( SELECT start_time FROM contests WHERE contest_id=? ) ORDER BY upload_date DESC LIMIT 50 OFFSET $page_from",array($contest_id, $contest_id));
-    // var_dump($rec);
-    foreach ($rec as $line) {
+    foreach ($res["submits"] as $line) {
         echo '<tr><th>';
         echo $line["username"];
         echo '</th>';
         echo '<th>';
-        echo $line["upload_date"];
+        echo $line["submit_time"];
         echo '</th>';
         echo '<th>';
-        echo $line["problem"];
+        echo $line["problem_name"];
         echo '</th>';
         echo '<th>';
-        echo '<a href="/result.php?code_session='.$line["code_session"].'&contest_id='.$contest_id.'">詳細</a>';
+        echo $line["result"];
+        echo '</th>';
+        echo '<th>';
+        echo '<a href="/result.php?code_session='.$line["submit_id"].'&contest_id='.$contest_id.'">提出コード</a>';
         echo '</th></tr>';
     }
-}catch(Exception $e){
-    echo "DB SELECT ERROR";
-}
 ?>
 </tbody>
 </table>
-<?php
-include_once("../util/util.php");
-echo_nav_card_footer();
-?>
 </body>

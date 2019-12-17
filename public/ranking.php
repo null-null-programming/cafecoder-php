@@ -23,14 +23,47 @@
             });
         });
     </script>
+<style>
+ span.submit_time {
+    font-size: 80%;
+ }
+div.point{
+    margin: auto;
+    height: 4em;
+    width: 7em;
+    display: table-cell; 
+    vertical-align: middle;
+}
+div.point.num{
+    margin: auto;
+}
+div.username{
+    margin: auto;
+    height: 4em;
+    width: 7em;
+    display: table-cell; 
+    vertical-align: middle;
+}
+th{
+
+     text-align:center;
+     width: 10%;
+     }
+</style>
 </head>
 
 <body>
-<?php 
+
+<?php
 include_once("../template/nav.php");
 include_once("../util/util.php");
-echo_nav_card($_GET["contest_id"]);
 ?>
+<div class="container">
+    <div class="card" style="width: auto">
+        <div class="card-body">
+            <nav class="navbar navbar-expand-sm navbar-light bg-light">
+
+
 <table class="table table-bordered">
 <thead>
     <tr>
@@ -56,86 +89,56 @@ if(!isset($_GET["contest_id"])){
 
 $contest_id = $_GET["contest_id"];
 try{
-include_once "../database/connection.php";
+include_once "./call_api.php";
 include_once "../util/util.php";
-$con = new DBC();
 }catch(Exception $e){
     echo "RANKING INIT ERROR";
     exit();
 }
-//update all user submit
 try{
-$rec = $con->prepare_execute("SELECT username, user_id, problem, code_session FROM uploads LEFT JOIN users ON uid=user_id WHERE contest_id=?",array($contest_id));
+    $res = call_api("ranking","GET",array("contest_id"=>$contest_id));
 }catch(Exception $e){
     echo "DB SELECT ERROR 1";
     exit();
 }
-$all_path = array();
-foreach($rec as $line){
-    $user_code_path = get_uploaded_session_path($line["username"], $contest_id, $line["problem"], $line["code_session"]).".result";
-    if(!file_exists($user_code_path)){
-        continue;
-    }
-    try{
-    $fp = fopen($user_code_path,"r");
-    $csv = fgetcsv($fp);
-    $result = $csv[3];
-    }catch(Exception $e){
-        echo "csv load error";
-    }
-    try{
-    $con->prepare_execute("UPDATE uploads SET result=? WHERE code_session=?",array($result, $line["code_session"]),array($result));
-    }catch(Exception $e){
-        echo("DB UPDATE ERROR");
-    }
-}
-//get first ac
-try{
-$con->prepare_execute("DROP VIEW IF EXISTS first_ac",array());
-$con->prepare_execute("CREATE VIEW first_ac AS SELECT user_id AS u,result AS r,problem AS p,upload_date FROM uploads a WHERE contest_id=? AND upload_date BETWEEN (SELECT start_time FROM contests WHERE contest_id=?) AND (SELECT end_time FROM contests WHERE contest_id=?) GROUP BY user_id, problem,result,upload_date,contest_id HAVING result='AC' AND upload_date=(SELECT MIN(upload_date) FROM uploads WHERE contest_id=? AND problem=p AND user_id=u AND result=r AND upload_date BETWEEN (SELECT start_time FROM contests WHERE contest_id=?) AND (SELECT end_time FROM contests WHERE contest_id=?))  ORDER BY upload_date ASC",array($contest_id,$contest_id,$contest_id,$contest_id,$contest_id,$contest_id));
-}catch(Exception $e){
-    echo("DB VIEW ERROR");
-    exit();
-}
-//get point
-try{
-    $rec=$con->prepare_execute("SELECT u ,username,sum(point) AS sum_point FROM first_ac,problem,users WHERE p=problem_id and problem.contest_id=? and u=uid GROUP BY u,username ORDER BY sum_point DESC",array($contest_id));
-    // var_dump($rec);
-    $enum_problem = array("A"=>0,"B"=>1,"C"=>2,"D"=>3,"E"=>4,"F"=>5);
-    foreach ($rec as $rank => $line) {
-        $now_state=$con->prepare_execute("SELECT point,p  FROM problem ,first_ac WHERE p=problem.problem_id AND contest_id=? AND u=? GROUP BY p,u,point ORDER BY p ASC",array($contest_id,$line["u"]));
+    $enum_problem = array("A","B","C","D","E","F");
+    foreach ($res as $user) {
         echo '<tr><th>';
-        echo (int)($rank)+1;
+        echo '<div class="point">';
+        echo $user["rank"]+1;
+        echo '</div>';
         echo '</th>';
         echo '<th>';
-        echo $line["username"];
+        echo '<div class="username">';
+        echo $user["username"];
+        echo '</div>';
         echo '</th>';
         echo '<th>';
-        echo $line["sum_point"];
+        echo '<div class="point">';
+        echo $user["point"];
+        echo '</div>';
         echo '</th>';
-        for($i=0,$j=0; $i < 6; $i++){
-            if($enum_problem[$now_state[$j]["p"]] == $i){
+        for($j=0; $j < 6; $j++){
+            if($enum_problem[$j] === $user["submits"][$j]["problem_name"]){
                 echo '<th>';
-                echo $now_state[$j]["point"];
+                echo '<div class="point">';
+                echo '<a class="num" href="result.php?contest_id='.$contest_id.'&username='.$user["username"].'&code_session='.$user["submits"][$j]["submit_id"].'">'.$user["submits"][$j]["point"].'</a>';
+                echo '<br />';
+                echo '<span class="submit_time">'.$user["submits"][$j]["submit_time"].'</span>';
+                echo '</div>';
                 echo '</th>';
-                $j++;
             }else{
                 echo '<th>';
+                echo '<div class="point">';
                 echo " - ";
+                echo '</div>';
                 echo '</th>';
 
             }
         }
         echo '</tr>';
     }
-}catch(Exception $e){
-    echo "DB SELECT ERROR 2";
-}
 ?>
 </tbody>
 </table>
-<?php
-include_once("../util/util.php");
-echo_nav_card_footer();
-?>
 </body>
