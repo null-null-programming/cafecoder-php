@@ -160,7 +160,11 @@ echo_nav_card($_GET["contest_id"]);
                 echo '</tr>';
                 echo '<tr>';
                 echo '<th>得点</th>';
-                echo '<th>' . $res["point"] . '</th>';
+                if($res["result"] === 'AC'){
+                    echo '<th>' . $res["point"] . '</th>';
+                }else{
+                    echo '<th>0</th>';
+                }
                 echo '</tr>';
                 echo '</tbody>';
                 echo '</table>';
