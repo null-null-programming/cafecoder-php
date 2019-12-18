@@ -32,7 +32,6 @@ echo_nav_card($_GET["contest_id"]);
 ?>
 
 
-<div class="card" style="width: auto"> <div class="card-body"> <nav class="navbar navbar-expand-sm navbar-light bg-light"> 
 <table class="table table-bordered">
 <div class="pager">
 </div>
