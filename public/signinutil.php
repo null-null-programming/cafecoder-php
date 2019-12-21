@@ -33,7 +33,7 @@ function signin($username, $password){
     $q = array('username'=>$username, 'password'=>$password);
     $response = call_api("auth", "POST", $q);
     session_start();
-    return $response["result"];
+    return $response;
     //$rec = $con->prepare_execute("SELECT uid,username,role FROM users WHERE username=? and password_hash=? ", array($username, $con->sha256hash($password)))[0];
     }catch(Exception $e){
         var_dump($e);
@@ -41,9 +41,11 @@ function signin($username, $password){
     }
 }
 if(isset($_POST["username"]) && isset($_POST["password"])){
-    if(signin($_POST["username"], $_POST["password"])){
+    $response = signin($_POST["username"], $_POST["password"]);
+    if($response["result"]){
+	session_start();
         $_SESSION["token"] = $response["auth_token"];
-        $_SESSION["username"] = $username;
+        $_SESSION["username"] = $_POST["username"];
         header("Location: /users/".$_POST["username"]);
         exit();
     }else{
