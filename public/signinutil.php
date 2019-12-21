@@ -30,11 +30,9 @@ function signin($username, $password){
     //$con = new DBC();
     try{
     include_once("./call_api.php");
-    $q = array('username'=>$username,'password'=>$password);
-    $response = call_api("auth","POST",$q);
+    $q = array('username'=>$username, 'password'=>$password);
+    $response = call_api("auth", "POST", $q);
     session_start();
-    $_SESSION["token"] = $response["auth_token"];
-    $_SESSION["username"] = $username;
     return $response["result"];
     //$rec = $con->prepare_execute("SELECT uid,username,role FROM users WHERE username=? and password_hash=? ", array($username, $con->sha256hash($password)))[0];
     }catch(Exception $e){
@@ -44,6 +42,8 @@ function signin($username, $password){
 }
 if(isset($_POST["username"]) && isset($_POST["password"])){
     if(signin($_POST["username"], $_POST["password"])){
+        $_SESSION["token"] = $response["auth_token"];
+        $_SESSION["username"] = $username;
         header("Location: /users/".$_POST["username"]);
         exit();
     }else{
