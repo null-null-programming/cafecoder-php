@@ -18,6 +18,15 @@
 
         gtag('config', 'UA-144747694-2');
     </script>
+    
+    <!--MathJax-->
+    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ["\\(","\\)"]] } });
+</script>
+<script type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_CHTML">
+</script>
+<meta http-equiv="X-UA-Compatible" CONTENT="IE=EmulateIE7" />
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -32,7 +41,7 @@
     </script>
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@earlgray283_C" />
-    <meta property="og:url" content="https://www.kakecoder.com" />
+    <meta property="og:url" content="https://www.cafecoder.top" />
     <meta property="og:title" content="CafeCoder" />
     <meta property=" og:description" content="喫茶店的プログラミングコンテストサイトです。" />
     <meta property="og:image"

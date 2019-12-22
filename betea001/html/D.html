@@ -1,0 +1,86 @@
+<h3>【Earlgray】 - Happiness Festival　【配点：250 点】</h3>
+
+
+<hr>
+<h4><strong>問題文</strong></h4>
+今日は1年に一回のお祭りの日です。ポリアンナちゃんは屋台を引っ張る役割を担っています。<br>
+<br>
+お祭りは縦<var>H</var>×横<var>W</var>マスからなる区画からなる町<var>T</var>で開催されます。<br>
+ポリアンナちゃんはスタート地点である左上端<var>T<sub>( 1,1 )</sub></var>からゴール地点右下端<var>T<sub>( H,W
+        )</sub></var>へ向かって屋台を引っ張ります。<br>
+このとき、ポリアンナちゃんは右か下にしか屋台を引っ張ることができません。<br>
+<br>
+お祭りの日はあいにくの雨上がりであったため、路面が荒れているマスとそうでないマスが町の中にあります。<br>
+1マス移動するとき、移動先のマスが<var>T<sub>( i, j )</sub></var>='0'であれば平坦な路面であるためコストはかかりません。<br>
+しかし、<var>T<sub>( i, j )</sub></var>='1'であれば、路面が荒れているため移動コストが<var>C</var>かかります。<br>
+<br>
+ポリアンナちゃんはなるべくコストがかからないようにしてゴール地点まで屋台を引っ張りたいです。<br>
+スタート地点からゴール地点まで屋台を引くときにかかるコストの総和の最小値を求めてください。<br>
+
+<br>
+<h4><strong>制約</strong></h4>
+・2≦<var>H,W</var>≦10<sup>3</sup><br>
+・0≦<var>C</var>≦10<sup>3</sup><br>
+・<var>T<sub>( i , j )</sub></var>='0' or '1'<br>
+・<var>T<sub>( 1 , 1 )</sub></var>=0<br>
+
+<br>
+<h4><strong>入力</strong></h4>
+<span style="background-color:#c7c7c7">
+    <var>H W C</var><br>
+    <var>T<sub>( 1 , 1 )</sub></var> <var>T<sub>( 1 , 2 )</sub></var>　… <var>T<sub>( 1 , W
+            )</sub></var><br>
+    ：<br>
+    ：<br>
+    <var>T<sub>( H , 1 )</sub></var> <var>T<sub>( H , 1 )</sub></var>　… <var>T<sub>( H , W
+            )</sub></var><br>
+</span>
+
+<br>
+<h4><strong>出力</strong></h4>
+スタート地点からゴール地点まで屋台を引くときにかかるコストの総和の最小値を出力せよ<br>
+
+<br>
+<h4><strong>入力例1</strong></h4>
+<span style="background-color:#c7c7c7">
+    2 4 1<br>
+    0 1 1 1<br>
+    0 0 1 0<br>
+</span>
+
+<br>
+<h4><strong>出力例1</strong></h4>
+<span style="background-color:#c7c7c7">1</span><br>
+コストが最小となるルートは(1,1)→(2,1)→(2,2)→(3,2)→(4,2)です。<br>
+(3,2)のマスの路面が荒れているため、コストが<var>C</var>=1だけかかります。<br>
+よって最小となるコストの総和は1となります。<br>
+
+<br>
+<h4><strong>入力例2</strong></h4>
+<span style="background-color:#c7c7c7">
+    3 3 4<br>
+    0 1 1<br>
+    0 0 1<br>
+    1 1 1<br>
+</span>
+
+<br>
+<h4><strong>出力例2</strong></h4>
+<span style="background-color:#c7c7c7">8</span><br>
+
+<br>
+<h4><strong>入力例3</strong></h4>
+<span style="background-color:#c7c7c7">
+    7 6 5<br>
+    0 1 1 1 1 0<br>
+    0 0 1 1 0 0<br>
+    0 1 0 0 1 0<br>
+    0 1 1 1 1 0<br>
+    0 1 1 1 1 0<br>
+    0 1 1 1 1 0<br>
+    0 1 1 1 1 0<br>
+</span>
+
+<br>
+<h4><strong>出力例3</strong></h4>
+<span style="background-color:#c7c7c7">10</span><br>

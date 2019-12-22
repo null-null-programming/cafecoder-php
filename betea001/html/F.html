@@ -1,0 +1,61 @@
+<h3>Keemun - Multiple Multiple　【配点：400 点】</h3>
+
+
+<hr>
+<h4><strong>問題文</strong></h4>
+長さ<var>N</var>の数列<var>A</var>があります。<br>
+
+<var>A</var>の要素から一つ以上選んで総乗(全ての積)をとったとき、値が<var>M</var>に最も近くなるものを求めて下さい。<br>
+具体的には、以下の問題を解いてください。<br>
+・1以上<var>N</var>以下の相異なる<var>k</var>(<var>k</var> = 1, 2, ..., <var>N</var>)個の整数
+<var>p<sub>1</sub></var> <var>p<sub>2</sub></var> ... <var>p<sub>k</sub></var>に対して<br>
+　Π<var><sub></sub></var><var>A<sub>p<sub>i</sub></sub></var>=<var>X</var> としたとき、
+|<var>X</var>-<var>M</var>|が最も小さくなる<var>X</var>を求めて下さい。<br>
+
+なお、答えが複数ある場合は値が最も小さいものを出力してください。<br>
+
+
+<br>
+<h4><strong>制約</strong></h4>
+・入力は全て整数で与えられる<br>
+・1≦<var>N</var>≦18<br>
+・1≦<var>M</var>≦10<sup>18</sup><br>
+
+・-10≦<var>A<sub>i</sub></var>≦<var>10</var><br>
+
+<br>
+<h4><strong>入力</strong></h4>
+<span style="background-color:#c7c7c7">
+    <var>N M</var><br>
+    <var>A<sub>1</sub></var> <var>A<sub>2</sub></var> ... <var>A<sub>N</sub></var><br>
+</span>
+
+<br>
+<h4><strong>出力</strong></h4>
+<br>
+答えを出力してください。
+<br>
+<h4><strong>入力例1</strong></h4>
+<span style="background-color:#c7c7c7">
+    3 5<br>
+    1 2 3<br>
+</span>
+
+<br>
+<h4><strong>出力例1</strong></h4>
+<span style="background-color:#c7c7c7">
+    6<br>
+</span>
+2と3を選んだときの積である6が最も5に近いです<br>
+<h4><strong>入力例2</strong></h4>
+<span style="background-color:#c7c7c7">
+    5 24<br>
+    3 2 9 2 2<br>
+</span>
+
+<br>
+<h4><strong>出力例2</strong></h4>
+<span style="background-color:#c7c7c7">
+    24<br>
+</span>
+3*2*2*2=24です。<br>

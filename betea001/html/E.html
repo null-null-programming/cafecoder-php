@@ -1,0 +1,83 @@
+<h3>Earlgray - 最小全域木？なにそれおいしいの？　【配点：300 点】</h3>
+
+
+<hr>
+<h4><strong>問題文</strong></h4>
+<var>N</var>個の街を相互に行き来可能とするように街道を作りたいです。<br>
+具体的には、各街からいくつかの街と街道を通って、すべての街へ行けるようにしたいです。<br>
+今、街を<var>1,2,...,N</var>として、<var>2</var>つの街<var>(i,j)</var>同士をつなぐ街道に対するコスト<var>C<sub>i,j</sub></var>が以下のように推定されています。<br>
+<center><var>C<sub>i,j</sub></var> = <var>i+j</var> <var>( i&ne;j , 1≦i,j≦N )</var></center><br>
+この時、<var>N-1</var>個の街道を建設して、<var>N</var>個の街が相互に行き来可能となるようにするために必要なコストの最小値を求めなさい。<br>
+
+<details>
+    <summary>余談</summary>
+    N個以上の街道を建設すると最小のコストにはならないことは示せます。<br>
+    このような問題は一般に最小全域木と呼ばれ、AtCoderでは500点以上の問題に出題されることが多いです。<br>
+    ただし、この問題を解くには最小全域木のアルゴリズムは必要なく、想定解の1つはО(1)です。<br>
+    もちろん、最小全域木のアルゴリズムを用いても解くことが出来ます。<br>
+</details>
+<details>
+    <summary>ヒント</summary>
+    ・N=3,N=5の時のサンプルの図を見て、どの街道を選べば最小のコストになるかを考えてみる。<br>
+    ・NとN+1の答えに法則性があるかを考えてみる。<br>
+    ・最小コストになる街道の繋げ方には決まりがある？<br>
+    といったことを考えてみましょう。以下のようにしても良いですが、UnionFind等の知識が必要になり、難易度は高いです。<br>
+    ・最小全域木のアルゴリズムを調べて貼る。(上級者向け)<br>
+</details>
+<br>
+<h4><strong>制約</strong></h4>
+・3≦<var>N</var>≦10<sup>3</sup><br>
+
+<br>
+<h4><strong>入力</strong></h4>
+<span style="background-color:#c7c7c7">
+    <var>N</var><br>
+</span>
+
+<br>
+<h4><strong>出力</strong></h4>
+コストが最小となるように街道を作った際に必要なコストを出力せよ。<br>
+
+<br>
+<h4><strong>入力例1</strong></h4>
+<span style="background-color:#c7c7c7">
+    3<br>
+</span>
+
+<br>
+<h4><strong>出力例1</strong></h4>
+<span style="background-color:#c7c7c7">
+    7<br>
+</span>
+<br>
+街1,2をつなぐ街道と街3,1をつなぐ街道を作ることで、全ての街は街道を通って相互に行き来可能となります。<br>
+また、これよりコストの総和が少なくなる街道の選び方はありません。<br>
+<img src="graph_B_sample1.png" width="40%"><br>
+
+<br>
+<h4><strong>入力例2</strong></h4>
+<span style="background-color:#c7c7c7">
+    5<br>
+</span>
+
+<br>
+<h4><strong>出力例2</strong></h4>
+<span style="background-color:#c7c7c7">
+    18<br>
+</span>
+<br>
+<img src="graph_B_sample2.png" width="40%"><br>
+
+
+
+<h4><strong>入力例3</strong></h4>
+<span style="background-color:#c7c7c7">
+    99<br>
+</span>
+
+<br>
+<h4><strong>出力例3</strong></h4>
+<span style="background-color:#c7c7c7">
+    5047<br>
+</span>
+<br>

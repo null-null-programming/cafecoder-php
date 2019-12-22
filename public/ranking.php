@@ -53,7 +53,6 @@ th{
 </head>
 
 <body>
-
 <?php
 include_once("../template/nav.php");
 include_once("../util/util.php");

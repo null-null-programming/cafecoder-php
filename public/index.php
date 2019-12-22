@@ -22,7 +22,11 @@
                     　喫茶店らしくまったりとした雰囲気のコンテストを定期的に開催しているのでお気軽にご参加ください。<br>
 
                     <h5>CafeCoderのソースコード</h5>
-                    　<a href="https://github.com/earlgray283/CafeCoder">https://github.com/earlgray283/CafeCoder</a>
+                    　<a href="https://github.com/earlgray283/cafecoder-judge">https://github.com/earlgray283/cafecoder-judge</a>
+			<br />
+                    　<a href="https://github.com/tachibana51/cafecoder-back">https://github.com/tachibana51/cafecoder-back</a>
+			<br />
+                    　<a href="https://github.com/tachibana51/cafecoder-back">https://github.com/tachibana51/cafecoder-php</a>
                     <br>
 
 
@@ -31,6 +35,29 @@
     </div>
     <br />
 
+<div class="container">
+        <div class="card" style="width:auto">
+            <div class="card-body">
+                <h4 class="card-title">【Before Tea Break 001(test contest)　告知】</h4>
+                <h6 class="card-subtitle mb-2 text-muted">コンテスト区分：be-tea</h6>
+                <p class="card-text">
+                    ・コンテストリンク：
+                    <?php
+                    echo '<a href="' . $address . '/Before_Tea_break_001/">' . $address .
+                        '/betea001/</a>';
+                    ?>
+                    <br> ・開催時刻：2019-12-22(日) 18:00:00
+                    <br> ・コンテスト時間：90分
+                    <br> ・問題数：6問
+                    <br> ・Writer(敬称略) : otamay, Ultraviolett, sakaki_tohru, earlgray283
+                    <br> ・ペナルティ：なし
+                    <br> ・メニュー：Green-Ceylon-Darjeeling-Earlgray-Earlgray-Keemun
+                </p>
+
+            </div>
+        </div>
+    </div>
+	<br>
     <div class="container">
         <div class="card" style="width:auto">
             <div class="card-body">

@@ -6,10 +6,6 @@ function get_uploaded_session_path($username, $contest_id, $problem, $code_sessi
     return "users/$username/codes/$contest_id/$problem/$code_session";
 }
 function echo_nav_card($contest_id){
-    if(!preg_match("/^[a-zA-Z0-9]+$/", $contest_id)){
-        echo "CONTEST ID ERROR";
-        die();
-    }
     try{
     require(dirname(__FILE__)."/../public/call_api.php");
     $contest_name = call_api("contest","GET",array("contest_id"=>$contest_id))["contest_name"];
@@ -43,19 +39,65 @@ function echo_nav_card_footer(){
 }
 
 function block_out_of_contest($contest_id){
-    if($_SESSION["role"]==="admin"){
+
+
+    include_once(dirname(__FILE__)."/../public/call_api.php");
+    if(isset($_SESSION["role"]) && $_SESSION["role"]==="admin"){
+        echo "admin";
         return true;
     }
-    require(dirname(__FILE__)."/../public/call_api.php");
     try{
-        $contest= call_api("contest","GET",array("contest_id"=>$contest_id));
-        $contest_name = $contest["contest_name"];
-            if(!$contest["is_open"]){
-                echo "コンテストは開始前です。";
-                die();
-            }
+        $contest = call_api("contest","GET",array("contest_id"=>$contest_id));
+	    if(!$contest["is_open"]){
+		echo "コンテストは開始前です。";
+		die();
+	    }else{
+		    return true;
+	    }
     }catch(Exception $e){
         echo "TIME ERROR";
         die();
     }
+
+}
+function echo_submit_form($problem,$contest_id) {
+echo '
+                <h4><strong>提出する</strong></h4><br>
+                <form action="/submit.php" method="POST" name="submit_form">
+
+                    <select style="display:none" name="problem" dssdase>
+                        <option  value="'.$problem.'"></option>
+
+                    </select>
+                    <select style="display:none" name="contest_id" dssdase>
+                        <option value="'.$contest_id.'"></option>
+
+                    </select>
+';
+                    include_once "../../../template/select_language.php";
+		    echo '
+
+	            <br />
+                    <label>ソースコード：</label>
+                    <br>
+                    <textarea cols="60" name="sourcecode" rows="20"></textarea>
+
+                    <br>
+                    <input type="submit" value="送信" class="btn" onclick="return checkform();">
+                    <div>
+                        <script>
+                            function checkform() {
+                                if (document.submit_form.userid.value == "" || document.submit_form.contestid.value == "" || document.submit_form.sourcecode.value == "") {
+                                    alert("ユーザIDもしくはソースコードが入力されていません。");
+                                    return false;
+                                } else {
+                                    //location.href=\'WaitForJudgging.php\';
+                                    return true;
+                                }
+                            }
+                        </script>
+                    </div>
+                </form>
+
+';
 }

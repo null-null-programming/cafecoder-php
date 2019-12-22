@@ -54,9 +54,9 @@ include_once "./call_api.php";
 /*
 sesssion to mysql 
 */
-$res = call_api("code","POST",array('code'=>$code,'username'=>$username,'language'=>$language,'auth_token'=>$auth_token,'problem'=>$problem,'contest_id'=>'0'));
+$res = call_api("code","POST",array('code'=>$code,'username'=>$username,'language'=>$language,'auth_token'=>$auth_token,'problem'=>$problem,'contest_id'=>$contest_id));
 $_SESSION["code_session"] = $res["code_session"];
-header("Location: /result.php?username=".$_SESSION["username"]."&code_session=".$res["code_session"]."&contest_id=0");
+header("Location: /result.php?username=".$_SESSION["username"]."&code_session=".$res["code_session"]."&contest_id=$contest_id");
 exit();
 ?>
 

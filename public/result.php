@@ -93,13 +93,15 @@ echo_nav_card($_GET["contest_id"]);
                 $res = call_api("result","GET",array("code_session"=>$code_session,"auth_token"=>$_SESSION["token"]));
                 $username = $res["username"];
                 //if contest time
+		/*
                 if ($con["is_open"]) {
-                    if ($_SESSION["username"] != $username && ( !isset($_SESSION["role"]) || $_SESSION["role"] !== "admin")) {
+                    if ($_SESSION["username"] != $username ) {
                         echo "コンテスト中は本人のみが確認できます。";
                         exit();
                     }
-                }
-                //get test_case_list path
+		}
+		*/
+		//get test_case_list path
                 //get usercode
                 //get error
                 $testcases = call_api("testcase","GET",array("code_session"=>$code_session,"auth_token"=>$_SESSION["token"]));

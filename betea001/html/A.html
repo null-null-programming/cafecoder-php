@@ -1,0 +1,70 @@
+<h3>【Darjeeling】 - Happiness function　【配点：100 点】</h3>
+
+
+<hr>
+<h4><strong>問題文</strong></h4>
+　ポリアンナちゃんは <var>P</var> ≦ x ≦ <var>Q</var> の範囲で多項式関数を描き、「自分が描いた多項式関数のX軸との交点の数がT以上」という条件を満たす関数を
+<span style="color: peru">Happiness function</span> と定義しました。<br>
+　非負整数<var>T</var>とポリアンナちゃんが描いた多項式関数上におけるP</var> ≦ x ≦ <var>Q</var>
+にかけてのx座標<var>X<sub>i</sub></var>、y座標<var>Y<sub>i</sub></var>が与えられます。
+ポリアンナちゃんの描いた多項式関数が <span style="color: peru">Happiness function</span> かどうかを判定してください。<br>
+ただし、x座標をK(Kは整数)としたとき、KとK+1間での交点の数は2個以上存在しないものとする。<br>
+また、接点は存在しないものとする。<br>
+
+<br>
+<h4><strong>制約</strong></h4>
+・0 ≦ <var>T</var> ≦ <var>Q</var> - <var>P</var> ≦ 2×10<sup>5</sup><br>
+・-10<sup>5</sup> ≦ <var>P</var>
+< <var>Q</var> ≦ 10<sup>5</sup><br>
+    ・<var>P</var> ≦ <var>X<sub>i</sub></var> ≦ <var>Q</var><br>
+    ・-10<sup>6</sup> ≦ <var>Y<sub>i</sub></var> ≦ 10<sup>6</sup><br>
+    ・<var>Y<sub>i</sub></var> ≠ 0 <br>
+    ・<var>X<sub>i</sub></var>=<var>P</var>+<var>i</var><br>
+    <br>
+    <h4><strong>入力</strong></h4>
+    入力は以下の形式で標準入力から与えられる。<br>
+    <span style="background-color:#c7c7c7">
+        <var>T</var> <var>P</var> <var>Q</var><br>
+        <var>X<sub>0</sub></var> <var>Y<sub>0</sub></var>
+        <vr></vr><br>
+        …<br>
+        <var>X<sub>Q-P</sub></var> <var>Y<sub>Q-P</sub></var><br>
+    </span>
+    <br>
+    <h4><strong>出力</strong></h4>
+    ポリアンナちゃんの描いた多項式関数が <span style="color: peru">Happiness function</span> であれば "Yes" そうでなければ "No"
+    と出力せよ。<br>
+
+    <br>
+    <h4><strong>入力例1</strong></h4>
+    <span style="background-color:#c7c7c7">
+        2 -2 3<br>
+        -2 5<br>
+        -1 1<br>
+        0 -3<br>
+        1 4<br>
+        2 -8<br>
+        3 -10<br>
+    </span>
+    <br>
+
+    <h4><strong>出力例1</strong></h4>
+    <span style="background-color:#c7c7c7">Yes</span><br>
+    <br>
+    このケースでのグラフは以下のようになります。<br>
+    <img src="入力例1.png" width="40%"><br>
+    X軸との交点は3つなので<span style="color: peru">Happiness function</span>であるといえます。<br>
+
+    <br>
+    <h4><strong>入力例2</strong></h4>
+    <span style="background-color:#c7c7c7">
+        2 -1 1<br>
+        -1 -1<br>
+        0 3<br>
+        1 7<br>
+    </span>
+    <br>
+
+    <h4><strong>出力例2</strong></h4>
+    <span style="background-color:#c7c7c7">No</span><br>
+    <br>
