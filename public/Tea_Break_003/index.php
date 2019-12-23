@@ -15,7 +15,7 @@
             <div class="card-body">
                <?php
                include_once("../../util/util.php"); 
-               echo_nav_card("3");
+               echo_nav_card("tea003");
                ?>
 
                 <br>
@@ -26,7 +26,7 @@
                 </h1>
                 <br>
                 <p class="card-text">
-                    ・開催時刻：2019-11-27(水) 21:00:00<br>
+                    ・開催時刻：2019-12-25(水) 21:00:00<br>
                     ・開催時間：100分<br>
                     ・問題数：6問<br>
                     ・writer：null, ir_1st_vil, holeguma, sanada<br>
