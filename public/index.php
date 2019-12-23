@@ -26,7 +26,7 @@
 			<br />
                     　<a href="https://github.com/tachibana51/cafecoder-back">https://github.com/tachibana51/cafecoder-back</a>
 			<br />
-                    　<a href="https://github.com/tachibana51/cafecoder-back">https://github.com/tachibana51/cafecoder-php</a>
+                    　<a href="https://github.com/tachibana51/cafecoder-php">https://github.com/tachibana51/cafecoder-php</a>
                     <br>
 
 
