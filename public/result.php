@@ -7,6 +7,7 @@
 
     <title>提出結果</title>
     <link rel="stylesheet" href="https://cdn.datatables.net/t/bs-3.3.6/jqc-1.12.0,dt-1.10.11/datatables.min.css" />
+    <link rel="stylesheet" href="/css/index.css" />
     <script src="https://cdn.datatables.net/t/bs-3.3.6/jqc-1.12.0,dt-1.10.11/datatables.min.js"></script>
     <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
     <script>
@@ -23,36 +24,7 @@
             });
         });
     </script>
-    <style>
-        .AC {
-            color: palegreen;
-        }
-
-        .WA {
-            color: orange;
-        }
-
-        .TLE {
-            color: orange;
-        }
-
-        .RE {
-            color: orange;
-        }
-
-        .MLE {
-            color: orange;
-        }
-
-        .CE {
-            color: lightblue;
-        }
-
-        .IE {
-            color: lightblue;
-        }
-    </style>
-</head>
+    </head>
 
 <body>
     <!-- Optional JavaScript -->
@@ -93,14 +65,12 @@ echo_nav_card($_GET["contest_id"]);
                 $res = call_api("result","GET",array("code_session"=>$code_session,"auth_token"=>$_SESSION["token"]));
                 $username = $res["username"];
                 //if contest time
-		/*
-                if ($con["is_open"]) {
-                    if ($_SESSION["username"] != $username ) {
+                if (!$con["is_open"]) {
+                    if ($_SESSION["username"] !== $username && $_SESSION["role"] !== "admin") {
                         echo "コンテスト中は本人のみが確認できます。";
                         exit();
                     }
 		}
-		*/
 		//get test_case_list path
                 //get usercode
                 //get error
@@ -132,7 +102,7 @@ echo_nav_card($_GET["contest_id"]);
                 foreach ($testcases["testcases"] as $case) {
                     echo '<tr>';
                     echo '<th>' . $case["testcase_name"] . '</th>';
-                    echo '<th><span class="' . $case["result"] . '">' . $case["result"] . '</span></th>';
+                    echo '<th><span class="' . $case["result"] . ' result">' . $case["result"] . '</span></th>';
                     echo '<th>' . $case["runtime"]. '[ms]</th>';
                 }
                 echo '</tr>';
@@ -150,7 +120,7 @@ echo_nav_card($_GET["contest_id"]);
                 echo '</tr>';
                 echo '<tr>';
                 echo '<th>結果</th>';
-                echo '<th class=".'.$res["result"].'">' . $res["result"] . '</th>';
+                echo '<th class=".'.$res["result"].' result">' .'<span class="'.$res["result"].'">'.$res["result"] .'</span>'. '</th>';
                 echo '</tr>';
                 echo '<tr>';
                 echo '<th>実行時間</th>';

@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <title>みんなの提出</title>
     <link rel="stylesheet" href="https://cdn.datatables.net/t/bs-3.3.6/jqc-1.12.0,dt-1.10.11/datatables.min.css" />
+    <link rel="stylesheet" href="/css/index.css" />
     <script src="https://cdn.datatables.net/t/bs-3.3.6/jqc-1.12.0,dt-1.10.11/datatables.min.js"></script>
     <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
     <script>
@@ -73,7 +74,7 @@ try{
         echo $line["problem_name"];
         echo '</th>';
         echo '<th>';
-        echo $line["result"];
+        echo '<span class="result '.$line["result"]."\">".$line["result"]."</span>";
         echo '</th>';
         echo '<th>';
         echo '<a href="/result.php?code_session='.$line["submit_id"].'&contest_id='.$contest_id.'">提出コード</a>';

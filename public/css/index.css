@@ -8,4 +8,87 @@ textarea {
     color: #5f4b8b;
 }
 
+.result {
+    -webkit-text-stroke: #000;
+    font-size: 1em;
+    text-shadow:1px 1px 0 #333,-1px 1px 0 #333,1px -1px 0 #333,-1px -1px 0 #333;
+    color:#ffffff;
+    font-weight: bold; /* Making font bold */
+}
 
+.AC {
+    padding: 0.5em 1em;
+    margin: 5em 0;
+    font-weight: bold;
+    background: rgba(23,200,23,0.3);
+    border: solid 1px #334400;/*線*/
+    border-radius: 10px;/*角の丸み*/
+    text-align:center;
+}
+
+.WA {
+    padding: 0.5em 1em;
+    margin: 5em 0;
+    font-weight: bold;
+    background:rgba(240,200,10);
+    border: solid 1px #334400;/*線*/
+    border-radius: 10px;/*角の丸み*/
+    text-align:center;
+}
+
+.TLE {
+    padding: 0.5em 1em;
+    margin: 5em 0;
+    font-weight: bold;
+    background: rgba(230,230,0,0.4);
+    border: solid 1px #334400;/*線*/
+    border-radius: 10px;/*角の丸み*/
+    text-align:center;
+}
+
+.RE {
+    padding: 0.5em 1em;
+    margin: 5em 0;
+    font-weight: bold;
+    background: rgba(250,100,100,0.5);
+    border: solid 1px #334400;/*線*/
+    border-radius: 10px;/*角の丸み*/
+    text-align:center;
+}
+
+.WJ {
+    padding: 0.5em 1em;
+    margin: 5em 0;
+    font-weight: bold;
+    background: gray;
+    border: solid 1px #334400;/*線*/
+    border-radius: 10px;/*角の丸み*/
+    text-align:center;
+}
+
+.CE {
+    padding: 0.5em 1em;
+    margin: 5em 0;
+    font-weight: bold;
+    background: lightblue;
+    border: solid 1px #334400;/*線*/
+    border-radius: 10px;/*角の丸み*/
+    text-align:center;
+}
+
+
+.IE {
+    padding: 0.5em 1em;
+    margin: 5em 0;
+    font-weight: bold;
+    background: pink;
+    border: solid 1px #334400;/*線*/
+    border-radius: 10px;/*角の丸み*/
+    text-align:center;
+}
+
+
+
+th {
+    text-align:center;
+}

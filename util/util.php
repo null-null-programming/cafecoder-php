@@ -52,7 +52,7 @@ function block_out_of_contest($contest_id){
 		echo "コンテストは開始前です。";
 		die();
 	    }else{
-		    return true;
+	        return true;
 	    }
     }catch(Exception $e){
         echo "TIME ERROR";

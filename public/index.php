@@ -42,8 +42,8 @@
                 <p class="card-text">
                     ・コンテストリンク：
                     <?php
-                    echo '<a href="' . $address . '/Tea_Break_003/">' . 'https://cafecoder.top' .
-                        '/Tea_Break_003/</a>';
+                    echo '<a href="' . $address . '/tea003">' . 'https://cafecoder.top' .
+                        '/tea003/</a>';
                     ?>
                     <br> ・開催時刻：2019-12-25(水) 21:00:00
                     <br> ・コンテスト時間：100分
@@ -65,7 +65,7 @@
                 <p class="card-text">
                     ・コンテストリンク：
                     <?php
-                    echo '<a href="' . $address . '/Before_Tea_break_001/">' . $address .
+                    echo '<a href="' . $address . '/Before_Tea_break_001/">' . 'https://cafecoder.top' .
                         '/betea001/</a>';
                     ?>
                     <br> ・開催時刻：2019-12-22(日) 18:00:00
@@ -88,7 +88,7 @@
                 <p class="card-text">
                     ・コンテストリンク：
                     <?php
-                    echo '<a href="' . $address . '/tea002/">' . $address .
+                    echo '<a href="' . $address . '/tea002/">' .  'https://cafecoder.top' .
                         '/tea002/</a>';
                     ?>
                     <br> ・開催時刻：2019-11-13(水) 21:00:00
@@ -111,7 +111,7 @@
                 <h6 class="card-subtitle mb-2 text-muted">コンテスト区分：tea</h6>
                 <p class="card-text">
                     <?php
-                    echo '<a href="' . $address . '/tea001/index.html">' . $address .
+                    echo '<a href="' . $address . '/tea001/index.html">' . 'https://cafecoder.top' .
                         '/tea001/index.html</a>';
                     ?>
                     <br> ・開催時刻：2019-11-06(水) 20:00:00
