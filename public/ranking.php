@@ -114,15 +114,16 @@ try{
         echo $user["point"];
         echo '</div>';
         echo '</th>';
-        for($j=0; $j < 6; $j++){
-            if($enum_problem[$j] === $user["submits"][$j]["problem_name"]){
+        for($j=0, $i=0; $j < 6; $j++){
+            if($enum_problem[$j] === $user["submits"][$i]["problem_name"]){
                 echo '<th>';
                 echo '<div class="point">';
-                echo '<a class="num" href="result.php?contest_id='.$contest_id.'&username='.$user["username"].'&code_session='.$user["submits"][$j]["submit_id"].'">'.$user["submits"][$j]["point"].'</a>';
+                echo '<a class="num" href="result.php?contest_id='.$contest_id.'&username='.$user["username"].'&code_session='.$user["submits"][$i]["submit_id"].'">'.$user["submits"][$i]["point"].'</a>';
                 echo '<br />';
-                echo '<span class="submit_time">'.$user["submits"][$j]["submit_time"].'</span>';
+                echo '<span class="submit_time">'.$user["submits"][$i]["submit_time"].'</span>';
                 echo '</div>';
                 echo '</th>';
+		$i++;
             }else{
                 echo '<th>';
                 echo '<div class="point">';
