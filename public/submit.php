@@ -9,7 +9,6 @@
 <body>
     
 <?php
-ini_set('display_errors', "On");
 if(!isset($_SESSION["username"]) || $_SESSION["username"] == ""){
     echo "サインインしてください。";
     exit();

@@ -17,7 +17,7 @@ function is_signin($username){
 
 function signin($username, $password){
     
-    ini_set('display_errors', "On");
+    include_once("./call_api.php");
     //password is safe because it is hashed with sha256 
     if(!preg_match("/^[a-zA-Z0-9_]+$/", $username)){
         echo "ユーザー名に使用できない文字が含まれています。";
@@ -29,7 +29,6 @@ function signin($username, $password){
     }
     //$con = new DBC();
     try{
-    include_once("./call_api.php");
     $q = array('username'=>$username, 'password'=>$password);
     $response = call_api("auth", "POST", $q);
     return $response;
