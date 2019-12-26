@@ -20,14 +20,13 @@
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
     </script>
 
-    <div class="container">
-        <br>
     <!--メインコン�?ン�?-->
                 <?php
 		include_once("../../util/util.php");
 		echo_nav_card('betea001');
                 block_out_of_contest('betea001');
                 ?>
+<br />
 
                 <table class="table">
                     <thead>
@@ -46,45 +45,45 @@
                     <tbody>
                         <tr>
                             <th scope="row">Green</th>
-                            <td><a href="./Problems/A.php">Happiness Function easy</a>
-                            </td>
-                            <td>2sec</td>
-                            <td>earlgray283</td>
+                            <th><a href="./Problems/A.php">Happiness Function easy</a>
+                            </th>
+                            <th>2sec</th>
+                            <th>earlgray283</th>
                         </tr>
                         <tr>
                             <th scope="row">Ceylon</th>
-                            <td><a href="./Problems/B.php">Semiprime-like</a>
-                            </td>
-                            <td>2sec</td>
-                            <td>Ultraviolett</td>
+                            <th><a href="./Problems/B.php">Semiprime-like</a>
+                            </th>
+                            <th>2sec</th>
+                            <th>Ultraviolett</th>
                         </tr>
                         <tr>
                             <th scope="row">Darjeeling</th>
-                            <td><a href="./Problems/C.php">trick of treat</a>
-                            </td>
-                            <td>2sec</td>
-                            <td>otamay</td>
+                            <th><a href="./Problems/C.php">trick of treat</a>
+                            </th>
+                            <th>2sec</th>
+                            <th>otamay</th>
                         </tr>
                         <tr>
                             <th scope="row">Earlgray</th>
-                            <td><a href="./Problems/D.php">Happiness Festival</a>
-                            </td>
-                            <td>2sec</td>
-                            <td>earlgray283</td>
+                            <th><a href="./Problems/D.php">Happiness Festival</a>
+                            </th>
+                            <th>2sec</th>
+                            <th>earlgray283</th>
                         </tr>
                         <tr>
                             <th scope="row">Earlgray</th>
-                            <td><a href="./Problems/E.php">最小全域木？なにそれおいしいの？</a>
-                            </td>
-                            <td>2sec</td>
-                            <td>sakaki_tohru</td>
+                            <th><a href="./Problems/E.php">最小全域木？なにそれおいしいの？</a>
+                            </th>
+                            <th>2sec</th>
+                            <th>sakaki_tohru</th>
                         </tr>
                         <tr>
                             <th scope="row">Keemun</th>
-                            <td><a href="./Problems/F.php">Multiple Multiple</a>
-                            </td>
-                            <td>2sec</td>
-                            <td>otamay</td>
+                            <th><a href="./Problems/F.php">Multiple Multiple</a>
+                            </th>
+                            <th>2sec</th>
+                            <th>otamay</th>
                         </tr>
                     </tbody>
                 </table>

@@ -2,28 +2,8 @@
 <html lang="ja">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <?php include_once "../template/head.php"; ?>
     <title>ランキング</title>
-    <link rel="stylesheet" href="https://cdn.datatables.net/t/bs-3.3.6/jqc-1.12.0,dt-1.10.11/datatables.min.css" />
-    <link rel="stylesheet" href="/css/index.css" />
-    <script src="https://cdn.datatables.net/t/bs-3.3.6/jqc-1.12.0,dt-1.10.11/datatables.min.js"></script>
-    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
-    <script>
-        jQuery(function($) {
-            $.extend($.fn.dataTable.defaults, {
-                language: {
-                    url: "http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Japanese.json"
-                }
-            });
-            $("#result-table").DataTable({
-                order: [
-                    [0, "desc"]
-                ]
-            });
-        });
-    </script>
 <style>
  span.submit_time {
     font-size: 80%;
@@ -38,7 +18,7 @@ div.point{
 div.point.num{
     margin: auto;
 }
-div.username{
+th.username{
     margin: auto;
     height: 4em;
     width: 7em;
@@ -61,6 +41,7 @@ echo_nav_card($_GET["contest_id"]);
 ?>
 
 
+<br />
 <table class="table table-bordered">
 <thead>
     <tr>
@@ -105,10 +86,8 @@ try{
         echo $user["rank"];
         echo '</div>';
         echo '</th>';
-        echo '<th>';
-        echo '<div class="username">';
+        echo '<th class="username">';
         echo $user["username"];
-        echo '</div>';
         echo '</th>';
         echo '<th>';
         echo '<div class="point">';

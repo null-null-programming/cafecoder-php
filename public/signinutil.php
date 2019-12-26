@@ -43,7 +43,7 @@ if(isset($_POST["username"]) && isset($_POST["password"])){
 	session_start();
         $_SESSION["token"] = $response["auth_token"];
         $_SESSION["username"] = $_POST["username"];
-	if ($_POST["username"] === "admin"){
+	if ($_POST["username"] === "admin" ){
 		$_SESSION["role"] = "admin";
 	}
         header("Location: /users/".$_POST["username"]);

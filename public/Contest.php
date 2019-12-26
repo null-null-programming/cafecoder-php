@@ -5,6 +5,12 @@
     <!-- Required meta tags -->
     <?php include_once "../template/head.php"; ?>
     <title>コンテスト</title>
+    <style>
+th {
+ width:20em;
+ text-align:center;
+}
+    </style>
 </head>
 
 <body>
@@ -23,6 +29,8 @@
     </script>
 
 
+    <?php include_once "./call_api.php" ;
+    ?>
 
 
     <!--メインコンテンツ-->
@@ -44,15 +52,18 @@
                                 </th>
                         </thead>
                         <tbody>
-                            <!--
-                                        テンプレ
-                                        <tr>
-                                        <th scope="row">2019-07-30 22:30:00</th>
-                                        <td><a href="">(復刻)PCK Screening Meeting Contest</a></td>
-                                        <td>なし</td>
-                                    </tr>
-                                    -->
-
+			<?php
+	include_once "./call_api.php" ;
+    $resp = call_api("all_contests", "GET", array(""=>""));
+    foreach($resp["contests"] as $line){
+	    if(!$line["is_over"]){
+		    echo'<tr><th scope="row">'.$line["start_time"].'</th>
+			<th><a href="/'.$line["contest_name"].'">' .$line["contest_name"].'</a></th>
+			<th>'.$line["writers"].'</th>
+			</tr>';
+	    }
+    }
+		    ?>
 
 
                         </tbody>
@@ -73,10 +84,23 @@
                                     writer
                                 </th>
                             </tr>
-
                         </thead>
                         <tbody>
+<?php
+    $resp = call_api("all_contests", "GET", array(""=>""));
+    foreach($resp["contests"] as $line){
+	    if($line["is_over"]){
+		    echo'
+                                        <tr>
+                                        <th scope="row">'.$line["start_time"].'</th>
+                                        <th><a href="/'.$line["contest_name"].'">' .$line["contest_name"].'</a></th>
+                                        <th>'.$line["writers"].'</th>
+				    </tr>';
+	    }
+    }
+		    ?>
                             <!--
+
                                         テンプレ
                                         <tr>
                                         <th scope="row">2019-07-30 22:30:00</th>
@@ -86,10 +110,10 @@
                                     -->
                             <tr>
                                 <th scope="row">2019-11-06 20:00:00</th>
-                                <td>
+                                <th>
                                     <a href="https://www.kakecoder.com/Contests/tea001/index.html">Tea Break 001</a>
-                                </td>
-                                <td>earlgray283</td>
+                                </th>
+                                <th>earlgray283</th>
                             </tr>
 
                         </tbody>

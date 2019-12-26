@@ -3,6 +3,7 @@
 
 
 <head>
+    <title>CafeCoder</title>
     <?php include_once "../template/head.php"; ?>
 </head>
 
@@ -15,19 +16,22 @@
     <div class="container">
         <div class="card" style="width:auto">
             <div class="card-body">
-                <h3 class="card-title" style="background-color:">CafeCoderへようこそ！</h3>
+                <h2 class="card-title" style="background-color:">CafeCoderへようこそ！</h2>
                 <hr>
                 <p class="card-text">
                     　CafeCoderは喫茶店的プログラミングコンテストサイトという位置づけで運営されています。<br>
                     　喫茶店らしくまったりとした雰囲気のコンテストを定期的に開催しているのでお気軽にご参加ください。<br>
-
-                    <h5>CafeCoderのソースコード</h5>
+        	<div class="card" style="width:50%" >
+                    <div class="card-body">
+                    <h5 class="card-title">CafeCoderのソースコード</h5>
                     　<a href="https://github.com/earlgray283/cafecoder-judge">https://github.com/earlgray283/cafecoder-judge</a>
 			<br />
                     　<a href="https://github.com/tachibana51/cafecoder-back">https://github.com/tachibana51/cafecoder-back</a>
 			<br />
                     　<a href="https://github.com/tachibana51/cafecoder-php">https://github.com/tachibana51/cafecoder-php</a>
-                    <br>
+		    </div>
+		</div>
+                <br>
 
 
             </div>
@@ -48,10 +52,12 @@
                     <br> ・開催時刻：2019-12-25(水) 21:00:00
                     <br> ・コンテスト時間：100分
                     <br> ・問題数：6問
-                    <br> ・Writer(敬称略)：null, ir_1st_vil, holeguma, sanada<br>
+                    <br> ・Writer(敬称略)：null, ir_1st_vil, holeguma, sanada
                     <br> ・ペナルティ：<s>3分</s>なし
                     <br> ・メニュー：Green-Ceylon-Dimbula-Darjeeling-Earlgray-Keemun
                 </p>
+		第三回にして三度目の正直、tea003は終わることができるのか!?
+              <br />
 
             </div>
         </div>
@@ -75,7 +81,6 @@
                     <br> ・ペナルティ：なし
                     <br> ・メニュー：Green-Ceylon-Darjeeling-Earlgray-Earlgray-Keemun
                 </p>
-
             </div>
         </div>
     </div>
@@ -110,10 +115,6 @@
                 <h4 class="card-title">【Tea Break 001　告知】</h4>
                 <h6 class="card-subtitle mb-2 text-muted">コンテスト区分：tea</h6>
                 <p class="card-text">
-                    <?php
-                    echo '<a href="' . $address . '/tea001/index.html">' . 'https://cafecoder.top' .
-                        '/tea001/index.html</a>';
-                    ?>
                     <br> ・開催時刻：2019-11-06(水) 20:00:00
                     <br> ・コンテスト時間：90分
                     <br> ・問題数：3問

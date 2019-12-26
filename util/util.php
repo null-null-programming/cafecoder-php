@@ -9,7 +9,8 @@ function echo_nav_card($contest_id){
     try{
     require(dirname(__FILE__)."/../public/call_api.php");
     $contest_name = call_api("contest","GET",array("contest_id"=>$contest_id))["contest_name"];
-    echo '    <div class="container">
+    echo '
+    <div class="container">
         <div class="card" style="width: auto">
             <div class="card-body">
                 <nav class="navbar navbar-expand-sm navbar-light bg-light">
@@ -17,7 +18,7 @@ function echo_nav_card($contest_id){
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navmenu1" aria-controls="navmenu1" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <div class="collapse navbar-collapse" id="navmenu1">
+                    <div class="collapse navbar-collapse  justify-content-center" id="navmenu1">
                         <div class="navbar-nav">
                             <a class="nav-item nav-link" href="/'.$contest_name.'/index.php">コンテストTOP</a>
                             <a class="nav-item nav-link" href="/'.$contest_name.'/problem_list.php">問題一覧</a>

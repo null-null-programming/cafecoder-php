@@ -14,16 +14,14 @@
         </div>
     </div>
     <div class="navbar-nav" class="username">
-        <span class="nav-item">
             <?php
             if ($_SESSION["username"] != "") {
-                echo '<a style="background-color:white">'.$_SESSION["username"] . '</a>';
-                echo '<a href="/signout.php">サインアウト</a>';
+                echo '<a class="nav-item nav-link" style="text-align:center" href="/users/'.$_SESSION["username"].'" >'.$_SESSION["username"] . '</a>';
+                echo '<a class="nav-item nav-link" href="/signout.php">サインアウト</a>';
             } else {
-                echo '<a href="/signin.php">サインイン</a>';
+                echo '<a class="nav-item nav-link" href="/signin.php">サインイン</a>';
             }
             ?>
-        </span>
     </div>
 </nav>
     <!-- Optional JavaScript -->

@@ -3,5 +3,6 @@ config/*
 Contests/*
 database/config.php
 public/users/*
+tea003/
 
 

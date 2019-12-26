@@ -3,6 +3,9 @@ textarea {
 	width: 400px;
 	height: 500px;
 }
+body {
+    font-family: 'Noto Sans JP', sans-serif;
+}
 
 .Ultraviolettwriter {
     color: #5f4b8b;

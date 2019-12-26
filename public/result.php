@@ -6,24 +6,7 @@
 
 
     <title>提出結果</title>
-    <link rel="stylesheet" href="https://cdn.datatables.net/t/bs-3.3.6/jqc-1.12.0,dt-1.10.11/datatables.min.css" />
-    <link rel="stylesheet" href="/css/index.css" />
-    <script src="https://cdn.datatables.net/t/bs-3.3.6/jqc-1.12.0,dt-1.10.11/datatables.min.js"></script>
-    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
-    <script>
-        jQuery(function($) {
-            $.extend($.fn.dataTable.defaults, {
-                language: {
-                    url: "http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Japanese.json"
-                }
-            });
-            $("#result-table").DataTable({
-                order: [
-                    [0, "desc"]
-                ]
-            });
-        });
-    </script>
+    <?php include_once "../template/head.php"; ?>
     </head>
 
 <body>
@@ -65,7 +48,7 @@ echo_nav_card($_GET["contest_id"]);
                 $res = call_api("result","GET",array("code_session"=>$code_session,"auth_token"=>$_SESSION["token"]));
                 $username = $res["username"];
                 //if contest time
-                if (!$con["is_open"]) {
+                if (!$con["is_over"]) {
                     if ($_SESSION["username"] !== $username && $_SESSION["role"] !== "admin") {
                         echo "コンテスト中は本人のみが確認できます。";
                         exit();
@@ -84,7 +67,7 @@ echo_nav_card($_GET["contest_id"]);
                 //print error
                 echo '</pre>';
                 echo 'ERROR : <br/> ';
-                echo '<pre>';
+                echo '<pre class="prettyprint">';
                 echo htmlspecialchars(base64_decode($res["error"]));
                 echo '</pre>';
 

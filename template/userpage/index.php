@@ -15,7 +15,7 @@ if(!is_signin(basename(getcwd()))){
 
     <title>UserPage</title>
 
-    <meta property="og:url" content="https://www.kakecoder.com"/>
+    <meta property="og:url" content="https://www.cafecoder.top"/>
     <meta property="og:title" content="KakeCoder" />
     <meta property=" og:description" content="喫茶店的プログラミングコンテストサイトです。"/>
     <meta property="og:image" content="https://2.bp.blogspot.com/-2PgVP0iOkHY/USNoKzJtQlI/AAAAAAAANSI/1xMd2jtWmPA/s1600/cafe_tea.png" />
